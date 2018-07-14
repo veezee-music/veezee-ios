@@ -90,7 +90,7 @@ The server can be set up either on the localhost or the Internet. This server's 
 
 
 
-**For more information about the server application please visit [here](https://github.com/veezee-music/veezee-server).**
+**For more information about the server application please visit [here](https://github.com/veezee-music/veezee-server-example).**
 
 ## License
 veezee (iOS) is available under the MIT license. See LICENSE file for more info.
