@@ -6,6 +6,8 @@
 <br>
 
 
+**This project is a work in progress!**
+
 **veezee** is a cross-platform music streamer inspired by Apple Music and Spotify for **iOS** and **Android**. It is built with **native** technologies for each platform (**Swift** and **Kotlin**). 
 
 *This is the repository for veezee for **iOS**, the **Android** version can be found [here](https://github.com/veezee-music/veezee-android).*
@@ -82,11 +84,13 @@ You'll need to use Xcode 9+ and the Cocoapods 1.5+ with the repos up to date.
 - Wait for Xcode to complete the indexing proccess and then build the project using Product -> Build option from the top menu.
 - Select a device or simulator with a screen size **equal or larger than 4.7 inch** (e.g. iPhone 8, 8 Plus, X or any iPad) an run the project (For running on a real device you might need to change the application bundle id from Xcode project settings)
 
-### Setting up a server
+### Setting up a server (IMPORTANT!)
 
 veezee depends on a functioning HTTPS API server to show music lists and play music as well as do user management and provide analytics data. An incomplete example is provided by the veezee team that can be used as a starting point but it's not completely safe and must be reviewed thoroughly before used in a production environment.
 
 The server can be set up either on the localhost or the Internet. This server's address must be specified in the `Constants.swift` file in the iOS application's project code.
+
+*`https://veezee.cloud/api/v1/` is a demo API limited in functionaliity (registrations not allowed) that can be used to understand the apps behavior. **It contains some music and image files that exist for educational purposes only! No profit is gained from them. Its content may not be used in any way that may violate any copyright laws.** This server does not have powerful hardware and network connectivity and is expected to be slow and unresponsive at times.*
 
 
 
