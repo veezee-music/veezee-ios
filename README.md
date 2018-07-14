@@ -1,4 +1,3 @@
-
 # veezee - music streamer (iOS)
 
 <p align="center">
@@ -43,7 +42,7 @@
 
 ## iOS version features
 
-- Completely written with **Swift 4**
+- Completely written in **Swift 4**
 - Optimized for both **iPhone and iPad** (Supports screen resizing)
 - Landscape mode (iPad only) - WiP (UI bugs expected)
 - **Coded UI** with Autolayout using **Snapkit** (no storyboards or xib files!)
