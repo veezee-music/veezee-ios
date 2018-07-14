@@ -1,0 +1,10 @@
+FabricApiKey:
+your_key_here
+FabricSecretKey:
+your_key_here
+GoogleReversediOSClientId:
+your_key_here
+GoogleiOSClientId:
+your_key_here
+GoogleServerClientId:
+your_key_here
