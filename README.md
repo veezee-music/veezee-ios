@@ -13,12 +13,6 @@
 
 <br>
 
-
-<p align="center">
-	<img width="20%" style="text-align:center; width: 15%;" src="http://veezee.cloud/demo_assets/veezee-rounded.png">
-</p>
-
-
 <p align="center">
   <a href="http://veezee.cloud/demo_assets/ios/p1.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p1.png"></a>
   <a href="http://veezee.cloud/demo_assets/ios/p2.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p2.png"></a>
