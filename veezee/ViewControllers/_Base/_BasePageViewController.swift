@@ -106,49 +106,6 @@ class _BasePageViewController: _BaseCommonViewController, BottomPlayerDelegate, 
 		return false;
 	}
 	
-	var center = CGPoint.zero;
-	var startLocation = CGPoint.zero;
-	var stopLocation = CGPoint.zero;
-	@objc
-	func handleBottomPlayerPan(sender: UIPanGestureRecognizer) {
-		
-		UIView.animate(withDuration: 0.2) {
-			if(sender.state == UIGestureRecognizerState.began) {
-				self.center = (sender.view?.center)!;
-				self.startLocation = sender.location(in: sender.view);
-			} else if(sender.state == UIGestureRecognizerState.changed) {
-				guard let isLeft = sender.isLeft(view: sender.view!), let isUp = sender.isUp(view: sender.view!) else {
-					return;
-				}
-				if(isLeft) {
-					var center = sender.view?.center;
-					let translation = sender.translation(in: sender.view);
-					center = CGPoint(x: center!.x + translation.x, y: center!.y);
-					sender.view?.center = center!;
-					sender.setTranslation(CGPoint.zero, in: sender.view);
-				} else if(isUp) {
-					self.bottomPlayerTapped();
-					sender.view?.center = self.center;
-					sender.setTranslation(CGPoint.zero, in: sender.view);
-				}
-			} else if(sender.state == UIGestureRecognizerState.ended) {
-				if((sender.view?.frame.origin.x)! * -1 < CGFloat(200.0)) {
-					sender.view?.center = self.center;
-					sender.setTranslation(CGPoint.zero, in: sender.view);
-				} else {
-					// passed the limit, hide the bottom player and stop the music
-					sender.view?.frame.origin.x -= self.view.bounds.size.width;
-					// self.audioPlayer.pause();
-					DispatchQueue.global(qos: .background).async {
-						self.audioPlayer.pause();
-						self.audioPlayer.stop();
-					}
-				}
-			}
-		}
-		
-	}
-
 	let bottomPlayer = BottomPlayer(frame: CGRect.zero);
 	func initializeBottomPlayer() {
 		if(bottomPlayer.frame != .zero) {

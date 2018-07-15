@@ -233,16 +233,45 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 	func appSettingsBundleChanged() {
 		SettingsBundleHelper.appSettingsBundleChanged();
 	}
+	
+	/// check if width AND height of current device and orientation are from the `compact` class
+	func wChC() -> Bool {
+		if(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.compact &&
+			self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClass.compact) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/// check if width AND height of current device and orientation are from the `regular` class
+	func wRhR() -> Bool {
+		if(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.regular &&
+			self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClass.regular) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/// check if width of current device and orientation is `compact`
+	func wC() -> Bool {
+		if(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.compact) {
+			return true;
+		}
+		
+		return false;
+	}
 }
 
 extension _BaseCommonViewController {
 	
 	func playlistSelected(playlist: Album) {
-		print(playlist.title)
+//		print(playlist.title)
 	}
 	
 	func trackAddedToPlaylist(playlist: Album) {
-		print(playlist.title)
+//		print(playlist.title)
 	}
 	
 }

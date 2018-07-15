@@ -1,9 +1,9 @@
 //
 //  Constants.swift
-//  UNIVER30t-Native
+//  veezee
 //
 //  Created by Vahid Amiri Motlagh on 1/26/18.
-//  Copyright © 2018 UNIVER30t Network. All rights reserved.
+//  Copyright © 2018 veezee-music. All rights reserved.
 //
 
 import Foundation
@@ -77,6 +77,15 @@ struct Constants {
 			
 			return "";
 		}
+	}
+	
+	static func getCurrentApplicationDocoumentDirectory() -> String? {
+		if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+		{
+			return documentsDirectoryPath;
+		}
+		
+		return nil;
 	}
 	
 	static func createCacheFoldersIfDoesNotExist() {

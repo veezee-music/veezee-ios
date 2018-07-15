@@ -63,7 +63,7 @@ class OfflineBrowseViewController: _BasePageViewController {
 	func loadHomePageLists() {
 		var tracks = [Track]();
 		var albums = [Album]();
-
+		
 		let db = OfflineAccessDatabase.sharedInstance.database!;
 		let searchQuery = QueryBuilder.select(SelectResult.all()).from(DataSource.database(db));
 		var items = [PlayableItem]();
@@ -153,7 +153,7 @@ class OfflineBrowseViewController: _BasePageViewController {
 			
 			self.homePageItems = parentHomePageItem;
 		}
-
+		
 	}
 	
 	@objc
@@ -179,7 +179,7 @@ class OfflineBrowseViewController: _BasePageViewController {
 }
 
 extension OfflineBrowseViewController: UICollectionViewDataSource {
-
+	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let item = self.homePageItems[indexPath.item];
 		

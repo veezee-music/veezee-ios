@@ -27,12 +27,12 @@ class BrowseViewController: _BasePageViewController {
 	let musicSmallCardInsetSize: CGFloat = 15;
 	let musicSmallCardSideSizeHorizontal: CGFloat = 150;
 	lazy var musicSmallCardSideSizeVertical = musicSmallCardSideSizeHorizontal + 50;
-
+	
 	private var _homePageItems = [HomePageItem]();
 	var homePageItems: [HomePageItem] {
 		set {
 			var newCollection = [HomePageItem]();
-			for n in newValue {				
+			for n in newValue {
 				newCollection.append(n);
 			}
 			// one more spacer just to make it look better
@@ -67,12 +67,6 @@ class BrowseViewController: _BasePageViewController {
 		
 		self.loadHomePageLists();
 		
-		let fileManager = FileManager.default;
-		if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-		{
-			print(documentsDirectoryPath)
-		}
-		
 		self.initializeBottomPlayer();
 	}
 	
@@ -105,13 +99,13 @@ class BrowseViewController: _BasePageViewController {
 			
 		});
 	}
-
+	
 	@objc
 	func settingsButtonPressed(_ sender: AnyObject) {
 		guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
 			return;
 		}
-
+		
 		if UIApplication.shared.canOpenURL(settingsUrl) {
 			UIApplication.shared.open(settingsUrl);
 		}
@@ -130,7 +124,8 @@ class BrowseViewController: _BasePageViewController {
 	override func viewReappearedFromForeground() {
 		super.viewReappearedFromForeground();
 		
-		self.loadHomePageLists(silent: true);
+		// FIXME: Causes issues with bottom player
+//		self.loadHomePageLists(silent: true);
 	}
 }
 
@@ -184,15 +179,15 @@ extension BrowseViewController: UICollectionViewDataSource {
 }
 
 extension BrowseViewController: UICollectionViewDelegateFlowLayout {
-
+	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.homePageItems.count;
 	}
-
+	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		
 	}
-
+	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		let item = self.homePageItems[indexPath.item];
 		
@@ -220,9 +215,9 @@ extension BrowseViewController {
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator);
 		
-//		coordinator.animate(alongsideTransition: nil, completion: { _ in
-//			self.reInitializeBottomPlayer();
-//		});
+		//	coordinator.animate(alongsideTransition: nil, completion: { _ in
+		//		self.reInitializeBottomPlayer();
+		//	});
 		
 		self.collectionView.removeFromSuperview();
 		self.collectionView = self.getCollectionView();

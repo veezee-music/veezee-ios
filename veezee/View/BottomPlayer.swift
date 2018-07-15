@@ -83,7 +83,7 @@ class BottomPlayer: UIView {
 		} else {
 			self.isHidden = true;
 		}
-
+		
 		if(!Constants.COLORED_PLAYER) {
 			let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark);
 			let blurEffectView = UIVisualEffectView(effect: blurEffect);
@@ -94,24 +94,24 @@ class BottomPlayer: UIView {
 			self.backgroundImageView = UIImageView();
 			self.backgroundImageView!.frame = CGRect(x: 0, y: 0, width: (self.bounds.width), height: BottomPlayer.Height);
 			self.backgroundImageView!.contentMode = .redraw;
-
+			
 			// the order is important, the image must be placed before the blurEffect view
 			self.insertSubview(self.backgroundImageView!, at: 0);
-
+			
 			let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark);
 			let blurEffectView = UIVisualEffectView(effect: blurEffect);
 			blurEffectView.frame = self.backgroundImageView!.frame;
-
+			
 			self.insertSubview(blurEffectView, at: 1);
 		}
-
+		
 		self.addSubviewOnce(self.artworkView);
 		artworkView.snp.remakeConstraints({(make) -> Void in
 			make.width.height.equalTo(70)
 			make.bottom.equalTo(0).inset(10)
 			make.left.equalTo(20)
 		});
-
+		
 		let titlesStackView = UIStackView(arrangedSubviews: [titleView, artistView]);
 		titlesStackView.axis = .vertical;
 		titlesStackView.distribution = .fill;
@@ -121,7 +121,7 @@ class BottomPlayer: UIView {
 			make.left.equalTo(artworkView.snp.right).offset(20)
 			make.right.equalTo(0).inset(50)
 		});
-
+		
 		self.addSubviewOnce(playPauseButtonView);
 		playPauseButtonView.snp.remakeConstraints ({(make) -> Void in
 			make.centerY.equalToSuperview()

@@ -3,7 +3,7 @@
 //  veezee
 //
 //  Created by Vahid Amiri Motlagh on 3/26/18.
-//  Copyright © 2018 UNIVER30t Network. All rights reserved.
+//  Copyright © 2018 veezee-music. All rights reserved.
 //
 
 import Foundation
@@ -12,8 +12,7 @@ import KeychainSwift
 import Kingfisher
 import NVActivityIndicatorView
 
-class SplashScreenViewController: UIViewController {
-	let keychain = KeychainSwift();
+class SplashScreenViewController: _BaseCommonViewController {
 	lazy var token: String? = self.keychain.get("token");
 	lazy var tokenExpiresIn: String? = self.keychain.get("expiresIn");
 	
@@ -86,16 +85,16 @@ class SplashScreenViewController: UIViewController {
 		self.view.addSubview(self.logoView);
 		self.logoView.snp.makeConstraints({(make) -> Void in
 			make.centerX.centerY.equalTo(self.view)
-			make.width.lessThanOrEqualTo(self.view.frame.width / 2)
-			make.height.lessThanOrEqualTo((self.view.frame.width / 2) / 1.5)
+			make.width.lessThanOrEqualTo(self.view.frame.width / (self.wC() ? 2 : 3))
+			make.height.lessThanOrEqualTo((self.view.frame.width / (self.wC() ? 2 : 3)) / 1.5)
 		});
 		self.logoView.layoutIfNeeded();
 		
-		self.view.addSubview(self.autoLoginActivityIndicator);
-		autoLoginActivityIndicator.snp.makeConstraints({(make) -> Void in
+		self.view.addSubviewOnce(self.autoLoginActivityIndicator);
+		autoLoginActivityIndicator.snp.remakeConstraints({(make) -> Void in
 			make.bottom.equalTo(0).inset(logoView.frame.height / 2)
 			make.centerX.equalToSuperview()
-			make.width.height.equalTo(logoView.frame.height / 5)
+			make.width.height.equalTo(logoView.frame.height / (self.wC() ? 5 : 7))
 		});
 		
 		self.view.addSubview(self.retryAutoLoginButton);
