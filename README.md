@@ -74,19 +74,19 @@
 
 ### Compiling: iOS version
 
-You'll need to use Xcode 9+ and the Cocoapods 1.5+ with the repos up to date.
+You'll need to use **Xcode 9+** and the **Cocoapods 1.5+** with the repos up to date.
 
 - Install the dependencies by executing the following command in the project directory in a terminal window: `pod install`
 - Rename the `example-app-config.txt` file to `app-config.txt` located in the project root and optionally fill it with API keys for various services supported by veezee
 
 
 - Open `veezee.xcworkspace` file by double clicking on it or use Xcode file menu to open the project.
-- Wait for Xcode to complete the indexing proccess and then build the project using Product -> Build option from the top menu.
-- Select a device or simulator with a screen size **equal or larger than 4.7 inch** (e.g. iPhone 8, 8 Plus, X or any iPad) an run the project (For running on a real device you might need to change the application bundle id from Xcode project settings)
+- Wait for Xcode to complete the indexing proccess and then build the project using **Product** -> **Build** option from the top menu.
+- Select a device or simulator with a screen size **equal or larger than 4.7 inch** (e.g. iPhone 8, 8 Plus, X or any iPad) and run the project (For running on a real device you might need to change the application bundle id from Xcode project settings)
 
 ### Setting up a server (IMPORTANT!)
 
-veezee depends on a functioning HTTPS API server to show music lists and play music as well as do user management and provide analytics data. An incomplete example is provided by the veezee team that can be used as a starting point but it's not completely safe and must be reviewed thoroughly before used in a production environment.
+**veezee** depends on a functioning HTTPS API server to show music lists and play music as well as do user management and provide analytics data. An incomplete example is provided by the veezee team that can be used as a starting point but it's not completely safe and must be reviewed thoroughly before used in a production environment.
 
 The server can be set up either on the localhost or the Internet. This server's address must be specified in the `Constants.swift` file in the iOS application's project code.
 
@@ -95,6 +95,12 @@ The server can be set up either on the localhost or the Internet. This server's 
 
 
 **For more information about the server application please visit [here](https://github.com/veezee-music/veezee-server-example).**
+
+## Contributors
+
+veezee (iOS) is designed and developed by **[Vahid Amiri Motlagh](http://vahidamiri.com/)**.
+
+My contact info can also be found on my [GitHub page](https://github.com/vsg24).
 
 ## License
 veezee (iOS) is available under the MIT license. See LICENSE file for more info.
