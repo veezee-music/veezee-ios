@@ -55,7 +55,6 @@
 		3D8728D62086BDC4002C2CD5 /* OfflineAccessDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8728D52086BDC4002C2CD5 /* OfflineAccessDatabase.swift */; };
 		3D95672C20E7B946005C8369 /* UserPlaylistsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D95672B20E7B946005C8369 /* UserPlaylistsDelegate.swift */; };
 		3D95672E20E7B964005C8369 /* NavigationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D95672D20E7B964005C8369 /* NavigationControllerDelegate.swift */; };
-		3D9571C220AFFDB9007981EF /* GenericApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9571C120AFFDB9007981EF /* GenericApiError.swift */; };
 		3D9F5A4020ED738100AF72B0 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9F5A3E20ED738000AF72B0 /* AudioPlayer.swift */; };
 		3D9F5A4120ED738100AF72B0 /* BaseAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9F5A3F20ED738100AF72B0 /* BaseAudioPlayer.swift */; };
 		3D9FB8CD2073B1E80024D435 /* UserAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9FB8CC2073B1E80024D435 /* UserAccess.swift */; };
@@ -173,7 +172,6 @@
 		3D8728D52086BDC4002C2CD5 /* OfflineAccessDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineAccessDatabase.swift; sourceTree = "<group>"; };
 		3D95672B20E7B946005C8369 /* UserPlaylistsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlaylistsDelegate.swift; sourceTree = "<group>"; };
 		3D95672D20E7B964005C8369 /* NavigationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerDelegate.swift; sourceTree = "<group>"; };
-		3D9571C120AFFDB9007981EF /* GenericApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericApiError.swift; sourceTree = "<group>"; };
 		3D9F5A3E20ED738000AF72B0 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		3D9F5A3F20ED738100AF72B0 /* BaseAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseAudioPlayer.swift; sourceTree = "<group>"; };
 		3D9FB8CC2073B1E80024D435 /* UserAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccess.swift; sourceTree = "<group>"; };
@@ -267,7 +265,7 @@
 			path = API;
 			sourceTree = "<group>";
 		};
-		3D2E67282022B351003E463E /* ViewControllers */ = {
+		3D2E67282022B351003E463E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				3DCFBEAC20F10D020050C066 /* Search */,
@@ -286,7 +284,7 @@
 				3DC3734C20A7F92200C5A92B /* UserPlaylistsViewController.swift */,
 				3D716E9720A900210067E3FE /* CreatePlaylistViewController.swift */,
 			);
-			path = ViewControllers;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		3D6277F0206F6F6200975A11 /* utils */ = {
@@ -343,13 +341,13 @@
 		3D78177E201BA054003C2054 /* veezee */ = {
 			isa = PBXGroup;
 			children = (
-				3DC372FB20A7712D00C5A92B /* ExternalAndModifiedLibs */,
+				3DC372FB20A7712D00C5A92B /* Vendors */,
 				3D645F982061287A00B5F638 /* Resources */,
 				3D2B41D2203010B10083C7D2 /* API */,
-				3D2E67282022B351003E463E /* ViewControllers */,
+				3D2E67282022B351003E463E /* Controllers */,
 				3D78179B201BD159003C2054 /* Models */,
-				3D781796201BB9B6003C2054 /* View */,
-				3D781791201BA7BD003C2054 /* Utility */,
+				3D781796201BB9B6003C2054 /* Views */,
+				3D781791201BA7BD003C2054 /* Helpers */,
 				3D78177F201BA054003C2054 /* AppDelegate.swift */,
 				3D781794201BACC6003C2054 /* Constants.swift */,
 				3D781786201BA055003C2054 /* Assets.xcassets */,
@@ -360,7 +358,7 @@
 			path = veezee;
 			sourceTree = "<group>";
 		};
-		3D781791201BA7BD003C2054 /* Utility */ = {
+		3D781791201BA7BD003C2054 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				3D781792201BA7F9003C2054 /* Helpers.swift */,
@@ -373,10 +371,10 @@
 				3DBD04B020E966AF00791A49 /* Reachability.swift */,
 				3DB78FC920ED8D5E0085A715 /* SHA1.swift */,
 			);
-			path = Utility;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
-		3D781796201BB9B6003C2054 /* View */ = {
+		3D781796201BB9B6003C2054 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				3D7D9D5320F32E7800E419C9 /* CollectionView */,
@@ -386,10 +384,9 @@
 				3D716E9B20A90E510067E3FE /* ActionSheetCustomButton.swift */,
 				3D4C1ED420B0C4C2002CD65E /* ProgressHUD.swift */,
 				3D4C1ED620B1397D002CD65E /* UniversalActionSheet.swift */,
-				3DF4713D20C2DF8400A03576 /* GenreTinyViewCell.swift */,
 				3D847BA020DE9B58007DC533 /* BottomPlayer.swift */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		3D78179B201BD159003C2054 /* Models */ = {
@@ -405,7 +402,6 @@
 				3D6FA4A7205665AC0001857E /* AlbumArtColor.swift */,
 				3D4B1D342064E1E2004853CF /* User.swift */,
 				3D9FB8CC2073B1E80024D435 /* UserAccess.swift */,
-				3D9571C120AFFDB9007981EF /* GenericApiError.swift */,
 				3DF4713920C2DB2F00A03576 /* Genre.swift */,
 			);
 			path = Models;
@@ -414,6 +410,7 @@
 		3D7D9D5320F32E7800E419C9 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				3DF4713D20C2DF8400A03576 /* GenreTinyViewCell.swift */,
 				3DEED42320317CB400603EDB /* HorizontalTinyTripleRowCollectionViewCell.swift */,
 				3DEED42520317CDF00603EDB /* SnappingCollectionViewFlowLayout.swift */,
 				3DEED42720317D1E00603EDB /* HorizontalLargeCollectionViewCell.swift */,
@@ -496,7 +493,7 @@
 			path = AudioPlayer;
 			sourceTree = "<group>";
 		};
-		3DC372FB20A7712D00C5A92B /* ExternalAndModifiedLibs */ = {
+		3DC372FB20A7712D00C5A92B /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
 				3D645F912061248400B5F638 /* CustomLGButton */,
@@ -504,7 +501,7 @@
 				3D9571C020AFFA58007981EF /* HalfModal */,
 				3DC372FC20A77C2F00C5A92B /* DeckTransition */,
 			);
-			path = ExternalAndModifiedLibs;
+			path = Vendors;
 			sourceTree = "<group>";
 		};
 		3DC372FC20A77C2F00C5A92B /* DeckTransition */ = {
@@ -853,7 +850,6 @@
 				3DC3732B20A77D3D00C5A92B /* DeckTransitioningDelegate.swift in Sources */,
 				3DEED4362031822900603EDB /* SettingsBundleHelper.swift in Sources */,
 				3D9F5A4020ED738100AF72B0 /* AudioPlayer.swift in Sources */,
-				3D9571C220AFFDB9007981EF /* GenericApiError.swift in Sources */,
 				3DEED42A20317D4300603EDB /* SpacerCollectionViewCell.swift in Sources */,
 				3D04130120C6B6B30068299D /* AllTracksListViewController.swift in Sources */,
 				3D781780201BA054003C2054 /* AppDelegate.swift in Sources */,

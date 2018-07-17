@@ -12,7 +12,7 @@ import MarqueeLabel
 import DeviceKit
 import Kingfisher
 
-protocol BottomPlayerDelegate: class {
+protocol BottomPlayerDelegate: AnyObject {
 	func bottomPlayerTapped();
 }
 
