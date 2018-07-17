@@ -70,4 +70,4 @@ fastlane/test_output
 # intellij idea
 .idea/
 app_config.txt
-#.DS_Store
+.DS_Store
