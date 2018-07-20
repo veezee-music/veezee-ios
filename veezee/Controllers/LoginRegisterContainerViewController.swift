@@ -18,7 +18,7 @@ import PMAlertController
 import VSInfiniteCarousel
 import Crashlytics
 
-class LoginRegisterContainerViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
+class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignInDelegate, GIDSignInUIDelegate {
 	
 	var albumArts = [String]();
 	
@@ -39,10 +39,6 @@ class LoginRegisterContainerViewController: UIViewController, GIDSignInDelegate,
 	override var prefersStatusBarHidden: Bool {
 		return true;
 	}
-	
-	let audioPlayer = AudioPlayer.shared;
-	let device = Device();
-	let keychain = KeychainSwift();
 	
 	let nameInputTag = 395543232;
 	let emailInputTag = 3918009687;
@@ -75,6 +71,10 @@ class LoginRegisterContainerViewController: UIViewController, GIDSignInDelegate,
 	
 	var googleLoginButton = LGButton();
 	
+	override func shouldCheckForUserLogin() -> Bool {
+		return false;
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad();
 		UIApplication.shared.isStatusBarHidden = true;
@@ -106,8 +106,8 @@ class LoginRegisterContainerViewController: UIViewController, GIDSignInDelegate,
 		self.view.addSubview(logoView);
 		logoView.snp.makeConstraints({(make) -> Void in
 			make.centerX.centerY.equalTo(self.view)
-			make.width.lessThanOrEqualTo(self.view.frame.width / 2)
-			make.height.lessThanOrEqualTo((self.view.frame.width / 2) / 1.5)
+			make.width.lessThanOrEqualTo(self.view.frame.width / (self.wC() ? 2 : 3))
+			make.height.lessThanOrEqualTo((self.view.frame.width / (self.wC() ? 2 : 3)) / 1.5)
 		});
 		logoView.layer.zPosition = 8;
 		

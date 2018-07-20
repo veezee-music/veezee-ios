@@ -66,6 +66,10 @@ class SplashScreenViewController: _BaseCommonViewController {
 		return offlineModeButton;
 	}();
 	
+	override func shouldCheckForUserLogin() -> Bool {
+		return false;
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad();
 		

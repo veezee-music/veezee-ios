@@ -33,13 +33,17 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		// just for initialization this time
 		self.appSettingsBundleChanged();
 		
-		if(!Constants.GUEST_MODE) {
+		if(!Constants.GUEST_MODE && self.shouldCheckForUserLogin()) {
 			self.checkUserLogin();
 		}
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated);
+	}
+	
+	func shouldCheckForUserLogin() -> Bool {
+		return true;
 	}
 	
 	func checkUserLogin() {

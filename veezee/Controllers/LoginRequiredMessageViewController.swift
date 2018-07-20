@@ -14,7 +14,7 @@ class LoginRequiredMessageViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad();
 		
-		self.view.backgroundColor = .black
+		self.view.backgroundColor = UIColor.black;
 	}
 	
 }
