@@ -61,7 +61,7 @@ class SplashScreenViewController: _BaseCommonViewController {
 		offlineModeButton.shadowOffset = CGSize(width: 0, height: 1);
 		offlineModeButton.shadowColor = Constants.ACCENT_COLOR;
 		offlineModeButton.layer.zPosition = 8;
-		offlineModeButton.addTarget(self, action: #selector(SplashScreenViewController.replaceCurrentPageWithMainViews), for: .touchUpInside);
+		offlineModeButton.addTarget(self, action: #selector(SplashScreenViewController.offlineModeButtonTapped), for: .touchUpInside);
 		
 		return offlineModeButton;
 	}();
@@ -120,8 +120,11 @@ class SplashScreenViewController: _BaseCommonViewController {
 		self.hideAndShowViewWithAnimation(logoView: logoView, animationDuration: 0.5, delayDuration: 0.3, completion: {
 			let reachability = Reachability();
 			
-			if(Constants.GUEST_MODE || Constants.FORCE_OFFLINE_USAGE) {
+			if(Constants.GUEST_MODE) {
 				self.replaceCurrentPageWithMainViews();
+				return;
+			} else if(Constants.FORCE_OFFLINE_USAGE) {
+				self.replaceCurrentPageWithMainViews(offline: true);
 				return;
 			}
 			
@@ -137,7 +140,7 @@ class SplashScreenViewController: _BaseCommonViewController {
 					// user is offline, check the stored token expiration date
 					if(self.isOfflineModeIsAvailable()) {
 						// redirect to the main page
-						self.replaceCurrentPageWithMainViews();
+						self.replaceCurrentPageWithMainViews(offline: true);
 					} else {
 						// token is expired, log the user out and redirect to the login page
 						self.keychain.clear();
@@ -173,7 +176,7 @@ class SplashScreenViewController: _BaseCommonViewController {
 		autoLoginActivityIndicator.startAnimating();
 		API.Account.validateLogin(token: self.keychain.get("token")) { (user, errorMessage, retryPossible) in
 			self.autoLoginActivityIndicator.stopAnimating();
-
+			
 			if(retryPossible == nil) {
 				// update the expiration session date
 				AppDelegate.autoLoginSessionExpireDate = getDateTimeForHoursInTheFuture(hours: 6);
@@ -196,7 +199,7 @@ class SplashScreenViewController: _BaseCommonViewController {
 						UIView.animate(withDuration: 1.0, animations: {
 							self.retryAutoLoginButton.snp.remakeConstraints({(make) -> Void in
 								make.centerY.equalTo(self.autoLoginActivityIndicator)
-								make.width.equalTo(self.logoView.frame.width / 3)
+								make.width.greaterThanOrEqualTo(self.logoView.frame.width / 3)
 								make.centerX.equalTo(self.view).offset(-100)
 							});
 							self.retryAutoLoginButton.layoutIfNeeded();
@@ -205,7 +208,7 @@ class SplashScreenViewController: _BaseCommonViewController {
 							self.offlineModeButton.alpha = 1.0;
 							self.offlineModeButton.snp.remakeConstraints({(make) -> Void in
 								make.centerY.equalTo(self.autoLoginActivityIndicator)
-								make.width.equalTo(self.logoView.frame.width / 3)
+								make.width.greaterThanOrEqualTo(self.logoView.frame.width / 3)
 								make.centerX.equalTo(self.view).offset(100)
 							});
 							self.offlineModeButton.layoutIfNeeded();
@@ -230,7 +233,15 @@ class SplashScreenViewController: _BaseCommonViewController {
 		return false;
 	}
 	
-	@objc func replaceCurrentPageWithMainViews() {
+	@objc
+	func offlineModeButtonTapped() {
+		self.replaceCurrentPageWithMainViews(offline: true);
+	}
+	
+	func replaceCurrentPageWithMainViews(offline: Bool = false) {
+		if(offline) {
+			Constants.FORCE_OFFLINE_USAGE = true;
+		}
 		UIView.transition(with: (UIApplication.shared.delegate?.window!)!, duration: 0.3, options: .transitionFlipFromBottom, animations: {
 			UIApplication.shared.isStatusBarHidden = false;
 			let vc = AppDelegate.initializeMainViewsLayout(window: (UIApplication.shared.delegate?.window!)!);

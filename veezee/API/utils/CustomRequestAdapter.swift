@@ -24,7 +24,7 @@ class CustomRequestAdapter: RequestAdapter {
 		let device = Device();
 
 		urlRequest.setValue("veezee-\(appVersion):\(appBuildNumber)/iOS-\(osVersion)/\(device)", forHTTPHeaderField: "X-Requested-With");
-		urlRequest.timeoutInterval = 20;
+		urlRequest.timeoutInterval = Constants.API_TIME_OUT;
 		
 		let token = self.keychain.get("token");
 		if(token != nil) {

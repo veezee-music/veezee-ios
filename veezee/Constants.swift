@@ -13,9 +13,11 @@ import DeviceKit
 struct Constants {
 	
 	/// Enabling this flag disables all user specific functionality including registration/login and account page
-	static var GUEST_MODE = false;
-	/// Enabling this flag forces the application to always launch in offline mode
+	static var GUEST_MODE = true;
+	/// Enabling this flag forces the application to always launch in offline mode, it may dynamically change during app life cycle
 	static var FORCE_OFFLINE_USAGE = false;
+	/// Max time out for API calls
+	static var API_TIME_OUT: Double = 20;
 	
 	static var API_BASE_URL = "https://veezee.cloud/api/v1";
 	
