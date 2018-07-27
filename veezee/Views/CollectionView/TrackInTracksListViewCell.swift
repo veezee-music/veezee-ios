@@ -13,6 +13,8 @@ import DeviceKit
 class TrackInTracksListViewCell: UICollectionViewCell {
 	static let ID = "TrackInTracksListViewCell";
 	
+	static let verticalMargin: CGFloat = 20;
+	
 	lazy var containerView: UIView = {
 		let view = UIView();
 		view.cornerRadius = 4;
@@ -68,7 +70,7 @@ class TrackInTracksListViewCell: UICollectionViewCell {
 			self.addSubview(self.containerView);
 			self.containerView.snp.remakeConstraints({(make) -> Void in
 				make.left.right.equalTo(0).offset(70).inset(70)
-				make.top.bottom.equalTo(0).offset(40).inset(40)
+				make.top.bottom.equalTo(0).offset(TrackInTracksListViewCell.verticalMargin).inset(TrackInTracksListViewCell.verticalMargin)
 			});
 			self.containerView.layoutIfNeeded();
 			

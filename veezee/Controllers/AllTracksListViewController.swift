@@ -230,11 +230,13 @@ extension AllTracksListViewController: UICollectionViewDelegateFlowLayout, UIScr
 		if(item.tracks!.count > 1) {
 			let innerContainerHeight = CGFloat(item.tracks!.count) * 50.0 + TracksForAlbumCollectionViewCell.insetSize * (CGFloat(item.tracks!.count) + 1.0)
 			
-			let height = self.device.isPad ? CGFloat(170 + 80) : CGFloat(150 + 30);
-			return CGSize(width: self.collectionView.frame.width - (self.device.isPad ? 50 : 0), height: innerContainerHeight + height);
+			let height = self.device.isPad ? (170 + 80) : CGFloat(150 + 30);
+			let width = self.collectionView.frame.width - (self.device.isPad ? 50 : 0);
+			return CGSize(width: width, height: innerContainerHeight + height);
 		} else {
-			let height = self.device.isPad ? CGFloat(170 + 80) : CGFloat(110 + 30);
-			return CGSize(width: self.collectionView.frame.width - (self.device.isPad ? 50 : 0), height: height);
+			let height = self.device.isPad ? (170 + (TrackInTracksListViewCell.verticalMargin * 2)) : CGFloat(110 + 30);
+			let width = self.collectionView.frame.width - (self.device.isPad ? 50 : 0);
+			return CGSize(width: width, height: height);
 		}
 	}
 	

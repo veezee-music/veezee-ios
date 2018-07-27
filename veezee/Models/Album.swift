@@ -15,7 +15,7 @@ struct Album: Codable {
 	var artist: Artist?;
 	var tracks: [Track]?;
 	var image: String?;
-	var colors: AlbumArtColor?;
+	var colors = AlbumArtColor();
 	var allTracks: [Track]?;
 	
 	enum CodingKeys: String, CodingKey {
@@ -43,9 +43,7 @@ struct Album: Codable {
 		tracks = (try? container.decode([Track]?.self, forKey: .tracks)) ?? nil;
 		image = (try? container.decode(String?.self, forKey: .image)) ?? nil;
 		if(container.contains(.colors) && Constants.COLORED_PLAYER) {
-			colors = try container.decode(AlbumArtColor?.self, forKey: .colors);
-		} else {
-			colors = AlbumArtColor(primaryColor: Constants.PRIMARY_TEXT_COLOR, accentColor: Constants.ACCENT_COLOR);
+			colors = try container.decode(AlbumArtColor.self, forKey: .colors);
 		}
 		allTracks = (try? container.decode([Track]?.self, forKey: .allTracks)) ?? nil;
 	}

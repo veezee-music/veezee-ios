@@ -10,13 +10,13 @@ import Foundation
 
 struct Track: Codable {
 	var _id: [String:String]?;
-	var id : String?;
-	var title : String?;
-	var fileName : String?;
-	var originalFileName : String?;
-	var album : Album?;
-	var image : String?;
-	var colors: AlbumArtColor?;
+	var id: String?;
+	var title: String?;
+	var fileName: String?;
+	var originalFileName: String?;
+	var album: Album?;
+	var image: String?;
+	var colors = AlbumArtColor();
 	
 	enum CodingKeys: String, CodingKey {
 		case _id
@@ -42,9 +42,7 @@ struct Track: Codable {
 		album = (try? container.decode(Album?.self, forKey: .album)) ?? nil;
 		image = (try? container.decode(String?.self, forKey: .image)) ?? nil;
 		if(container.contains(.colors) && Constants.COLORED_PLAYER) {
-			colors = try container.decode(AlbumArtColor?.self, forKey: .colors)
-		} else {
-			colors = AlbumArtColor(primaryColor: Constants.PLAYER_TITLE_COLOR, accentColor: Constants.ACCENT_COLOR);
+			colors = try container.decode(AlbumArtColor.self, forKey: .colors);
 		}
 	}
 	

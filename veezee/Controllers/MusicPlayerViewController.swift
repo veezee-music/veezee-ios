@@ -158,7 +158,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var progressPassedView: UILabel = {
 		let progressPassed = UILabel();
-		progressPassed.textColor = self.audioPlayer.currentItem?.colors?.accentColor;
+		progressPassed.textColor = self.audioPlayer.currentItem?.colors.accentColor;
 		progressPassed.font = progressPassed.font.withSize(11);
 		progressPassed.text = "0:00";
 		
@@ -167,7 +167,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var durationView: UILabel = {
 		let duration = UILabel();
-		duration.textColor = self.audioPlayer.currentItem?.colors?.accentColor;
+		duration.textColor = self.audioPlayer.currentItem?.colors.accentColor;
 		duration.font = duration.font.withSize(11);
 		duration.text = "0:00";
 		
@@ -176,7 +176,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var shuffleButton: IconedButton = {
 		let button = IconedButton();
-		button.initButton(icon: .ionicons(.iosShuffleStrong), iconSize: (self.device.isPad ? 7.38 : 6) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+		button.initButton(icon: .ionicons(.iosShuffleStrong), iconSize: (self.device.isPad ? 7.38 : 6) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		button.addTarget(self, action: #selector(self.shuffleButtonPressed), for: .touchUpInside);
 		
 		return button;
@@ -184,7 +184,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var skipBackwardButton: IconedButton = {
 		let button = IconedButton();
-		button.initButton(icon: .ionicons(.iosReward), iconSize: (self.device.isPad ? 7.38 : 5) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+		button.initButton(icon: .ionicons(.iosReward), iconSize: (self.device.isPad ? 7.38 : 5) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		button.addTarget(self, action: #selector(self.skipBackwardButtonPressed), for: .touchUpInside);
 		
 		return button;
@@ -192,7 +192,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var playPauseStopButton: IconedButton = {
 		let button = IconedButton();
-		button.initButton(icon: .ionicons(.pause), iconSize: (self.device.isPad ? 12 : 9) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+		button.initButton(icon: .ionicons(.pause), iconSize: (self.device.isPad ? 12 : 9) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		button.addTarget(self, action: #selector(self.playButtonPressed), for: .touchUpInside);
 		
 		return button;
@@ -200,7 +200,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var skipForwardButton: IconedButton = {
 		let button = IconedButton();
-		button.initButton(icon: .ionicons(.iosFastforward), iconSize: (self.device.isPad ? 7.38 : 5) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+		button.initButton(icon: .ionicons(.iosFastforward), iconSize: (self.device.isPad ? 7.38 : 5) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		button.addTarget(self, action: #selector(self.skipForwardButtonPressed), for: .touchUpInside);
 		
 		return button;
@@ -208,7 +208,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var repeatButton: IconedButton = {
 		let button = IconedButton();
-		button.initButton(icon: .ionicons(.iosLoopStrong), iconSize: (self.device.isPad ? 7.38 : 6) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+		button.initButton(icon: .ionicons(.iosLoopStrong), iconSize: (self.device.isPad ? 7.38 : 6) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		button.addTarget(self, action: #selector(self.repeatButtonPressed), for: .touchUpInside);
 		
 		return button;
@@ -218,7 +218,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		let titleText = MarqueeLabel.init(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), duration: 10.0, fadeLength: 10.0);
 		titleText.trailingBuffer = 40;
 		titleText.animationDelay = 3;
-		titleText.textColor = self.audioPlayer.currentItem?.colors?.primaryColor;
+		titleText.textColor = self.audioPlayer.currentItem?.colors.primaryColor;
 		let boldFont = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize);
 		titleText.font = boldFont.withSize(self.device.isPad && isDeviceLandscape() ? (4 * self.screenHieght / 100) : (6 * self.screenHieght / 100));
 		
@@ -227,7 +227,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var artistView: UILabel = {
 		let artistText = UILabel();
-		artistText.textColor = self.audioPlayer.currentItem?.colors?.accentColor;
+		artistText.textColor = self.audioPlayer.currentItem?.colors.accentColor;
 		artistText.font = artistText.font.withSize(4.67 * self.screenHieght / 100);
 		
 		return artistText;
@@ -236,8 +236,8 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	lazy var mpVolumeSlider: UISlider = {
 		var mpVolumeSlider = UISlider();
 		for subview in MPVolumeView().subviews {
-			guard let volumeSlider = subview as? UISlider else { continue }
-			volumeSlider.tintColor = self.audioPlayer.currentItem?.colors?.accentColor;
+			guard let volumeSlider = subview as? UISlider else { continue; }
+			volumeSlider.tintColor = self.audioPlayer.currentItem?.colors.accentColor;
 			mpVolumeSlider = volumeSlider
 		}
 
@@ -246,7 +246,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var volumeUpButton: IconedButton = {
 		let button = IconedButton();
-		button.initButton(icon: .ionicons(.iosVolumeHigh), iconSize: 6.15 * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+		button.initButton(icon: .ionicons(.iosVolumeHigh), iconSize: 6.15 * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		button.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal);
 		
 		return button;
@@ -254,7 +254,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var volumeDownButton: IconedButton = {
 		let button = IconedButton();
-		button.initButton(icon: .ionicons(.iosVolumeLow), iconSize: 6.15 * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+		button.initButton(icon: .ionicons(.iosVolumeLow), iconSize: 6.15 * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		button.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal);
 		
 		return button;
@@ -332,7 +332,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			self.screenHieght = self.view.bounds.height * 75 / 100;
 			
 			self.chevronDownIcon = IconedButton();
-			self.chevronDownIcon?.initButton(icon: .ionicons(.androidArrowDropdownCircle), iconSize: 30, color: self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+			self.chevronDownIcon?.initButton(icon: .ionicons(.androidArrowDropdownCircle), iconSize: 30, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 			if(self.chevronDownIcon != nil) {
 				self.containerView.addSubview(self.chevronDownIcon!);
 			}
@@ -699,10 +699,10 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		animator.rotateX(angle: 180).animate(t: 0.3);
 		if(self.audioPlayer.mode?.contains(AudioPlayerMode.shuffle) == true) {
 			self.audioPlayer.mode?.remove(AudioPlayerMode.shuffle);
-			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: self.audioPlayer.currentItem!.colors!.accentColor!);
+			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: self.audioPlayer.currentItem!.colors.accentColor);
 		} else {
 			self.audioPlayer.mode?.insert(AudioPlayerMode.shuffle);
-			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: self.audioPlayer.currentItem!.colors!.primaryColor!);
+			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: self.audioPlayer.currentItem!.colors.primaryColor);
 		}
 	}
 	
@@ -732,10 +732,10 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		animator.rotate(angle: 360).animate(t: 0.3);
 		if(self.audioPlayer.mode?.contains(AudioPlayerMode.repeat) == true) {
 			self.audioPlayer.mode?.remove(AudioPlayerMode.repeat);
-			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: self.audioPlayer.currentItem!.colors!.accentColor!);
+			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: self.audioPlayer.currentItem!.colors.accentColor);
 		} else {
 			self.audioPlayer.mode?.insert(AudioPlayerMode.repeat);
-			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: self.audioPlayer.currentItem!.colors!.primaryColor!);
+			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: self.audioPlayer.currentItem!.colors.primaryColor);
 		}
 	}
 	
@@ -796,8 +796,8 @@ extension MusicPlayerViewController {
 				
 				self.artworkView.image = currentItemImage;
 
-				let whiteAndAccentContrastRatio = UIColor.white.contrastRatio(with: self.audioPlayer.currentItem!.colors!.accentColor!);
-				let blackAndAccentContrastRatio = UIColor.black.contrastRatio(with: self.audioPlayer.currentItem!.colors!.accentColor!);
+				let whiteAndAccentContrastRatio = UIColor.white.contrastRatio(with: self.audioPlayer.currentItem!.colors.accentColor);
+				let blackAndAccentContrastRatio = UIColor.black.contrastRatio(with: self.audioPlayer.currentItem!.colors.accentColor);
 
 				if(whiteAndAccentContrastRatio > blackAndAccentContrastRatio) {
 					// white is more suitable
@@ -826,9 +826,9 @@ extension MusicPlayerViewController {
 			.subscribe(onNext: { audioPlayerState in
 				
 				if(audioPlayerState == AudioPlayerState.fsAudioStreamPaused) {
-					self.playPauseStopButton.setIcon(icon: .ionicons(.play), color: self.audioPlayer.currentItem!.colors!.accentColor!);
+					self.playPauseStopButton.setIcon(icon: .ionicons(.play), color: self.audioPlayer.currentItem!.colors.accentColor);
 				} else if(audioPlayerState == AudioPlayerState.fsAudioStreamPlaying) {
-					self.playPauseStopButton.setIcon(icon: .ionicons(.pause), color: self.audioPlayer.currentItem!.colors!.accentColor!);
+					self.playPauseStopButton.setIcon(icon: .ionicons(.pause), color: self.audioPlayer.currentItem!.colors.accentColor);
 				}
 				
 			})
@@ -854,7 +854,7 @@ extension MusicPlayerViewController {
 				self.progressPassedView.text = format(duration: self.audioPlayer.currentItemProgression);
 				self.durationView.text = format(duration: self.audioPlayer.currentItemDuration);
 				
-				self.chevronDownIcon?.setIcon(color: currentItem!.colors!.accentColor!, forState: .normal);
+				self.chevronDownIcon?.setIcon(color: currentItem!.colors.accentColor, forState: .normal);
 				
 				if(currentItem!.imageUrl != nil) {
 					self.setupCurrentAudioItemImage(imageUrl: currentItem!.imageUrl!);
@@ -918,31 +918,31 @@ extension MusicPlayerViewController {
 	}
 	
 	func setupColorsForUIElements(currentItem: PlayableItem) {
-		self.titleView.textColor = currentItem.colors!.primaryColor!;
-		self.artistView.textColor = currentItem.colors!.accentColor!;
-		self.progressBarView.color = currentItem.colors!.accentColor!;
+		self.titleView.textColor = currentItem.colors.primaryColor;
+		self.artistView.textColor = currentItem.colors.accentColor;
+		self.progressBarView.color = currentItem.colors.accentColor;
 		if(self.audioPlayer.mode?.contains(AudioPlayerMode.shuffle) == true) {
-			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: currentItem.colors!.primaryColor!);
+			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: currentItem.colors.primaryColor);
 		} else {
-			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: currentItem.colors!.accentColor!);
+			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: currentItem.colors.accentColor);
 		}
-		self.skipBackwardButton.setIcon(icon: .ionicons(.iosReward), color: currentItem.colors!.accentColor!);
+		self.skipBackwardButton.setIcon(icon: .ionicons(.iosReward), color: currentItem.colors.accentColor);
 		if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying || self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering) {
-			self.playPauseStopButton.setIcon(icon: .ionicons(.pause), color: currentItem.colors!.accentColor!);
+			self.playPauseStopButton.setIcon(icon: .ionicons(.pause), color: currentItem.colors.accentColor);
 		} else {
-			self.playPauseStopButton.setIcon(icon: .ionicons(.play), color: currentItem.colors!.accentColor!);
+			self.playPauseStopButton.setIcon(icon: .ionicons(.play), color: currentItem.colors.accentColor);
 		}
-		self.skipForwardButton.setIcon(icon: .ionicons(.iosFastforward), color: currentItem.colors!.accentColor!);
+		self.skipForwardButton.setIcon(icon: .ionicons(.iosFastforward), color: currentItem.colors.accentColor);
 		if(self.audioPlayer.mode?.contains(AudioPlayerMode.repeat) == true) {
-			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: currentItem.colors!.primaryColor!);
+			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: currentItem.colors.primaryColor);
 		} else {
-			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: currentItem.colors!.accentColor!);
+			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: currentItem.colors.accentColor);
 		}
-		self.progressPassedView.textColor = currentItem.colors!.accentColor!;
-		self.durationView.textColor = currentItem.colors!.accentColor!;
-		self.volumeDownButton.setIcon(icon: .ionicons(.iosVolumeLow), color: currentItem.colors!.accentColor!);
-		self.mpVolumeSlider.tintColor = currentItem.colors!.accentColor!;
-		self.volumeUpButton.setIcon(icon: .ionicons(.iosVolumeHigh), color: currentItem.colors!.accentColor!);
+		self.progressPassedView.textColor = currentItem.colors.accentColor;
+		self.durationView.textColor = currentItem.colors.accentColor;
+		self.volumeDownButton.setIcon(icon: .ionicons(.iosVolumeLow), color: currentItem.colors.accentColor);
+		self.mpVolumeSlider.tintColor = currentItem.colors.accentColor;
+		self.volumeUpButton.setIcon(icon: .ionicons(.iosVolumeHigh), color: currentItem.colors.accentColor);
 	}
 	
 }

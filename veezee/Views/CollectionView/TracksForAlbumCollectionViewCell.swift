@@ -60,7 +60,7 @@ class TracksForAlbumCollectionViewCell: UICollectionViewCell, UIGestureRecognize
 	
 	lazy var containerView: UIView = {
 		let container = UIView();
-		container.backgroundColor = Constants.PRIMARY_COLOR;
+		//container.backgroundColor = Constants.PRIMARY_COLOR;
 		container.layer.cornerRadius = 4;
 		
 		return container;

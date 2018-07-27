@@ -42,7 +42,7 @@ class BottomPlayer: UIView {
 		let titleView = MarqueeLabel.init(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height), duration: 10.0, fadeLength: 10.0);
 		titleView.trailingBuffer = 40;
 		titleView.animationDelay = 3;
-		titleView.textColor = self.audioPlayer.currentItem?.colors?.primaryColor;
+		titleView.textColor = self.audioPlayer.currentItem?.colors.primaryColor;
 		titleView.font = titleView.font.withSize(self.device.isPad ? 20 : 16);
 		
 		return titleView;
@@ -50,7 +50,7 @@ class BottomPlayer: UIView {
 	
 	lazy var artistView: UILabel = {
 		let artistView = UILabel();
-		artistView.textColor = self.audioPlayer.currentItem?.colors?.accentColor;
+		artistView.textColor = self.audioPlayer.currentItem?.colors.accentColor;
 		artistView.font = artistView.font.withSize(self.device.isPad ? 15 : 12);
 		
 		return artistView;
@@ -58,7 +58,7 @@ class BottomPlayer: UIView {
 	
 	lazy var playPauseButtonView: IconedButton = {
 		let playPauseButtonView = IconedButton();
-		playPauseButtonView.initButton(icon: .ionicons(.pause), iconSize: 30, color: self.audioPlayer.currentItem == nil ? UIColor.black : self.audioPlayer.currentItem!.colors!.accentColor!, forState: .normal);
+		playPauseButtonView.initButton(icon: .ionicons(.pause), iconSize: 30, color: self.audioPlayer.currentItem == nil ? UIColor.black : self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		playPauseButtonView.addTarget(self, action: #selector(self.toggleMusicPlayerPlayStatus), for: .touchUpInside);
 		
 		return playPauseButtonView;
@@ -214,10 +214,10 @@ extension BottomPlayer {
 	func updateUI() {
 		DispatchQueue.main.async {
 			self.titleView.text = self.audioPlayer.currentItem?.title;
-			self.titleView.textColor = self.audioPlayer.currentItem?.colors?.primaryColor;
+			self.titleView.textColor = self.audioPlayer.currentItem?.colors.primaryColor;
 			
 			self.artistView.text = self.audioPlayer.currentItem?.artist;
-			self.artistView.textColor = self.audioPlayer.currentItem?.colors?.accentColor;
+			self.artistView.textColor = self.audioPlayer.currentItem?.colors.accentColor;
 			
 			if(self.audioPlayer.currentItem?.imageUrl != nil) {
 				self.artworkView.kf.setImage(with: URL.createFrom(localOrRemoteAddress: self.audioPlayer.currentItem!.imageUrl!));
@@ -229,9 +229,9 @@ extension BottomPlayer {
 			if(self.audioPlayer.currentItem?.colors != nil) {
 				self.isHidden = false;
 				if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering || self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying) {
-					self.playPauseButtonView.setIcon(icon: .ionicons(.pause), color: self.audioPlayer.currentItem!.colors!.accentColor!);
+					self.playPauseButtonView.setIcon(icon: .ionicons(.pause), color: self.audioPlayer.currentItem!.colors.accentColor);
 				} else {
-					self.playPauseButtonView.setIcon(icon: .ionicons(.play), color: self.audioPlayer.currentItem!.colors!.accentColor!);
+					self.playPauseButtonView.setIcon(icon: .ionicons(.play), color: self.audioPlayer.currentItem!.colors.accentColor);
 				}
 			}
 		}

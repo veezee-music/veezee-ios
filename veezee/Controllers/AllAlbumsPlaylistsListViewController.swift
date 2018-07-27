@@ -119,9 +119,9 @@ class AllAlbumsPlaylistsListViewController: _BasePageViewController {
 				for n in albums! {
 					self.albumsList.append(n);
 				}
-				var emptyAlbumToBeDetectedAndUsedAsSpacer = Album();
-				emptyAlbumToBeDetectedAndUsedAsSpacer.title = SpacerCollectionViewCell.ID;
-				self.albumsList.append(emptyAlbumToBeDetectedAndUsedAsSpacer);
+//				var emptyAlbumToBeDetectedAndUsedAsSpacer = Album();
+//				emptyAlbumToBeDetectedAndUsedAsSpacer.title = SpacerCollectionViewCell.ID;
+//				self.albumsList.append(emptyAlbumToBeDetectedAndUsedAsSpacer);
 				
 				self.collectionView.reloadData();
 			} else {

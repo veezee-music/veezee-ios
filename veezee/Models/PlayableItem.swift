@@ -18,7 +18,7 @@ open class PlayableItem: Codable {
 	var albumObj: Album?;
 	var imageUrl: String?;
 	var artworkImage: UIImage?;
-	var colors: AlbumArtColor?;
+	var colors = AlbumArtColor();
 	var fileName: String?;
 	var url: URL?;
 	
@@ -50,7 +50,7 @@ open class PlayableItem: Codable {
 		album = (try? container.decode(String?.self, forKey: .album)) ?? nil;
 		albumObj = (try? container.decode(Album?.self, forKey: .albumObj)) ?? nil;
 		imageUrl = (try? container.decode(String?.self, forKey: .imageUrl)) ?? nil;
-		colors = (try? container.decode(AlbumArtColor?.self, forKey: .colors)) ?? nil;
+		colors = (try container.decode(AlbumArtColor.self, forKey: .colors));
 		fileName = (try? container.decode(String?.self, forKey: .fileName)) ?? nil;
 		url = (try? container.decode(URL?.self, forKey: .url)) ?? nil;
 	}
