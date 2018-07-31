@@ -13,10 +13,6 @@ import SnapKit
 
 class AccountViewController: _BasePageViewController, UICollectionViewDataSource {
 	
-	fileprivate var orientation: UIDeviceOrientation {
-		return UIDevice.current.orientation
-	}
-	
 	lazy var navigationBarHeight = self.navigationController?.navigationBar.frame.size.height;
 	lazy var tabBarHeight = self.tabBarController?.tabBar.frame.size.height;
 	
@@ -29,41 +25,41 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 		return nameView;
 	}();
 	
-	lazy var premiumUntilLabel: UILabel = {
-		let premiumUntilLabel = UILabel();
-		premiumUntilLabel.text = "Premium days left:"
-		premiumUntilLabel.textColor = Constants.PRIMARY_TEXT_COLOR;
-		premiumUntilLabel.font = UIFont.systemFont(ofSize: self.device.isPad ? 18 : 15, weight: UIFont.Weight.light);
+	lazy var emailView: UILabel = {
+		let emailView = UILabel();
+		emailView.text = self.keychain.get("email");
+		emailView.textColor = Constants.PRIMARY_TEXT_COLOR.withAlphaComponent(0.8);
+		topSection.addSubviewOnce(emailView);
+		emailView.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular);
 		
-		return premiumUntilLabel;
+		return emailView;
 	}();
 	
-	lazy var daysRemainingView: UILabel = {
-		let daysRemainingView = UILabel();
-		daysRemainingView.text = "Less than a day";
-		daysRemainingView.textColor = Constants.PRIMARY_TEXT_COLOR;
-		daysRemainingView.font = UIFont.systemFont(ofSize: self.device.isPad ? 18 : 15, weight: UIFont.Weight.black);
-		
-		return daysRemainingView;
-	}();
+	let topSection = UIView();
+	let bottomSection = UIView();
+	let topSectionInnerContainer = UIView();
 	
-//	lazy var daysRemainingView: UILabel = {
-//		let daysRemainingView = UILabel();
-//		daysRemainingView.textColor = Constants.PRIMARY_TEXT_COLOR;
-//		daysRemainingView.text = "24"//"∞";
-//		daysRemainingView.font = UIFont.systemFont(ofSize: self.device.isPad ? 90 : 50, weight: UIFont.Weight.heavy);
-//
-//		return daysRemainingView;
-//	}();
+	lazy var carouselSize: CGSize = {
+		var width: CGFloat = 0;
+		
+		if(self.device.isPad) {
+			width = self.bottomSection.frame.width / 3;
+		} else {
+			width = self.bottomSection.frame.width / 2.5;
+		}
+		
+		// 25 is added for label
+		let height = width + 25;
+		
+		return CGSize(width: width, height: height);
+	}();
 	
 	lazy var collectionViewFlowLayout: UPCarouselFlowLayout = {
 		let collectionViewFlowLayout = UPCarouselFlowLayout();
 		collectionViewFlowLayout.scrollDirection = .horizontal;
-		collectionViewFlowLayout.spacingMode = .fixed(spacing: 50)
-//		collectionViewFlowLayout.minimumLineSpacing = self.musicSmallCardInsetSize;
-//		collectionViewFlowLayout.minimumInteritemSpacing = self.musicSmallCardInsetSize;
-//		collectionViewFlowLayout.sectionInset = .zero;
-		//collectionViewFlowLayout.estimatedItemSize = CGSize(width: view.bounds.width, height: 600.0);
+		collectionViewFlowLayout.sideItemScale = 0.8;
+		collectionViewFlowLayout.itemSize = self.carouselSize;
+		collectionViewFlowLayout.spacingMode = .fixed(spacing: self.device.isPad ? 60 : 30);
 		
 		return collectionViewFlowLayout;
 	}();
@@ -134,203 +130,89 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 	
 	override func viewDidLoad() {
 		super.viewDidLoad();
-		
 		self.view.backgroundColor = Constants.PRIMARY_COLOR;
 		
-		self.view.addSubview(self.nameView);
-		self.nameView.snp.makeConstraints ({(make) in
+		self.setupUI();
+		
+		self.loadRecentlyPlayedTracks();
+		
+		self.initializeBottomPlayer();
+	}
+	
+	func setupUI() {
+		// top section
+		self.view.addSubviewOnce(self.topSection);
+		self.topSection.snp.remakeConstraints ({ (make) in
+			make.top.equalTo(BottomPlayer.Height / 2)
+			make.left.right.equalTo(0)
+			make.height.equalToSuperview().dividedBy(2).inset(BottomPlayer.Height / 2)
+		});
+		self.topSection.layoutIfNeeded();
+		
+		// top section inner container
+		self.topSectionInnerContainer.addSubviewOnce(self.nameView);
+		self.nameView.snp.remakeConstraints ({(make) in
 			make.top.equalTo(0)
 			make.centerX.equalToSuperview()
 		});
 		self.nameView.layoutIfNeeded();
 		
-//		self.view.addSubview(self.premiumUntilLabel);
-//		self.premiumUntilLabel.snp.makeConstraints ({ (make) in
-//			make.top.equalTo(self.nameView.snp.bottom).offset(10)
-//			make.centerX.equalToSuperview()
-//		});
-		
-		let leftContainer = UIView();
-		self.view.addSubview(leftContainer);
-		leftContainer.snp.makeConstraints ({ (make) in
-			make.top.equalTo(self.nameView.snp.bottom).offset(10)
-			make.left.equalTo(10)
-			make.height.equalTo(40)
-			make.width.equalTo(self.view.frame.width / 2)
+		self.topSectionInnerContainer.addSubviewOnce(self.emailView);
+		self.emailView.snp.remakeConstraints ({(make) in
+			make.top.equalTo(self.nameView.snp.bottom).offset(20)
+			make.centerX.equalToSuperview()
 		});
+		self.emailView.layoutIfNeeded();
 		
-		let rightContainer = UIView();
-		self.view.addSubview(rightContainer);
-		rightContainer.snp.makeConstraints ({ (make) in
-			make.top.equalTo(self.nameView.snp.bottom).offset(10)
-			make.right.equalTo(0).inset(10)
-			make.height.equalTo(40)
-			make.width.equalTo(self.view.frame.width / 2)
+		let changeEmailButton = LGButton();
+		changeEmailButton.titleString = "Change email or password";
+		changeEmailButton.titleFontSize = 17;
+		changeEmailButton.titleColor = Constants.PRIMARY_TEXT_COLOR;
+		changeEmailButton.cornersRadius = 4;
+		changeEmailButton.bordersWidth = 1;
+		changeEmailButton.bordersColor = .red;
+		changeEmailButton.bgColor = Constants.PRIMARY_COLOR;
+		self.topSectionInnerContainer.addSubviewOnce(changeEmailButton);
+		changeEmailButton.snp.remakeConstraints ({(make) in
+			make.top.equalTo(emailView.snp.bottom).offset(20)
+			make.centerX.equalToSuperview()
+			make.width.greaterThanOrEqualTo(0)
 		});
+		changeEmailButton.layoutIfNeeded();
 		
-//		leftContainer.addSubview(self.premiumUntilLabel);
-//		self.premiumUntilLabel.snp.makeConstraints ({ (make) in
-//			make.center.equalToSuperview()
-//		});
-//		
-//		rightContainer.addSubview(self.daysRemainingView);
-//		self.daysRemainingView.snp.makeConstraints ({ (make) in
-//			make.center.equalToSuperview()
-//		});
+		self.topSection.addSubviewOnce(topSectionInnerContainer);
+		let topSectionInnerContainerHeight = self.nameView.frame.height + self.emailView.frame.height + changeEmailButton.frame.height + 20 + 20;
+		self.topSectionInnerContainer.snp.remakeConstraints ({ (make) in
+			make.centerY.equalTo(topSection)
+			make.left.right.equalTo(0)
+			make.height.equalTo(topSectionInnerContainerHeight)
+		});
+		self.topSectionInnerContainer.layoutIfNeeded();
 		
-		let loginButton = LGButton();
-		loginButton.titleString = "Log in";
-		loginButton.titleFontSize = 18;
-		loginButton.titleColor = .white;
-		loginButton.cornersRadius = 4;
-		loginButton.bgColor = Constants.ACCENT_COLOR;
-		loginButton.shadowRadius = 4;
-		loginButton.shadowOpacity = 2;
-		loginButton.shadowOffset = CGSize(width: 0, height: 1);
-		loginButton.shadowColor = Constants.ACCENT_COLOR;
+		// bottom section
+		self.view.addSubviewOnce(self.bottomSection);
+		self.bottomSection.snp.remakeConstraints ({ (make) in
+			make.top.equalTo(topSection.snp.bottom)
+			make.left.right.equalTo(0)
+			make.height.equalTo(topSection.frame.height - BottomPlayer.Height)
+		});
+		self.bottomSection.layoutIfNeeded();
 		
-		self.initializeBottomPlayer();
+		self.bottomSection.addSubviewOnce(self.collectionView);
+		self.collectionView.snp.remakeConstraints({(make) -> Void in
+			make.left.right.equalTo(0)
+			make.bottom.equalTo(0)
+			make.height.equalTo(self.bottomSection.frame.height)
+		});
+		self.collectionView.collectionViewLayout.invalidateLayout();
 	}
 	
-	
-	
-	let bottomSection = UIView();
-	
-//	func bviewDidLoad() {
-//		super.viewDidLoad();
-//
-//		for n in 0...10 {
-//			let g = Track();
-//			self.items.append(g)
-//		}
-//
-//		self.currentItemIndex = 0
-//
-//		self.view.backgroundColor = Constants.PRIMARY_COLOR;
-//
-//		let availableHeight = self.view.frame.height;
-//
-//		let topSection = UIView();
-//		self.view.addSubview(topSection);
-//		topSection.snp.makeConstraints ({ (make) in
-//			make.width.equalTo(self.view)
-//			make.height.equalTo((availableHeight / 2) - navigationBarHeight! - (tabBarHeight! / 2))
-//			make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-//		});
-//		topSection.layoutIfNeeded();
-//
-//		var topSectionCenterContentHeight: CGFloat = 0;
-//
-//
-//		topSection.addSubview(self.nameView);
-//		self.nameView.snp.makeConstraints ({(make) in
-//			make.centerX.equalTo(self.view)
-//			make.width.lessThanOrEqualTo(self.view.bounds.width)
-//		});
-//		self.nameView.layoutIfNeeded();
-//		topSectionCenterContentHeight += self.nameView.frame.height;
-//
-//
-//		topSection.addSubview(self.premiumUntilLabel);
-//		self.premiumUntilLabel.snp.makeConstraints ({(make) in
-//			make.top.equalTo(nameView.snp.bottom).offset(20)
-//			make.centerX.equalTo(self.view)
-//			make.width.lessThanOrEqualTo(self.view.bounds.width)
-//		});
-//		self.premiumUntilLabel.layoutIfNeeded();
-//		topSectionCenterContentHeight += (self.premiumUntilLabel.frame.height + 20);
-//
-//
-//		topSection.addSubview(self.daysRemainingView);
-//		self.daysRemainingView.snp.makeConstraints ({(make) in
-//			make.top.equalTo(self.premiumUntilLabel.snp.bottom).offset(20)
-//			make.centerX.equalTo(self.view)
-//			make.width.lessThanOrEqualTo(self.view.bounds.width)
-//		});
-//		self.daysRemainingView.layoutIfNeeded();
-//		topSectionCenterContentHeight += (self.daysRemainingView.frame.height + 20);
-//
-//		let hoursRemainingView = UILabel();
-//		hoursRemainingView.textColor = Constants.PRIMARY_TEXT_COLOR;
-//		hoursRemainingView.text = "24 Hours";//"∞";
-//		hoursRemainingView.font = UIFont.systemFont(ofSize: self.device.isPad ? 20 : 16, weight: UIFont.Weight.heavy);
-//		topSection.addSubview(hoursRemainingView);
-//		hoursRemainingView.snp.makeConstraints ({(make) in
-//			make.top.equalTo(daysRemainingView.snp.bottom).offset(5)
-//			make.centerX.equalTo(self.view)
-//			make.width.lessThanOrEqualTo(self.view.bounds.width)
-//		});
-//		hoursRemainingView.layoutIfNeeded();
-//		topSectionCenterContentHeight += (hoursRemainingView.frame.height + 10);
-//
-//
-//		let upgradeButtonView = UIButton();
-//		upgradeButtonView.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold);
-//		upgradeButtonView.setTitle("Upgrade", for: .normal);
-//		let upgradeButtonViewTitleColor: UIColor = Constants.PRIMARY_COLOR == Constants.WHITE_THEME.PRIMARY_COLOR ? Constants.ACCENT_COLOR : .yellow;
-//		upgradeButtonView.setTitleColor(upgradeButtonViewTitleColor, for: .normal);
-//		upgradeButtonView.setTitleColor(upgradeButtonViewTitleColor.withAlphaComponent(0.6), for: .highlighted);
-//		topSection.addSubview(upgradeButtonView);
-//		upgradeButtonView.snp.makeConstraints ({(make) in
-//			make.top.equalTo(hoursRemainingView.snp.bottom).offset(20)
-//			make.centerX.equalTo(self.view)
-//			make.width.lessThanOrEqualTo(self.view.bounds.width)
-//		});
-//		upgradeButtonView.layoutIfNeeded();
-//		topSectionCenterContentHeight += (upgradeButtonView.frame.height + 20);
-//
-//
-//		nameView.snp.remakeConstraints ({(make) in
-//			make.top.equalTo((topSection.frame.height - topSectionCenterContentHeight) / 2).offset(20)
-//			make.centerX.equalTo(self.view)
-//			make.width.lessThanOrEqualTo(self.view.bounds.width)
-//		});
-//
-//
-//
-//		self.view.addSubview(bottomSection);
-//		bottomSection.snp.makeConstraints ({ (make) in
-//			make.width.equalTo(self.view)
-//			make.top.equalTo(topSection.snp.bottom)
-//			make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-//		});
-//
-//
-//		bottomSection.addSubview(self.collectionView);
-//
-//		self.collectionView.snp.makeConstraints({(make) -> Void in
-//			make.height.equalTo(bottomSection)
-//			make.width.equalTo(bottomSection)
-//			make.top.right.bottom.left.equalTo(0)
-//		});
-//
-//		API.Account.info { (user, errorMessage) in
-//			print(user)
-//			print(user?.access?.expiresIn)
-//
-//			let now = Date();
-//			let expirationDate = user?.access?.expiresIn;
-//			// extract the diff date components including days, hour, minute
-//
-//			// todo: fix expirationdate nil
-//			let diff = Calendar.current.dateComponents([.minute, .hour, .day], from: now, to: expirationDate!);
-//
-//			if(expirationDate! < Date()) {
-//				self.daysRemainingView.text = String(0);
-//				hoursRemainingView.text = "Your premium account is expired.";
-//				self.nameView.text = user?.name;
-//			} else {
-//				self.daysRemainingView.text = String(describing: diff.day!);
-//				hoursRemainingView.text = String(describing: diff.hour!) + " Hour" + (diff.hour! > 1 ? "s" : "");
-//				self.nameView.text = user?.name;
-//
-//				print("not passed")
-//				print("\(diff.day) days \(diff.hour) hours \(diff.minute) minute")
-//			}
-//		}
-//
-//		self.initializeBottomPlayer();
-//	}
+	func loadRecentlyPlayedTracks() {
+		for n in 0...5 {
+			let g = Track();
+			self.items.append(g)
+		}
+	}
 	
 	override func addNavigationButtons() {
 		let settingsBtn = UIBarButtonItem();
@@ -376,7 +258,8 @@ extension AccountViewController : UICollectionViewDelegateFlowLayout {
 //		let item = self.homePageItems[indexPath.item];
 		
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MusicCarouselViewCell.ID, for: indexPath) as! MusicCarouselViewCell;
-		cell.titleView.text = "track name"
+		cell.titleView.text = "Track title";
+		cell.artworkImageView.kf.setImage(with: URL.createFrom(localOrRemoteAddress: "https://veezee.cloud/content/images/5aedd5a0cd6e51525536160.jpg"), placeholder: UIImage(named: "artwork"));
 
 		return cell;
 	}
@@ -388,20 +271,7 @@ extension AccountViewController : UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //		let item = self.homePageItems[indexPath.item];
 
-		var widthAndHeight: CGFloat = 0;
-
-		if(self.device.isPad) {
-			widthAndHeight = self.bottomSection.frame.width / 3
-		} else {
-			widthAndHeight = self.bottomSection.frame.width / 2
-		}
-
-		let width = widthAndHeight;
-		// 25 is added for label
-		let height = widthAndHeight + 25;
-
-
-		return CGSize(width: width, height: height);
+		return self.carouselSize;
 	}
 }
 
@@ -413,7 +283,7 @@ class MusicCarouselViewCell : UICollectionViewCell {
 	
 	lazy var albumArtShadowContainer: UIView = {
 		let view = UIView();
-		view.layer.shadowRadius = 30;
+		view.layer.shadowRadius = self.device.isPad ? 30 : 15;
 		view.backgroundColor = Constants.PRIMARY_COLOR
 		view.layer.shadowOpacity = 0.6;
 		view.layer.shadowColor = Constants.PRIMARY_COLOR == Constants.WHITE_THEME.PRIMARY_COLOR ? UIColor.gray.cgColor : UIColor.white.cgColor;
@@ -430,6 +300,7 @@ class MusicCarouselViewCell : UICollectionViewCell {
 		iv.layer.cornerRadius = 8;
 		iv.contentMode = .scaleAspectFit;
 		iv.clipsToBounds = true;
+		iv.image = UIImage(named: "artwork");
 		
 		return iv;
 	}();
@@ -443,15 +314,10 @@ class MusicCarouselViewCell : UICollectionViewCell {
 		return lb;
 	}();
 	
-	override func layoutSubviews() {
-		super.layoutSubviews();
-	}
+	let device = Device();
 	
 	override init(frame: CGRect) {
-		super.init(frame: frame)
-		
-		let bannerImage = UIImage(named: "artwork")!;
-		self.artworkImageView.image = bannerImage;
+		super.init(frame: frame);
 		
 		self.translatesAutoresizingMaskIntoConstraints = false;
 		
@@ -472,7 +338,7 @@ class MusicCarouselViewCell : UICollectionViewCell {
 		
 		self.addSubview(self.titleView);
 		self.titleView.snp.makeConstraints({(make) -> Void in
-			make.top.equalTo(self.artworkImageView.snp.bottom).offset(20);
+			make.top.equalTo(self.artworkImageView.snp.bottom).offset(16);
 			make.width.equalToSuperview();
 			make.height.equalTo(20)
 			make.left.right.equalTo(0);
@@ -481,5 +347,22 @@ class MusicCarouselViewCell : UICollectionViewCell {
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+}
+
+extension UICollectionView {
+	func scrollToNextItem() {
+		let contentOffset = CGFloat(floor(self.contentOffset.x + self.bounds.size.width))
+		self.moveToFrame(contentOffset: contentOffset)
+	}
+	
+	func scrollToPreviousItem() {
+		let contentOffset = CGFloat(floor(self.contentOffset.x - self.bounds.size.width))
+		self.moveToFrame(contentOffset: contentOffset)
+	}
+	
+	func moveToFrame(contentOffset : CGFloat) {
+		let frame: CGRect = CGRect(x: contentOffset, y: self.contentOffset.y , width: self.frame.width, height: self.frame.height)
+		self.scrollRectToVisible(frame, animated: true)
 	}
 }
