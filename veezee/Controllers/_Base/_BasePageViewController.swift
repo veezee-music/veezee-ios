@@ -209,7 +209,8 @@ class _BasePageViewController: _BaseCommonViewController, BottomPlayerDelegate, 
 	func onShowTrackActionSheet(_ notification: Notification) {
 		if let dict = notification.userInfo as Dictionary? {
 			if let track = dict["track"] as? Track {
-				self.showTrackActionSheet(track: track);
+				let extraOptions = dict["extraOptions"] as? [String];
+				self.showTrackActionSheet(track: track, extraOptions: extraOptions);
 			}
 		}
 	}

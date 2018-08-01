@@ -84,7 +84,6 @@ final public class AudioPlayer: BaseAudioPlayer {
 			self.currentItem?.url = cacheUrl;
 		}
 		
-		
 	}
 	
 }

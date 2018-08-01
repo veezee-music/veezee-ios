@@ -468,6 +468,9 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 		}
 		
 		let albumArtsCount = self.albumArts.count;
+		if(albumArtsCount <= 6) {
+			return;
+		}
 		// we cut the images list in two as it prevents continuous carousels to show the same set of images
 		let firstHalfOfAlbumArts = Array(self.albumArts[0...albumArtsCount / 2]);
 		let secondHalfOfAlbumArts = Array(self.albumArts[(albumArtsCount / 2) + 1...albumArtsCount - 1]);

@@ -192,8 +192,8 @@ class UserPlaylistsViewController: _BaseCommonViewController {
 				for n in playlists! {
 					self.playlistsList.append(n);
 				}
-				self.collectionView.reloadData();
 			}
+			self.collectionView.reloadData();
 		}
 	}
 	

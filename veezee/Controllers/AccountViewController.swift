@@ -10,8 +10,10 @@ import Foundation
 import UIKit
 import DeviceKit
 import SnapKit
+import RxCocoa
+import RxSwift
 
-class AccountViewController: _BasePageViewController, UICollectionViewDataSource {
+class AccountViewController: _BasePageViewController, UICollectionViewDataSource, UIGestureRecognizerDelegate {
 	
 	lazy var navigationBarHeight = self.navigationController?.navigationBar.frame.size.height;
 	lazy var tabBarHeight = self.tabBarController?.tabBar.frame.size.height;
@@ -79,53 +81,22 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 		return collectionView;
 	}();
 	
-	var items = [Track]();
+	var userTracksHistory = [Track]();
+	var playableList = [PlayableItem]();
 	
-	var currentItemIndex: Int = 0 {
-		didSet {
-			if(self.currentItemIndex < 0) {
-				self.currentItemIndex = 0;
-			}
-			if(self.currentItemIndex >= self.items.count - 1) {
-				self.currentItemIndex = self.currentItemIndex - 1;
-			}
-			print(self.currentItemIndex)
-//			let item = self.items[self.currentItemIndex]
-//			item.ti
-//			self.detailLabel.text = character.movie.uppercased()
-		}
-	}
-	
-	var pageSize: CGSize {
-		let layout = self.collectionView.collectionViewLayout as! UPCarouselFlowLayout
-		
-		
-		var widthAndHeight: CGFloat = 0;
-		
-		if(self.device.isPad) {
-			widthAndHeight = self.bottomSection.frame.width / 3
-		} else {
-			widthAndHeight = self.bottomSection.frame.width / 2
-		}
-		
-		let width = widthAndHeight;
-		// 25 is added for label
-		let height = widthAndHeight + 25;
-		
-		
-		
-		
-		var pageSize = CGSize(width: width, height: height)
-		if layout.scrollDirection == .horizontal {
-			pageSize.width += layout.minimumLineSpacing
-		} else {
-			pageSize.height += layout.minimumLineSpacing
-		}
-		return pageSize
-	}
+	var isUserTracksHistoryLoading = BehaviorRelay<Bool>(value: false);
+	let disposeBag = DisposeBag();
 	
 	override func shouldLeaveNavigationTitleUnchanged() -> Bool {
 		return true;
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated);
+		
+		self.loadRecentlyPlayedTracks(silent: true);
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(self.loadRecentlyPlayedTracks(silent:)), name: Notification.Name(rawValue: Constants.refreshUserHistoryTracksBroadcastNotificationKey), object: nil);
 	}
 	
 	override func viewDidLoad() {
@@ -136,7 +107,19 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 		
 		self.loadRecentlyPlayedTracks();
 		
+		let lpgr: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleCellLongPress(gestureRecognizer:)));
+		lpgr.minimumPressDuration = 0.5;
+		lpgr.delegate = self;
+		lpgr.delaysTouchesBegan = true;
+		self.collectionView.addGestureRecognizer(lpgr);
+		
 		self.initializeBottomPlayer();
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated);
+		
+		NotificationCenter.default.removeObserver(self);
 	}
 	
 	func setupUI() {
@@ -164,24 +147,24 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 		});
 		self.emailView.layoutIfNeeded();
 		
-		let changeEmailButton = LGButton();
-		changeEmailButton.titleString = "Change email or password";
-		changeEmailButton.titleFontSize = 17;
-		changeEmailButton.titleColor = Constants.PRIMARY_TEXT_COLOR;
-		changeEmailButton.cornersRadius = 4;
-		changeEmailButton.bordersWidth = 1;
-		changeEmailButton.bordersColor = .red;
-		changeEmailButton.bgColor = Constants.PRIMARY_COLOR;
-		self.topSectionInnerContainer.addSubviewOnce(changeEmailButton);
-		changeEmailButton.snp.remakeConstraints ({(make) in
+		let changeNameOrPassword = LGButton();
+		changeNameOrPassword.titleString = "Change name or password";
+		changeNameOrPassword.titleFontSize = 17;
+		changeNameOrPassword.titleColor = Constants.PRIMARY_TEXT_COLOR;
+		changeNameOrPassword.cornersRadius = 4;
+		changeNameOrPassword.bordersWidth = 1;
+		changeNameOrPassword.bordersColor = UIColor.red;
+		changeNameOrPassword.bgColor = Constants.PRIMARY_COLOR;
+		self.topSectionInnerContainer.addSubviewOnce(changeNameOrPassword);
+		changeNameOrPassword.snp.remakeConstraints ({(make) in
 			make.top.equalTo(emailView.snp.bottom).offset(20)
 			make.centerX.equalToSuperview()
 			make.width.greaterThanOrEqualTo(0)
 		});
-		changeEmailButton.layoutIfNeeded();
+		changeNameOrPassword.layoutIfNeeded();
 		
 		self.topSection.addSubviewOnce(topSectionInnerContainer);
-		let topSectionInnerContainerHeight = self.nameView.frame.height + self.emailView.frame.height + changeEmailButton.frame.height + 20 + 20;
+		let topSectionInnerContainerHeight = self.nameView.frame.height + self.emailView.frame.height + changeNameOrPassword.frame.height + 20 + 20;
 		self.topSectionInnerContainer.snp.remakeConstraints ({ (make) in
 			make.centerY.equalTo(topSection)
 			make.left.right.equalTo(0)
@@ -207,11 +190,46 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 		self.collectionView.collectionViewLayout.invalidateLayout();
 	}
 	
-	func loadRecentlyPlayedTracks() {
-		for n in 0...5 {
-			let g = Track();
-			self.items.append(g)
+	@objc
+	func loadRecentlyPlayedTracks(silent: Bool = false) {
+		if(!silent) {
+			self.isUserTracksHistoryLoading.accept(true);
 		}
+
+		API.VEX.tracksHistory(limit: 15) { (tracks, errorMessage) in
+			self.isUserTracksHistoryLoading.accept(false);
+			
+			if(tracks != nil && tracks!.count > 0) {
+				self.userTracksHistory.removeAll();
+				self.userTracksHistory = tracks!;
+				self.collectionView.reloadData();
+			}
+		}
+	}
+	
+	var longPressEnded = false;
+	@objc
+	func handleCellLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+		if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
+			self.longPressEnded = false;
+			return;
+		}
+		
+		if(self.longPressEnded) {
+			// no go, too soon
+			return;
+		}
+		
+		let gestureRecognizer = gestureRecognizer.location(in: self.collectionView);
+		
+		if let indexPath = self.collectionView.indexPathForItem(at: gestureRecognizer) {
+			// get the cell at indexPath (the one you long pressed)
+			// let cell = self.collectionView.cellForItem(at: indexPath) as! MusicTinyViewCell;
+			let item = self.userTracksHistory[indexPath.item];
+			NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track": item, "extraOptions": ["delete-from-user-tracks-history"]]);
+		}
+		
+		self.longPressEnded = true;
 	}
 	
 	override func addNavigationButtons() {
@@ -239,39 +257,40 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 
 extension AccountViewController : UICollectionViewDelegateFlowLayout {
 	
-	func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-		let layout = self.collectionView.collectionViewLayout as! UPCarouselFlowLayout;
-		let pageSide = (layout.scrollDirection == .horizontal) ? self.pageSize.width : self.pageSize.height;
-		let offset = (layout.scrollDirection == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y;
-		let tmpIndex = Int(floor((offset - pageSide / 2) / pageSide) + 1);
-		currentItemIndex = tmpIndex;
-		
-//		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MusicCarouselViewCell.ID, for: IndexPath(row: self.currentItemIndex, section: 0));
-		print(currentItemIndex)
-	}
-	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return self.items.count;
+		return self.userTracksHistory.count;
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//		let item = self.homePageItems[indexPath.item];
+		let item = self.userTracksHistory[indexPath.item];
 		
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MusicCarouselViewCell.ID, for: indexPath) as! MusicCarouselViewCell;
-		cell.titleView.text = "Track title";
-		cell.artworkImageView.kf.setImage(with: URL.createFrom(localOrRemoteAddress: "https://veezee.cloud/content/images/5aedd5a0cd6e51525536160.jpg"), placeholder: UIImage(named: "artwork"));
-
+		cell.titleView.text = item.title;
+		if(item.image != nil) {
+			cell.artworkImageView.kf.setImage(with: URL.createFrom(localOrRemoteAddress: item.image!), placeholder: UIImage(named: "artwork"));
+		}
+		
 		return cell;
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//		let item = self.userTracks[indexPath.item];
 		
+		if(self.playableList.count <= 0) {
+			self.playableList = generatePlayableListFromTracksList(list: self.userTracksHistory);
+			self.sendPlayBroadcastNotification(playableList: self.playableList, currentPlayableItemIndex: indexPath.item, mode: .normal);
+		} else {
+			// playable list already initialized
+			self.sendPlayBroadcastNotification(playableList: self.playableList, currentPlayableItemIndex: indexPath.item, mode: .normal);
+		}
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//		let item = self.homePageItems[indexPath.item];
-
 		return self.carouselSize;
+	}
+	
+	func sendPlayBroadcastNotification(playableList: [PlayableItem], currentPlayableItemIndex: Int, mode: AudioPlayerMode) {
+		NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.audioPlayerInitiatePlayBroadcastNotificationKey), object: self, userInfo: ["playableList" : playableList, "currentPlayableItemIndex": currentPlayableItemIndex, "mode": mode]);
 	}
 }
 
@@ -347,22 +366,5 @@ class MusicCarouselViewCell : UICollectionViewCell {
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
-	}
-}
-
-extension UICollectionView {
-	func scrollToNextItem() {
-		let contentOffset = CGFloat(floor(self.contentOffset.x + self.bounds.size.width))
-		self.moveToFrame(contentOffset: contentOffset)
-	}
-	
-	func scrollToPreviousItem() {
-		let contentOffset = CGFloat(floor(self.contentOffset.x - self.bounds.size.width))
-		self.moveToFrame(contentOffset: contentOffset)
-	}
-	
-	func moveToFrame(contentOffset : CGFloat) {
-		let frame: CGRect = CGRect(x: contentOffset, y: self.contentOffset.y , width: self.frame.width, height: self.frame.height)
-		self.scrollRectToVisible(frame, animated: true)
 	}
 }

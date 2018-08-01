@@ -102,7 +102,8 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		_BaseCommonViewController.AlreadyShownLoginRequiredPage = true;
 	}
 	
-	func showTrackActionSheet(track: Track) {
+	var actionSheet: UniversalActionSheet?;
+	func showTrackActionSheet(track: Track, extraOptions: [String]? = []) {
 		let headerView = UIView();
 		
 		var actionSheetItems = [ActionSheetItem]();
@@ -114,11 +115,17 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 			actionSheetItems.append(addToPlaylistButton);
 		}
 		
+		if(extraOptions?.contains("delete-from-user-tracks-history") == true) {
+			let deleteFromUserTracksHistory = ActionSheetCustomButton(title: "Delete from history", value: "Delete from history");
+			deleteFromUserTracksHistory.tapBehavior = .none;
+			
+			actionSheetItems.append(deleteFromUserTracksHistory);
+		}
+		
 		let cancelButton = ActionSheetCancelButton(title: "Cancel");
 		actionSheetItems.append(cancelButton);
 		
-		var actionSheet: UniversalActionSheet;
-		actionSheet = UniversalActionSheet(items: actionSheetItems) { (_, item) in
+		self.actionSheet = UniversalActionSheet(items: actionSheetItems) { (_, item) in
 			guard let value = item.value as? String else { return }
 			
 			if(value == "Add to a Playlist...") {
@@ -130,9 +137,13 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 				
 				self.present(modal, animated: true, completion: nil);
 			}
+			
+			if(value == "Delete from history") {
+				self.trackActionSheetDeleteTrackFromHistory(trackId: track.id);
+			}
 		}
 		
-		actionSheet.sheet?.headerView = headerView;
+		self.actionSheet?.sheet?.headerView = headerView;
 		headerView.snp.makeConstraints ({ (make) in
 			make.left.right.equalTo(0)
 			make.height.equalTo(130)
@@ -224,8 +235,21 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 			make.top.equalTo(albumView.snp.bottom).offset(5)
 		});
 		
-		actionSheet.sheet?.presenter = ActionSheetDefaultPresenter();
-		actionSheet.sheet?.present(in: self, from: self.view);
+		self.actionSheet?.sheet?.presenter = ActionSheetDefaultPresenter();
+		self.actionSheet?.sheet?.present(in: self, from: self.view);
+	}
+	
+	func trackActionSheetDeleteTrackFromHistory(trackId: String?) {
+		API.VEX.deleteTrackFromHistory(trackId: trackId, handler: { (errorMessage) in
+			if(errorMessage as String? == nil) {
+				// success
+				self.actionSheet?.sheet?.dismiss {
+					NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.refreshUserHistoryTracksBroadcastNotificationKey), object: self, userInfo: nil);
+				}
+			} else {
+				
+			}
+		});
 	}
 	
 	func registerSettingsBundle() {

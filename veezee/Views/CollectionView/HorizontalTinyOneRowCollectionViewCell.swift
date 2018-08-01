@@ -108,16 +108,16 @@ class HorizontalTinyOneRowCollectionViewCell: UICollectionViewCell, UIGestureRec
 			make.left.right.equalTo(0)
 		});
 		
-		let lpgr : UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleCellLongPress(gestureRecognizer:)))
-		lpgr.minimumPressDuration = 0.5
-		lpgr.delegate = self
-		lpgr.delaysTouchesBegan = true
-		self.collectionView.addGestureRecognizer(lpgr)
+		let lpgr: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleCellLongPress(gestureRecognizer:)));
+		lpgr.minimumPressDuration = 0.5;
+		lpgr.delegate = self;
+		lpgr.delaysTouchesBegan = true;
+		self.collectionView.addGestureRecognizer(lpgr);
 	}
 	
 	var longPressEnded = false;
 	@objc
-	func handleCellLongPress(gestureRecognizer: UILongPressGestureRecognizer){
+	func handleCellLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
 		if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
 			self.longPressEnded = false;
 			return;

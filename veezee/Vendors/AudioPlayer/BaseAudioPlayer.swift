@@ -52,6 +52,10 @@ open class BaseAudioPlayer: NSObject {
 				self.audioStream = FSAudioStream.init(configuration: self.audioStreamConfig);
 				self.setupObservers();
 				self.audioStream?.play(from: self.currentItem?.url);
+				
+				if(self.currentItem != nil) {
+					API.VEX.playedTrack(trackId: self.currentItem!._id!, handler: {});
+				}
 			}
 		}
 	}
