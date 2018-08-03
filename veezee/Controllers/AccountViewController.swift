@@ -15,6 +15,23 @@ import RxSwift
 import AnimatedTextInput
 import PMAlertController
 
+extension UICollectionView {
+	func scrollToNextItem() {
+		let contentOffset = CGFloat(floor(self.contentOffset.x + self.bounds.size.width))
+		self.moveToFrame(contentOffset: contentOffset)
+	}
+	
+	func scrollToPreviousItem() {
+		let contentOffset = CGFloat(floor(self.contentOffset.x - self.bounds.size.width))
+		self.moveToFrame(contentOffset: contentOffset)
+	}
+	
+	func moveToFrame(contentOffset : CGFloat) {
+		let frame: CGRect = CGRect(x: contentOffset, y: self.contentOffset.y , width: self.frame.width, height: self.frame.height)
+		self.scrollRectToVisible(frame, animated: true)
+	}
+}
+
 class AccountViewController: _BasePageViewController, UICollectionViewDataSource, UIGestureRecognizerDelegate {
 	
 	lazy var nameView: UILabel = {
@@ -527,6 +544,6 @@ class MusicCarouselViewCell : UICollectionViewCell {
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+		fatalError("init(coder:) has not been implemented");
 	}
 }

@@ -113,7 +113,11 @@ class HorizontalSmallDoubleRowCollectionViewCell: UICollectionViewCell {
 	
 	@objc
 	private func seeAllButtonClicked() {
-		self.navigationDelegate?.navigateToVCFor(albumsList: self.dataList);
+		if(self.dataList.first?.artist == nil) {
+			self.navigationDelegate?.navigateToVCFor(playLists: self.dataList);
+		} else {
+			self.navigationDelegate?.navigateToVCFor(albumsList: self.dataList);
+		}
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
