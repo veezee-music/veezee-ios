@@ -12,15 +12,14 @@ import DeviceKit
 import SnapKit
 import RxCocoa
 import RxSwift
+import AnimatedTextInput
+import PMAlertController
 
 class AccountViewController: _BasePageViewController, UICollectionViewDataSource, UIGestureRecognizerDelegate {
 	
-	lazy var navigationBarHeight = self.navigationController?.navigationBar.frame.size.height;
-	lazy var tabBarHeight = self.tabBarController?.tabBar.frame.size.height;
-	
 	lazy var nameView: UILabel = {
 		let nameView = UILabel();
-		nameView.text = self.keychain.get("name") ?? "";
+		nameView.text = self.keychain.get("name") ?? "Your name here";
 		nameView.textColor = Constants.PRIMARY_TEXT_COLOR;
 		nameView.font = UIFont.systemFont(ofSize: self.device.isPad ? 30 : 23, weight: UIFont.Weight.black);
 		
@@ -29,7 +28,7 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 	
 	lazy var emailView: UILabel = {
 		let emailView = UILabel();
-		emailView.text = self.keychain.get("email");
+		emailView.text = self.keychain.get("email") ?? "Your email here";
 		emailView.textColor = Constants.PRIMARY_TEXT_COLOR.withAlphaComponent(0.8);
 		topSection.addSubviewOnce(emailView);
 		emailView.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular);
@@ -113,6 +112,8 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 		lpgr.delaysTouchesBegan = true;
 		self.collectionView.addGestureRecognizer(lpgr);
 		
+		self.layoutChangeNameOrPasswordForm();
+		
 		self.initializeBottomPlayer();
 	}
 	
@@ -155,6 +156,7 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 		changeNameOrPassword.bordersWidth = 1;
 		changeNameOrPassword.bordersColor = UIColor.red;
 		changeNameOrPassword.bgColor = Constants.PRIMARY_COLOR;
+		changeNameOrPassword.addTarget(self, action: #selector(AccountViewController.changeNameOrPasswordButtonTapped), for: .touchUpInside);
 		self.topSectionInnerContainer.addSubviewOnce(changeNameOrPassword);
 		changeNameOrPassword.snp.remakeConstraints ({(make) in
 			make.top.equalTo(emailView.snp.bottom).offset(20)
@@ -250,6 +252,166 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 			UIApplication.shared.isStatusBarHidden = false;
 			let vc = SplashScreenViewController();
 			UIApplication.shared.delegate?.window!?.rootViewController = vc;
+		});
+	}
+	
+	let nameInputTag = 395543232;
+	let passwordInputTag = 01332943;
+	
+	var changeNameAndPasswordFormContainer = UIView();
+	var changeNameAndPasswordFormSubmitButton = LGButton();
+}
+
+extension AccountViewController {
+	
+	@objc
+	func changeNameOrPasswordButtonTapped() {
+		UIView.animate(withDuration: 0.5) {
+			self.changeNameAndPasswordFormContainer.alpha = 1.0;
+			self.view.bringSubview(toFront: self.changeNameAndPasswordFormContainer);
+		}
+	}
+	
+	@objc
+	func changeNameAndPasswordFormCancelButtonTapped() {
+		UIView.animate(withDuration: 0.5) {
+			self.changeNameAndPasswordFormContainer.alpha = 0.0;
+			self.view.sendSubview(toBack: self.changeNameAndPasswordFormContainer);
+		}
+	}
+	
+	func submitNameAndPasswordUpdate(name: String, password: String) {
+		self.changeNameAndPasswordFormSubmitButton.isLoading = true;
+		
+		API.Account.updateNameAndPassword(name: name, password: password) { (errorMessage) in
+			self.changeNameAndPasswordFormSubmitButton.isLoading = false;
+			if(errorMessage == nil) {
+				// success
+				
+				self.nameView.text = name;
+				
+				self.changeNameAndPasswordFormCancelButtonTapped();
+			} else {
+				let errorAC = PMAlertController(title: "Error", description: errorMessage!, image: nil, style: .alert);
+				errorAC.alertTitle.textColor = Constants.ACCENT_COLOR;
+				errorAC.addAction(PMAlertAction(title: "Dismiss", style: .cancel, action: nil));
+				errorAC.show();
+			}
+		}
+	}
+	
+	@objc
+	func changeNameAndPasswordFormSubmitButtonTapped() {
+		let nameInput = self.changeNameAndPasswordFormContainer.viewWithTag(nameInputTag) as! AnimatedTextInput;
+		let passwordInput = self.changeNameAndPasswordFormContainer.viewWithTag(passwordInputTag) as! AnimatedTextInput;
+		
+		if(nameInput.text == nil || nameInput.text!.count <= 0) {
+			return;
+		}
+		
+		self.submitNameAndPasswordUpdate(name: nameInput.text!, password: passwordInput.text!);
+	}
+	
+	func layoutChangeNameOrPasswordForm() {
+		let containerViewWidth = self.device.isPad ? ((self.view.frame.width / 1.5) + (20 * 2)) : self.view.frame.width - 50;
+		
+		changeNameAndPasswordFormContainer.layer.zPosition = 10;
+		changeNameAndPasswordFormContainer.cornerRadius = 4;
+		changeNameAndPasswordFormContainer.clipsToBounds = true;
+		changeNameAndPasswordFormContainer.backgroundColor = Constants.BLACK_THEME.PRIMARY_COLOR;
+		changeNameAndPasswordFormContainer.alpha = 0;
+		self.view.addSubview(changeNameAndPasswordFormContainer);
+		changeNameAndPasswordFormContainer.snp.makeConstraints({(make) -> Void in
+			make.width.equalTo(containerViewWidth);
+			make.centerX.centerY.equalTo(self.view)
+		});
+		changeNameAndPasswordFormContainer.layoutIfNeeded();
+		
+		var childViewsFullHeight: CGFloat = 0;
+		
+		let titleView = UILabel();
+		titleView.text = "Change name and password";
+		titleView.textColor = .white;
+		let boldFont = UIFont.boldSystemFont(ofSize:UIFont.labelFontSize);
+		titleView.font = boldFont.withSize(20);
+		
+		changeNameAndPasswordFormContainer.addSubview(titleView);
+		titleView.snp.makeConstraints({(make) -> Void in
+			make.top.equalTo(30)
+			make.centerX.equalTo(self.view)
+		});
+		titleView.layoutIfNeeded();
+		childViewsFullHeight += titleView.bounds.height + 30;
+		
+		let nameInput = AnimatedTextInput();
+		nameInput.tag = nameInputTag;
+		nameInput.style = CustomAnimatedTextInputStyle();
+		nameInput.type = .standard;
+		nameInput.placeHolderText = "New name";
+		
+		let passwordInput = AnimatedTextInput();
+		passwordInput.tag = passwordInputTag;
+		passwordInput.style = CustomAnimatedTextInputStyle();
+		passwordInput.type = .password(toggleable: true);
+		passwordInput.placeHolderText = "New password (Optional)";
+		
+		changeNameAndPasswordFormContainer.addSubview(nameInput);
+		nameInput.snp.makeConstraints({(make) -> Void in
+			make.top.equalTo(titleView.snp.bottom)
+			make.left.right.equalTo(0)
+		});
+		nameInput.layoutIfNeeded();
+		childViewsFullHeight += nameInput.bounds.height;
+		
+		changeNameAndPasswordFormContainer.addSubview(passwordInput);
+		passwordInput.snp.makeConstraints({(make) -> Void in
+			make.top.equalTo(nameInput.snp.bottom)
+			make.left.right.equalTo(0)
+		});
+		passwordInput.layoutIfNeeded();
+		childViewsFullHeight += passwordInput.bounds.height;
+		
+		changeNameAndPasswordFormSubmitButton.titleString = "Submit";
+		changeNameAndPasswordFormSubmitButton.titleFontSize = 18;
+		changeNameAndPasswordFormSubmitButton.titleColor = Constants.BLACK_THEME.PRIMARY_TEXT_COLOR;
+		changeNameAndPasswordFormSubmitButton.cornersRadius = 4;
+		changeNameAndPasswordFormSubmitButton.bgColor = Constants.ACCENT_COLOR;
+		changeNameAndPasswordFormSubmitButton.shadowRadius = 4;
+		changeNameAndPasswordFormSubmitButton.shadowOpacity = 2;
+		changeNameAndPasswordFormSubmitButton.shadowOffset = CGSize(width: 0, height: 1);
+		changeNameAndPasswordFormSubmitButton.shadowColor = Constants.ACCENT_COLOR;
+		changeNameAndPasswordFormSubmitButton.addTarget(self, action: #selector(AccountViewController.changeNameAndPasswordFormSubmitButtonTapped), for: .touchUpInside);
+		changeNameAndPasswordFormSubmitButton.loadingColor = Constants.BLACK_THEME.PRIMARY_TEXT_COLOR;
+		changeNameAndPasswordFormSubmitButton.loadingString = "Please wait...";
+		changeNameAndPasswordFormSubmitButton.loadingSpinnerColor = Constants.BLACK_THEME.PRIMARY_TEXT_COLOR;
+		
+		changeNameAndPasswordFormContainer.addSubview(changeNameAndPasswordFormSubmitButton);
+		changeNameAndPasswordFormSubmitButton.snp.makeConstraints({(make) -> Void in
+			make.top.equalTo(passwordInput.snp.bottom).offset(30)
+			make.left.right.equalTo(0).offset(20).inset(20)
+		});
+		changeNameAndPasswordFormSubmitButton.layoutIfNeeded();
+		childViewsFullHeight += (changeNameAndPasswordFormSubmitButton.bounds.height + 30);
+		
+		let cancelButton = UIButton();
+		cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 14);
+		cancelButton.setTitle("Cancel", for: .normal);
+		cancelButton.setTitleColor(UIColor.lightGray, for: .normal);
+		cancelButton.setTitleColor(UIColor.gray, for: .highlighted);
+		
+		changeNameAndPasswordFormContainer.addSubview(cancelButton);
+		cancelButton.snp.makeConstraints({(make) -> Void in
+			make.top.equalTo(changeNameAndPasswordFormSubmitButton.snp.bottom).offset(30 / 2)
+			make.left.right.equalTo(0)
+		});
+		cancelButton.addTarget(self, action: #selector(AccountViewController.changeNameAndPasswordFormCancelButtonTapped), for: .touchUpInside);
+		cancelButton.layoutIfNeeded();
+		childViewsFullHeight += (cancelButton.bounds.height + 30);
+		
+		changeNameAndPasswordFormContainer.snp.makeConstraints({(make) -> Void in
+			make.centerX.centerY.equalTo(self.view)
+			make.width.equalTo(containerViewWidth)
+			make.height.equalTo(childViewsFullHeight)
 		});
 	}
 	

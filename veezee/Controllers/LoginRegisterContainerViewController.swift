@@ -185,21 +185,21 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 		self.layoutRegistrationForm();
 		self.layoutLoginForm();
 		
-		let gradient = CAGradientLayer()
-		gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
-		gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-		gradient.locations = [0, 0.2, 0.8, 1]
-		gradient.frame = view.bounds
-		gradient.colors = [UIColor.clear.cgColor, Constants.BLACK_THEME.PRIMARY_COLOR.cgColor, Constants.BLACK_THEME.PRIMARY_COLOR.cgColor, UIColor.clear.cgColor]
-		self.view.layer.mask = gradient
-		
-		let gradient2 = CAGradientLayer();
-		gradient2.frame = self.view.bounds;
-		gradient2.colors = [Constants.BLACK_THEME.PRIMARY_COLOR.cgColor, UIColor.white.cgColor];
-		self.view.layer.addSublayer(gradient2);
-		
-		if(self.albumArts.count > 0) {
+		if(self.albumArts.count > 6) {
 			self.addInfiniteCarousels();
+			
+			let gradient = CAGradientLayer();
+			gradient.startPoint = CGPoint(x: 0.0, y: 0.5);
+			gradient.endPoint = CGPoint(x: 1.0, y: 0.5);
+			gradient.locations = [0, 0.2, 0.8, 1];
+			gradient.frame = self.view.bounds;
+			gradient.colors = [UIColor.clear.cgColor, Constants.BLACK_THEME.PRIMARY_COLOR.cgColor, Constants.BLACK_THEME.PRIMARY_COLOR.cgColor, UIColor.clear.cgColor];
+			self.view.layer.mask = gradient;
+			
+//			let gradient2 = CAGradientLayer();
+//			gradient2.frame = self.view.bounds;
+//			gradient2.colors = [Constants.BLACK_THEME.PRIMARY_COLOR.cgColor, UIColor.white.cgColor];
+//			self.view.layer.mask = gradient2;
 		}
 	}
 	
@@ -251,7 +251,7 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 //		let extraLightVibrancyView = self.vibrancyEffectView(forBlurEffectView: formContainerWithDarkBlurView)
 //		formContainerWithDarkBlurView.contentView.addSubview(extraLightVibrancyView)
 		
-		formContainer.layer.zPosition = 8
+		formContainer.layer.zPosition = 8;
 		formContainer.layer.cornerRadius = 4;
 		formContainer.clipsToBounds = true;
 		
@@ -424,6 +424,8 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 			if(userLoginResult != nil && userLoginResult?.token != nil && errorMessage == nil) {
 				// success
 				self.keychain.set(userLoginResult!.token!, forKey: "token", withAccess: .accessibleAfterFirstUnlock);
+				self.keychain.set(userLoginResult!.name!, forKey: "name", withAccess: .accessibleAfterFirstUnlock);
+				self.keychain.set(userLoginResult!.email!, forKey: "email", withAccess: .accessibleAfterFirstUnlock);
 				self.keychain.set(userLoginResult!.expiresIn!.toDateTimeString(), forKey: "expiresIn", withAccess: .accessibleAfterFirstUnlock);
 				self.keychain.set(userLoginResult!.access!.expiresIn!.toDateTimeString(), forKey: "accessExpiresIn", withAccess: .accessibleAfterFirstUnlock);
 				
@@ -468,9 +470,7 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 		}
 		
 		let albumArtsCount = self.albumArts.count;
-		if(albumArtsCount <= 6) {
-			return;
-		}
+
 		// we cut the images list in two as it prevents continuous carousels to show the same set of images
 		let firstHalfOfAlbumArts = Array(self.albumArts[0...albumArtsCount / 2]);
 		let secondHalfOfAlbumArts = Array(self.albumArts[(albumArtsCount / 2) + 1...albumArtsCount - 1]);
@@ -520,6 +520,7 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 		var items = [UIView]();
 		for n in images {
 			let view = UIImageView();
+			view.backgroundColor = .white
 			view.image = UIImage(named: "artwork");
 			view.kf.setImage(with: URL(string: n), placeholder: UIImage(named: "artwork"));
 			view.contentMode = .scaleAspectFill;
@@ -584,6 +585,8 @@ extension LoginRegisterContainerViewController {
 			if(userLoginResult != nil && userLoginResult?.token != nil && errorMessage == nil) {
 				// success
 				self.keychain.set(userLoginResult!.token!, forKey: "token", withAccess: .accessibleAfterFirstUnlock);
+				self.keychain.set(userLoginResult!.name!, forKey: "name", withAccess: .accessibleAfterFirstUnlock);
+				self.keychain.set(userLoginResult!.email!, forKey: "email", withAccess: .accessibleAfterFirstUnlock);
 				self.keychain.set(userLoginResult!.expiresIn!.toDateTimeString(), forKey: "expiresIn", withAccess: .accessibleAfterFirstUnlock);
 				self.keychain.set(userLoginResult!.access!.expiresIn!.toDateTimeString(), forKey: "accessExpiresIn", withAccess: .accessibleAfterFirstUnlock);
 				

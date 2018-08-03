@@ -58,11 +58,9 @@
 ## Things that ARE planned
 
 - ViewController (VC) for generes
-- Complete user accounts VC
 - In-app settings (Right now it's located in iOS settings)
 - More themes
 - More animations
-- BUG FIXES!
 
 ## Things that are currently NOT planned
 
