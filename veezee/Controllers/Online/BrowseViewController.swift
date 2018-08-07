@@ -48,6 +48,22 @@ class BrowseViewController: _BasePageViewController {
 	
 	lazy var collectionView = self.getCollectionView();
 	
+	lazy var retryButton: LGButton = {
+		let retryButton = LGButton();
+		retryButton.titleString = "Retry";
+		retryButton.titleFontSize = 18;
+		retryButton.titleColor = .white;
+		retryButton.cornersRadius = 4;
+		retryButton.bgColor = Constants.ACCENT_COLOR;
+		retryButton.shadowRadius = 4;
+		retryButton.shadowOpacity = 2;
+		retryButton.shadowOffset = CGSize(width: 0, height: 1);
+		retryButton.shadowColor = Constants.ACCENT_COLOR;
+		retryButton.addTarget(self, action: #selector(BrowseViewController.loadHomePageLists), for: .touchUpInside);
+		
+		return retryButton;
+	}();
+	
 	var isLoading = BehaviorRelay<Bool>(value: false);
 	let disposeBag = DisposeBag();
 	
@@ -70,6 +86,7 @@ class BrowseViewController: _BasePageViewController {
 		self.initializeBottomPlayer();
 	}
 	
+	@objc
 	func loadHomePageLists(silent: Bool = false) {
 		if(!silent) {
 			self.isLoading.accept(true);
@@ -84,10 +101,15 @@ class BrowseViewController: _BasePageViewController {
 				errorAC.alertTitle.textColor = Constants.ACCENT_COLOR;
 				errorAC.addAction(PMAlertAction(title: "Dismiss", style: .cancel, action: nil));
 				errorAC.show();
+				
+				self.retryButton.isHidden = false;
+				self.view.bringSubview(toFront: self.retryButton);
+				
 				return;
 			}
 			
 			if(list != nil) {
+				self.retryButton.isHidden = true;
 				// destroy the existing collection view and replace it with a new and clean instance
 				self.collectionView.removeFromSuperview();
 				self.collectionView = self.getCollectionView();
@@ -226,6 +248,12 @@ extension BrowseViewController {
 	}
 	
 	func setupUI() {
+		self.view.addSubviewOnce(self.retryButton);
+		self.retryButton.snp.remakeConstraints ({ (make) in
+			make.center.equalToSuperview()
+		});
+		self.retryButton.isHidden = true;
+		
 		self.view.addSubviewOnce(self.collectionView);
 		self.collectionView.snp.remakeConstraints({(make) -> Void in
 			make.width.equalTo(self.view);

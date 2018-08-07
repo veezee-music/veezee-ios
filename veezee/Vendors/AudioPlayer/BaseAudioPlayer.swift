@@ -47,9 +47,11 @@ open class BaseAudioPlayer: NSObject {
 				self.currentItemDuration = 0;
 				self.currentItemProgression = 0;
 				self.audioStream?.stop();
-				self.audioStream = nil;
+				if UIApplication.shared.applicationState != UIApplicationState.background {
+					self.audioStream = nil;
+					self.audioStream = FSAudioStream.init(configuration: self.audioStreamConfig);
+				}
 				self.timer?.invalidate();
-				self.audioStream = FSAudioStream.init(configuration: self.audioStreamConfig);
 				self.setupObservers();
 				self.audioStream?.play(from: self.currentItem?.url);
 				
