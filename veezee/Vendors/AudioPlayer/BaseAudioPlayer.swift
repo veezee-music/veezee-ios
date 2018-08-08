@@ -27,11 +27,12 @@ open class BaseAudioPlayer: NSObject {
 		let config = FSStreamConfiguration();
 		config.cacheEnabled = true;
 		config.cacheDirectory = Constants.MUSIC_TRACKS_CACHE_FOLDER_PATH;
+		config.maxPrebufferedByteCount = 100000;
 		
 		return config;
 	}();
 	
-	var audioStream: FSAudioStream? = nil;//FSAudioStream.init(configuration: self.audioStreamConfig);
+	var audioStream: FSAudioStream? = nil;
 	weak var delegate: AudioPlayerDelegate?;
 	
 	var queue = [PlayableItem]();
@@ -47,10 +48,10 @@ open class BaseAudioPlayer: NSObject {
 				self.currentItemDuration = 0;
 				self.currentItemProgression = 0;
 				self.audioStream?.stop();
-				if UIApplication.shared.applicationState != UIApplicationState.background {
+//				if UIApplication.shared.applicationState != UIApplicationState.background {
 					self.audioStream = nil;
 					self.audioStream = FSAudioStream.init(configuration: self.audioStreamConfig);
-				}
+//				}
 				self.timer?.invalidate();
 				self.setupObservers();
 				self.audioStream?.play(from: self.currentItem?.url);
@@ -69,11 +70,6 @@ open class BaseAudioPlayer: NSObject {
 	
 	override init() {
 		super.init();
-		
-//		let config = FSStreamConfiguration();
-//		config.maxDiskCacheSize = 0;
-		
-//		self.setupObservers();
 		
 		self.registerMPNowPlayingInfoCenterActions();
 	}

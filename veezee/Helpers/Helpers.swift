@@ -151,9 +151,12 @@ extension UIDevice {
 }
 
 extension UIView {
-	func addSubviewOnce(_ view: UIView) {
-		if(!view.isDescendant(of: self)) {
-			self.addSubview(view);
+	func addSubviewOnce(_ view: UIView?) {
+		if(view == nil) {
+			return;
+		}
+		if(!view!.isDescendant(of: self)) {
+			self.addSubview(view!);
 		}
 	}
 }
@@ -633,5 +636,22 @@ extension UIPanGestureRecognizer {
 		}
 		
 		return nil;
+	}
+}
+
+extension UIStackView {
+	
+	func removeAllArrangedSubviews() {
+		
+		let removedSubviews = arrangedSubviews.reduce([]) { (allSubviews, subview) -> [UIView] in
+			self.removeArrangedSubview(subview)
+			return allSubviews + [subview]
+		}
+		
+		// Deactivate all constraints
+		NSLayoutConstraint.deactivate(removedSubviews.flatMap({ $0.constraints }))
+		
+		// Remove the views from self
+		removedSubviews.forEach({ $0.removeFromSuperview() })
 	}
 }

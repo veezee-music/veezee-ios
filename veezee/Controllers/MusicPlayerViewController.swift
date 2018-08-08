@@ -18,6 +18,7 @@ import RxCocoa
 import MaterialComponents.MaterialSlider
 import MarqueeLabel
 import FreeStreamer
+import NVActivityIndicatorView
 
 class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
@@ -260,6 +261,8 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		return button;
 	}();
 	
+	var controlsStackView: UIStackView? = nil;
+	
 	var chevronDownIcon: IconedButton?;
 	
 	init() {
@@ -320,7 +323,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		let topPadding = window?.safeAreaInsets.top;
 		
 		self.view.addSubview(self.containerView);
-		self.containerView.snp.makeConstraints ({(make) -> Void in
+		self.containerView.snp.remakeConstraints ({(make) -> Void in
 			make.top.equalTo(topPadding!)
 			make.bottom.equalTo(0)
 			make.width.equalToSuperview();
@@ -336,7 +339,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			if(self.chevronDownIcon != nil) {
 				self.containerView.addSubview(self.chevronDownIcon!);
 			}
-			self.chevronDownIcon?.snp.makeConstraints ({ (make) in
+			self.chevronDownIcon?.snp.remakeConstraints ({ (make) in
 				make.top.left.equalTo(10)
 				make.width.height.equalTo(30)
 			});
@@ -344,7 +347,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			self.chevronDownIcon?.layoutIfNeeded();
 			
 			self.containerView.addSubview(self.artworkView);
-			self.artworkView.snp.makeConstraints ({(make) -> Void in
+			self.artworkView.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(0)
 				make.width.height.equalTo(self.view.frame.width)
 			});
@@ -356,7 +359,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			
 			let progressContainer = UIView();
 			self.containerView.addSubview(progressContainer)
-			progressContainer.snp.makeConstraints ({(make) -> Void in
+			progressContainer.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(self.artworkView.snp.bottom)
 				make.left.right.equalTo(0)
 				make.height.equalTo(heightLeft / 5)
@@ -365,27 +368,27 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			
 			progressContainer.addSubview(self.progressBarView)
 			//progressBar.transform = CGAffineTransform(scaleX: 0.5, y: 0.5);
-			self.progressBarView.snp.makeConstraints ({(make) -> Void in
+			self.progressBarView.snp.remakeConstraints ({(make) -> Void in
 				make.center.equalTo(progressContainer)
 				make.width.equalTo(progressContainer.frame.width - 30)
 				make.height.equalTo(10)
 			});
 
 			progressContainer.addSubview(self.progressPassedView);
-			self.progressPassedView.snp.makeConstraints ({(make) -> Void in
+			self.progressPassedView.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(self.progressBarView.snp.bottom).offset(5)
 				make.left.equalTo(0).offset(20)
 			});
 
 			progressContainer.addSubview(self.durationView);
-			self.durationView.snp.makeConstraints ({(make) -> Void in
+			self.durationView.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(self.progressBarView.snp.bottom).offset(5)
 				make.right.equalTo(0).inset(20)
 			});
 			
 			let titlesContainer = UIView();
 			self.containerView.addSubview(titlesContainer)
-			titlesContainer.snp.makeConstraints ({(make) -> Void in
+			titlesContainer.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(progressContainer.snp.bottom)
 				make.left.right.equalTo(0)
 				make.height.greaterThanOrEqualTo(heightLeft / 4)
@@ -402,7 +405,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			titlesStackView.alignment = .center
 			titlesStackView.distribution = .fillEqually;
 			titlesContainer.addSubview(titlesStackView);
-			titlesStackView.snp.makeConstraints ({(make) -> Void in
+			titlesStackView.snp.remakeConstraints ({(make) -> Void in
 				make.center.equalTo(titlesContainer)
 				make.left.equalTo(20)
 				make.right.equalTo(0).inset(20)
@@ -411,19 +414,19 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			
 			let controlsContainer = UIView();
 			self.containerView.addSubview(controlsContainer)
-			controlsContainer.snp.makeConstraints ({(make) -> Void in
+			controlsContainer.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(titlesContainer.snp.bottom)
 				make.left.right.equalTo(0)
 				make.height.equalTo(heightLeft / 4)
 			});
 			controlsContainer.layoutIfNeeded();
 			
-			let controlsStackView = UIStackView(arrangedSubviews: [self.shuffleButton, self.skipBackwardButton, self.playPauseStopButton, self.skipForwardButton, self.repeatButton]);
-			controlsStackView.axis = .horizontal;
-			controlsStackView.distribution = .equalCentering;
-			controlsContainer.addSubview(controlsStackView);
+			self.controlsStackView = UIStackView(arrangedSubviews: [self.shuffleButton, self.skipBackwardButton, self.playPauseStopButton, self.skipForwardButton, self.repeatButton]);
+			self.controlsStackView?.axis = .horizontal;
+			self.controlsStackView?.distribution = .equalCentering;
+			controlsContainer.addSubviewOnce(self.controlsStackView);
 			
-			controlsStackView.snp.makeConstraints ({(make) -> Void in
+			self.controlsStackView?.snp.remakeConstraints ({(make) -> Void in
 				make.centerY.equalTo(controlsContainer).offset(10) // the offset is really not necessary but i just feel like the player looks better with this
 				make.centerX.equalTo(controlsContainer)
 				make.width.equalTo(controlsContainer.frame.width / 1.2)
@@ -432,7 +435,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			
 			let volumesContainer = UIView();
 			self.containerView.addSubview(volumesContainer)
-			volumesContainer.snp.makeConstraints ({(make) -> Void in
+			volumesContainer.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(controlsContainer.snp.bottom)
 				make.left.right.equalTo(0)
 				make.height.equalTo(heightLeft / 4)
@@ -440,20 +443,20 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			volumesContainer.layoutIfNeeded();
 			
 			volumesContainer.addSubview(self.mpVolumeSlider);
-			self.mpVolumeSlider.snp.makeConstraints({(make) -> Void in
+			self.mpVolumeSlider.snp.remakeConstraints({(make) -> Void in
 				make.center.equalTo(volumesContainer)//.offset(-5)
 				make.width.equalTo(volumesContainer.frame.width / 1.4)
 			});
 			
 			volumesContainer.addSubview(self.volumeDownButton);
-			self.volumeDownButton.snp.makeConstraints({(make) -> Void in
+			self.volumeDownButton.snp.remakeConstraints({(make) -> Void in
 				make.centerY.equalTo(self.mpVolumeSlider)
 				make.right.equalTo(self.mpVolumeSlider.snp.left)
 				make.width.height.equalTo(30)
 			});
 			
 			volumesContainer.addSubview(self.volumeUpButton);
-			self.volumeUpButton.snp.makeConstraints({(make) -> Void in
+			self.volumeUpButton.snp.remakeConstraints({(make) -> Void in
 				make.centerY.equalTo(self.mpVolumeSlider)
 				make.left.equalTo(self.mpVolumeSlider.snp.right).offset(10)
 				make.width.height.equalTo(30)
@@ -479,7 +482,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			
 			let titlesContainer = UIView();
 			self.containerView.addSubview(titlesContainer);
-			titlesContainer.snp.makeConstraints ({(make) -> Void in
+			titlesContainer.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(0).offset(20)
 				make.left.equalTo(self.artworkView.snp.right).offset(20)
 				make.right.equalTo(0).inset(20)
@@ -492,14 +495,14 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			titlesStackView.distribution = .fillProportionally;
 			titlesStackView.spacing = 10;
 			titlesContainer.addSubview(titlesStackView);
-			titlesStackView.snp.makeConstraints ({(make) -> Void in
+			titlesStackView.snp.remakeConstraints ({(make) -> Void in
 				make.centerX.centerY.equalToSuperview()
 				make.right.left.equalTo(0)
 			});
 			
 			self.containerView.addSubview(self.progressBarView)
 			//progressBar.transform = CGAffineTransform(scaleX: 0.5, y: 0.5);
-			self.progressBarView.snp.makeConstraints ({(make) -> Void in
+			self.progressBarView.snp.remakeConstraints ({(make) -> Void in
 				//make.centerY.equalToSuperview().offset(-self.view.bounds.height / 5)
 				make.top.equalTo(artworkView.snp.bottom).offset(/*50*/ 4 * self.screenHieght / 100)
 				make.centerX.equalTo(self.view);
@@ -508,13 +511,13 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			});
 			
 			self.containerView.addSubview(self.progressPassedView);
-			self.progressPassedView.snp.makeConstraints ({(make) -> Void in
+			self.progressPassedView.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(self.progressBarView.snp.bottom).offset(5)
 				make.left.equalTo(0).offset(20)
 			});
 			
 			self.containerView.addSubview(self.durationView);
-			self.durationView.snp.makeConstraints ({(make) -> Void in
+			self.durationView.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(self.progressBarView.snp.bottom).offset(5)
 				make.right.equalTo(0).inset(20)
 			});
@@ -524,7 +527,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			controlsStackView.distribution = .equalCentering;
 			self.containerView.addSubview(controlsStackView);
 			
-			controlsStackView.snp.makeConstraints ({(make) -> Void in
+			controlsStackView.snp.remakeConstraints ({(make) -> Void in
 				make.top.equalTo(self.durationView.snp.bottom).offset(5 * self.screenHieght / 100)
 				make.centerX.equalTo(self.view);
 				make.width.equalTo(self.view.bounds.width / 2);
@@ -532,7 +535,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			});
 			
 			self.containerView.addSubview(self.mpVolumeSlider);
-			self.mpVolumeSlider.snp.makeConstraints({(make) -> Void in
+			self.mpVolumeSlider.snp.remakeConstraints({(make) -> Void in
 				make.top.equalTo(controlsStackView.snp.bottom).offset(/*20*/ 5 * self.screenHieght / 100)
 				make.height.equalTo(50).priority(50)
 				// see https://stackoverflow.com/questions/46520830/unable-to-simultaneously-satisfy-constraints-custom-header-section
@@ -541,14 +544,14 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			});
 			
 			self.containerView.addSubview(self.volumeDownButton);
-			self.volumeDownButton.snp.makeConstraints({(make) -> Void in
+			self.volumeDownButton.snp.remakeConstraints({(make) -> Void in
 				make.centerY.equalTo(self.mpVolumeSlider)
 				make.right.equalTo(self.mpVolumeSlider.snp.left)
 				make.width.height.equalTo(30)
 			});
 			
 			self.containerView.addSubview(self.volumeUpButton);
-			self.volumeUpButton.snp.makeConstraints({(make) -> Void in
+			self.volumeUpButton.snp.remakeConstraints({(make) -> Void in
 				make.centerY.equalTo(self.mpVolumeSlider)
 				make.left.equalTo(self.mpVolumeSlider.snp.right).offset(10)
 				make.width.height.equalTo(30)
@@ -809,10 +812,12 @@ extension MusicPlayerViewController {
 					self.mpVolumeSlider.maximumTrackTintColor = UIColor.black;
 				}
 
-				if(self.backgroundBlurredImageView.image != nil) {
-					self.updateBackgroundForMusicPlayer();
-				} else {
-					self.setBackgroundForMusicPlayer();
+				if(Constants.COLORED_PLAYER) {
+					if(self.backgroundBlurredImageView.image != nil) {
+						self.updateBackgroundForMusicPlayer();
+					} else {
+						self.setBackgroundForMusicPlayer();
+					}
 				}
 				
 			})
