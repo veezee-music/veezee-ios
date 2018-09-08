@@ -57,6 +57,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		return true;
 	}
 	
+	override func remoteControlReceived(with event: UIEvent?) {
+		if let event = event {
+			AudioPlayer.shared.remoteControlReceived(with: event);
+		}
+	}
+	
 	func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
 		return GIDSignIn.sharedInstance().handle(url,
 												 sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,

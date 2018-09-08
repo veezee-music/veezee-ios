@@ -11,7 +11,6 @@ import UIKit
 import DeviceKit
 
 struct Constants {
-	
 	/// Enabling this flag disables all user specific functionality including registration/login and account page
 	static var GUEST_MODE = true;
 	/// Enabling this flag forces the application to always launch in offline mode, it may dynamically change during app life cycle

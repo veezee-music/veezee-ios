@@ -1,15 +1,15 @@
 //
 //  PlayableList.swift
-//  bxpi
+//  veezee
 //
 //  Created by Vahid Amiri Motlagh on 2/12/18.
-//  Copyright © 2018 UNIVER30t Network. All rights reserved.
+//  Copyright © 2018 veezee. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-open class PlayableItem: Codable {
+open class PlayableItem: NSObject, Codable {
 	var _id: String?;
 	var title: String?;
 	var artist: String?;
@@ -20,7 +20,7 @@ open class PlayableItem: Codable {
 	var artworkImage: UIImage?;
 	var colors = AlbumArtColor();
 	var fileName: String?;
-	var url: URL?;
+	var url: URL!;
 	
 	var isOffline: Bool = false;
 	

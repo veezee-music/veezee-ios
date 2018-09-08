@@ -78,7 +78,7 @@ class BottomPlayer: UIView {
 	}
 	
 	func setLayouts() {
-		if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying || self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering || self.audioPlayer.state == AudioPlayerState.fsAudioStreamPaused) {
+		if(self.audioPlayer.state == AudioPlayerState.playing || self.audioPlayer.state == AudioPlayerState.buffering || self.audioPlayer.state == AudioPlayerState.paused) {
 			self.isHidden = false;
 		} else {
 			self.isHidden = true;
@@ -179,9 +179,9 @@ class BottomPlayer: UIView {
 	@objc
 	func toggleMusicPlayerPlayStatus() {
 		DispatchQueue.main.async {
-			if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying || self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering) {
+			if(self.audioPlayer.state == AudioPlayerState.playing || self.audioPlayer.state == AudioPlayerState.buffering) {
 				self.audioPlayer.pause();
-			} else if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPaused) {
+			} else if(self.audioPlayer.state == AudioPlayerState.paused) {
 				self.audioPlayer.resume();
 			}
 			self.resetVisibility();
@@ -191,10 +191,10 @@ class BottomPlayer: UIView {
 	func resetVisibility() {
 		DispatchQueue.main.async {
 			
-			if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying || self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering) {
+			if(self.audioPlayer.state == AudioPlayerState.playing || self.audioPlayer.state == AudioPlayerState.buffering) {
 				self.superview?.bringSubview(toFront: self);
 				self.isHidden = false;
-			} else if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPaused) {
+			} else if(self.audioPlayer.state == AudioPlayerState.paused) {
 				self.superview?.bringSubview(toFront: self);
 				self.isHidden = false;
 			} else {
@@ -220,15 +220,16 @@ extension BottomPlayer {
 			self.artistView.textColor = self.audioPlayer.currentItem?.colors.accentColor;
 			
 			if(self.audioPlayer.currentItem?.imageUrl != nil) {
-				self.artworkView.kf.setImage(with: URL.createFrom(localOrRemoteAddress: self.audioPlayer.currentItem!.imageUrl!));
-				self.backgroundImageView?.kf.setImage(with: URL.createFrom(localOrRemoteAddress: self.audioPlayer.currentItem!.imageUrl!));
+				self.loadImageToArtworkViewAndPlayableItem(imageUrl: self.audioPlayer.currentItem?.imageUrl);
+				//self.artworkView.kf.setImage(with: URL.createFrom(localOrRemoteAddress: self.audioPlayer.currentItem!.imageUrl!));
+				//self.backgroundImageView?.kf.setImage(with: URL.createFrom(localOrRemoteAddress: self.audioPlayer.currentItem!.imageUrl!));
 			} else {
 				self.artworkView.image = UIImage(named: "artwork");
 			}
 			
 			if(self.audioPlayer.currentItem?.colors != nil) {
 				self.isHidden = false;
-				if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering || self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying) {
+				if(self.audioPlayer.state == AudioPlayerState.buffering || self.audioPlayer.state == AudioPlayerState.playing) {
 					self.playPauseButtonView.setIcon(icon: .ionicons(.pause), color: self.audioPlayer.currentItem!.colors.accentColor);
 				} else {
 					self.playPauseButtonView.setIcon(icon: .ionicons(.play), color: self.audioPlayer.currentItem!.colors.accentColor);
@@ -246,6 +247,19 @@ extension BottomPlayer {
 	@objc
 	func audioPlayerDidChangeState(_ notification: Notification) {
 		self.updateUI();
+	}
+	
+	func loadImageToArtworkViewAndPlayableItem(imageUrl: String?) {
+		if(imageUrl == nil) {
+			return;
+		}
+		let imageUrl = URL.createFrom(localOrRemoteAddress: imageUrl!);
+		KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: imageUrl), options: nil, progressBlock: nil) {
+			(image, error, cacheType, imageURL) -> () in
+			self.audioPlayer.currentItem?.artworkImage = image;
+			self.artworkView.image = image;
+			self.backgroundImageView?.image = image;
+		};
 	}
 	
 }

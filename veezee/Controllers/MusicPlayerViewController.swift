@@ -50,8 +50,8 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		
 		// set the progress slider before page is shown to the user
 		if(self.audioPlayer.currentItem != nil) {
-			let itemDuration = self.audioPlayer.currentItemDuration;
-			let itemProgression = self.audioPlayer.currentItemProgression;
+			let itemDuration = self.audioPlayer.currentItemDuration ?? 0;
+			let itemProgression = self.audioPlayer.currentItemProgression ?? 0;
 			let percentage = (itemDuration > 0 ? CGFloat(itemProgression / itemDuration) * 100 : 0)
 
 			self.progressPassedView.text = format(duration: itemProgression);
@@ -61,6 +61,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		NotificationCenter.default.addObserver(self, selector: #selector(self.onStopAndClearPlayers(_:)), name: Notification.Name(rawValue: Constants.audioPlayerStopAndClearPlayersBroadcastNotificationKey), object: nil);
 		NotificationCenter.default.addObserver(self, selector: #selector(self.audioPlayerWillStartPlaying(_:)), name: Notification.Name(rawValue: AudioPlayer.Notifications.willStartPlayingItem), object: nil);
 		NotificationCenter.default.addObserver(self, selector: #selector(self.audioPlayerDidChangeState(_:)), name: Notification.Name(rawValue: AudioPlayer.Notifications.didChangeState), object: nil);
+		NotificationCenter.default.addObserver(self, selector: #selector(self.onPlaybackProgression), name: Notification.Name(rawValue: AudioPlayer.Notifications.didProgressTo), object: nil);
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -84,8 +85,9 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		
 	}
 	
-	func onPlaybackProgression(progression: TimeInterval) {
-		self.currentItemProgression.accept(progression);
+	@objc
+	func onPlaybackProgression() {
+		self.currentItemProgression.accept(self.audioPlayer.currentItemProgression);
 	}
 	
 	func onStateChange(state: AudioPlayerState) {
@@ -124,7 +126,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	var currentItemImage = BehaviorRelay<UIImage?>(value: nil);
 	var currentItemDuration = BehaviorRelay<TimeInterval?>(value: nil);
 	var currentItemProgression = BehaviorRelay<TimeInterval?>(value: nil);
-	var audioPlayerState = BehaviorRelay<AudioPlayerState?>(value: AudioPlayerState.fsAudioStreamPlaying);
+	var audioPlayerState = BehaviorRelay<AudioPlayerState?>(value: AudioPlayerState.playing);
 	
 	lazy var screenHieght: CGFloat = 0;
 	lazy var screenWidth: CGFloat = 0;
@@ -153,6 +155,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		progressBar.addTarget(self, action: #selector(self.onProgressBarValueChanged(slider:event:)), for: .valueChanged);
 		progressBar.maximumValue = 100.0;
 		progressBar.isContinuous = false;
+		progressBar.isThumbHollowAtStart = false;
 		
 		return progressBar;
 	}();
@@ -272,7 +275,9 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		
 		self.audioPlayer.delegate = self;
 		
-		self.playableList = self.audioPlayer.queue;
+		if(self.audioPlayer.queue != nil) {
+			self.playableList = self.audioPlayer.queue!.items;
+		}
 		self.currentItem.accept(self.audioPlayer.currentItem);
 	}
 	
@@ -700,26 +705,26 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	func shuffleButtonPressed() {
 		let animator = CoreAnimator(view: self.shuffleButton);
 		animator.rotateX(angle: 180).animate(t: 0.3);
-		if(self.audioPlayer.mode?.contains(AudioPlayerMode.shuffle) == true) {
-			self.audioPlayer.mode?.remove(AudioPlayerMode.shuffle);
+		if(self.audioPlayer.mode.contains(AudioPlayerMode.shuffle) == true) {
+			self.audioPlayer.mode.remove(AudioPlayerMode.shuffle);
 			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: self.audioPlayer.currentItem!.colors.accentColor);
 		} else {
-			self.audioPlayer.mode?.insert(AudioPlayerMode.shuffle);
+			self.audioPlayer.mode.insert(AudioPlayerMode.shuffle);
 			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: self.audioPlayer.currentItem!.colors.primaryColor);
 		}
 	}
 	
 	@objc
 	func skipBackwardButtonPressed() {
-		self.audioPlayer.prevOrRestart();
+		self.audioPlayer.previous();
 	}
 	
 	@objc
 	func playButtonPressed() {
 		// button icon changes with the state change, no need to do it here
-		if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPaused) {
+		if(self.audioPlayer.state == AudioPlayerState.paused) {
 			self.audioPlayer.resume();
-		} else if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying || self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering) {
+		} else if(self.audioPlayer.state == AudioPlayerState.playing || self.audioPlayer.state == AudioPlayerState.buffering) {
 			self.audioPlayer.pause();
 		}
 	}
@@ -733,11 +738,11 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	func repeatButtonPressed() {
 		let animator = CoreAnimator(view: self.repeatButton);
 		animator.rotate(angle: 360).animate(t: 0.3);
-		if(self.audioPlayer.mode?.contains(AudioPlayerMode.repeat) == true) {
-			self.audioPlayer.mode?.remove(AudioPlayerMode.repeat);
+		if(self.audioPlayer.mode.contains(AudioPlayerMode.repeat) == true) {
+			self.audioPlayer.mode.remove(AudioPlayerMode.repeat);
 			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: self.audioPlayer.currentItem!.colors.accentColor);
 		} else {
-			self.audioPlayer.mode?.insert(AudioPlayerMode.repeat);
+			self.audioPlayer.mode.insert(AudioPlayerMode.repeat);
 			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: self.audioPlayer.currentItem!.colors.primaryColor);
 		}
 	}
@@ -749,19 +754,20 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	@objc
 	func onProgressBarValueChanged(slider: MDCSlider, event: UIEvent) {
-		let value: CGFloat = slider.value;
-//		let alreadyPaused = self.audioPlayer.state == AudioPlayerState.fsAudioStreamPaused ? true : false;
-
+		let value = slider.value;
+		let alreadyPaused = self.audioPlayer.state == .paused ? true : false;
+		
 		// pause the player to avoid ui glitches
-//		self.audioPlayer.pause();
-
+		self.audioPlayer.pause();
+		
 		// the value coming from the slider is in percentage, convert it to seconds according to the item duration
-//		let time = Int(value * CGFloat(self.audioPlayer.currentItemDuration) / 100);
+		let time = Int(value * CGFloat(self.audioPlayer.currentItemDuration ?? 0) / 100);
+		
+		self.audioPlayer.seek(to: TimeInterval(time));
+		if(!alreadyPaused) {
+			self.audioPlayer.resume();
+		}
 
-		self.audioPlayer.seek(percentage: value);
-//		if(!alreadyPaused) {
-//			self.audioPlayer.resume();
-//		}
 	}
 	
 	private func applyArtworkFilter(inputImage: UIImage, effectPower: Int, handler: @escaping (UIImage) -> Void) {
@@ -830,9 +836,9 @@ extension MusicPlayerViewController {
 			.asObservable()
 			.subscribe(onNext: { audioPlayerState in
 				
-				if(audioPlayerState == AudioPlayerState.fsAudioStreamPaused) {
+				if(audioPlayerState == AudioPlayerState.paused) {
 					self.playPauseStopButton.setIcon(icon: .ionicons(.play), color: self.audioPlayer.currentItem!.colors.accentColor);
-				} else if(audioPlayerState == AudioPlayerState.fsAudioStreamPlaying) {
+				} else if(audioPlayerState == AudioPlayerState.playing) {
 					self.playPauseStopButton.setIcon(icon: .ionicons(.pause), color: self.audioPlayer.currentItem!.colors.accentColor);
 				}
 				
@@ -856,8 +862,8 @@ extension MusicPlayerViewController {
 				self.loadImageToArtworkViewAndPlayableItem(imageUrl: currentItem!.imageUrl);
 				
 				self.progressBarView.value = 0;
-				self.progressPassedView.text = format(duration: self.audioPlayer.currentItemProgression);
-				self.durationView.text = format(duration: self.audioPlayer.currentItemDuration);
+				self.progressPassedView.text = format(duration: self.audioPlayer.currentItemProgression ?? 0);
+				self.durationView.text = format(duration: self.audioPlayer.currentItemDuration ?? 0);
 				
 				self.chevronDownIcon?.setIcon(color: currentItem!.colors.accentColor, forState: .normal);
 				
@@ -926,19 +932,19 @@ extension MusicPlayerViewController {
 		self.titleView.textColor = currentItem.colors.primaryColor;
 		self.artistView.textColor = currentItem.colors.accentColor;
 		self.progressBarView.color = currentItem.colors.accentColor;
-		if(self.audioPlayer.mode?.contains(AudioPlayerMode.shuffle) == true) {
+		if(self.audioPlayer.mode.contains(AudioPlayerMode.shuffle) == true) {
 			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: currentItem.colors.primaryColor);
 		} else {
 			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: currentItem.colors.accentColor);
 		}
 		self.skipBackwardButton.setIcon(icon: .ionicons(.iosReward), color: currentItem.colors.accentColor);
-		if(self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying || self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering) {
+		if(self.audioPlayer.state == AudioPlayerState.playing || self.audioPlayer.state == AudioPlayerState.buffering) {
 			self.playPauseStopButton.setIcon(icon: .ionicons(.pause), color: currentItem.colors.accentColor);
 		} else {
 			self.playPauseStopButton.setIcon(icon: .ionicons(.play), color: currentItem.colors.accentColor);
 		}
 		self.skipForwardButton.setIcon(icon: .ionicons(.iosFastforward), color: currentItem.colors.accentColor);
-		if(self.audioPlayer.mode?.contains(AudioPlayerMode.repeat) == true) {
+		if(self.audioPlayer.mode.contains(AudioPlayerMode.repeat) == true) {
 			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: currentItem.colors.primaryColor);
 		} else {
 			self.repeatButton.setIcon(icon: .ionicons(.iosLoopStrong), color: currentItem.colors.accentColor);

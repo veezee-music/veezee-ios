@@ -170,7 +170,7 @@ class _BasePageViewController: _BaseCommonViewController, BottomPlayerDelegate, 
 		if let dict = notification.userInfo as Dictionary? {
 			if let playableList = dict["playableList"] as? [PlayableItem], var currentPlayableItemIndex = dict["currentPlayableItemIndex"] as? Int {
 				let mode = dict["mode"] as? AudioPlayerMode;
-				if((self.audioPlayer.state == AudioPlayerState.fsAudioStreamPlaying || self.audioPlayer.state == AudioPlayerState.fsAudioStreamBuffering) && self.audioPlayer.queue.first?._id == playableList.first?._id && self.audioPlayer.currentItem?._id == playableList[currentPlayableItemIndex]._id) {
+				if((self.audioPlayer.state == AudioPlayerState.playing || self.audioPlayer.state == AudioPlayerState.buffering) && self.audioPlayer.queue?.items.first?._id == playableList.first?._id && self.audioPlayer.currentItem?._id == playableList[currentPlayableItemIndex]._id) {
 					// we are already playing that file on the same playablelist, keep playling it and just open the player screen
 					self.openPlayerModal();
 				} else {

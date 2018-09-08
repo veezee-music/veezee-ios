@@ -37,7 +37,7 @@
 
 - Supports tracks, albums, playlists and genres
 - User management with email/password and **Google** (Supports cross-device sessions)
-- Supports remote (**MongoDB**) and local-offline (**CouchDB**) databases
+- Supports remote (**MongoDB**) and local-offline (**Couchbase**) databases
 - **Offline mode**
 - **Theme support**
 - Sharing
@@ -49,7 +49,6 @@
 - Landscape mode (iPad only) - WiP (UI bugs expected)
 - **Coded UI** with Autolayout using **Snapkit** (no storyboards or xib files!)
 - RxSwift and RxCocoa (limited use)
-- High performance audio streamming engine (using Freestreamer)
 - Guest mode (Without login)
 - Many custom views for different pages
 - Beautiful animations using UIKit animations and transitions and UIKit dynamics

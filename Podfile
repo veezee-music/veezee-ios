@@ -15,7 +15,7 @@ target 'veezee' do
   pod 'CodableExtensions', '~> 0.2.1'
   pod 'Kingfisher', '~> 4.0'
   pod 'PKHUD', '~> 5.0'
-  pod 'GoogleSignIn', '~> 4.1.2'
+  pod 'GoogleSignIn', '~> 4.2.0'
   pod 'Pages', '~> 2.0.2'
   pod 'AnimatedTextInput', '~> 0.5.2'
   pod 'RimhTypingLetters', '~> 0.1.1'

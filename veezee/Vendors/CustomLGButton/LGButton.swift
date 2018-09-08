@@ -9,7 +9,6 @@ import UIKit
 import QuartzCore
 import SwiftIconFont
 
-
 @IBDesignable
 public class LGButton: UIControl {
     
@@ -366,7 +365,7 @@ public class LGButton: UIControl {
     // MARK:
     
     // Setup the view appearance
-    fileprivate func setupView(){
+    fileprivate func setupView() {
         bgContentView.clipsToBounds = true
         layer.masksToBounds = false
         setIconOrientation()
@@ -445,7 +444,7 @@ public class LGButton: UIControl {
         }
     }
     
-    fileprivate func setupLeftIcon(){
+    fileprivate func setupLeftIcon() {
         setupIcon(icon: leftIcon,
                   fontName: leftIconFontName,
                   iconName: leftIconString,
@@ -453,7 +452,7 @@ public class LGButton: UIControl {
                   color: leftIconColor)
     }
     
-    fileprivate func setupRightIcon(){
+    fileprivate func setupRightIcon() {
         setupIcon(icon: rightIcon,
                   fontName: rightIconFontName,
                   iconName: rightIconString,
@@ -461,7 +460,7 @@ public class LGButton: UIControl {
                   color: rightIconColor)
     }
     
-    fileprivate func setupLeftImage(){
+    fileprivate func setupLeftImage() {
         setupImage(imageView: leftImage,
                    image: leftImageSrc,
                    color: leftImageColor,
@@ -472,7 +471,7 @@ public class LGButton: UIControl {
         leftIcon.isHidden =  (leftImageSrc != nil || !availableFontIcons.contains(leftIconFontName))
     }
     
-    fileprivate func setupRightImage(){
+    fileprivate func setupRightImage() {
         rightIcon.isHidden =  rightImageSrc != nil
         setupImage(imageView: rightImage,
                    image: rightImageSrc,
@@ -484,7 +483,7 @@ public class LGButton: UIControl {
         rightIcon.isHidden =  (rightImageSrc != nil || !availableFontIcons.contains(rightIconFontName))
     }
     
-    fileprivate func setupSpacings(){
+    fileprivate func setupSpacings() {
         mainStackView.spacing = spacingTitleIcon
         topMainConstraint.constant = spacingTop
         bottomMainConstraint.constant = spacingBottom
@@ -493,14 +492,14 @@ public class LGButton: UIControl {
         setupBorderAndCorners()
     }
     
-    fileprivate func setupShadow(){
+    fileprivate func setupShadow() {
         layer.shadowOffset = shadowOffset
         layer.shadowRadius = shadowRadius
         layer.shadowOpacity = Float(shadowOpacity)
         layer.shadowColor = shadowColor.cgColor
     }
     
-    fileprivate func setupLoadingView(){
+    fileprivate func setupLoadingView() {
         loadingLabel.isHidden = loadingString.isEmpty
         loadingLabel.text = loadingString
         loadingLabel.textColor = loadingColor
@@ -513,7 +512,7 @@ public class LGButton: UIControl {
         setupBorderAndCorners()
     }
     
-    fileprivate func setupIcon(icon:UILabel, fontName:String, iconName:String, fontSize:CGFloat, color:UIColor){
+    fileprivate func setupIcon(icon:UILabel, fontName:String, iconName:String, fontSize:CGFloat, color:UIColor) {
         icon.isHidden = !availableFontIcons.contains(fontName)
         if  !icon.isHidden {
             icon.textColor = color
@@ -615,11 +614,11 @@ public class LGButton: UIControl {
         }
     }
 
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         pressed = true
     }
     
-    override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
+    override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let shouldSendActions = pressed
         pressed = false
         if shouldSendActions{
@@ -627,12 +626,12 @@ public class LGButton: UIControl {
         }
     }
     
-    override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?){
-        if let touchLoc = touches.first?.location(in: self){
+    override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touchLoc = touches.first?.location(in: self) {
             if (touchLoc.x < -touchDisableRadius ||
                 touchLoc.y < -touchDisableRadius ||
                 touchLoc.x > self.bounds.size.width + touchDisableRadius ||
-                touchLoc.y > self.bounds.size.height + touchDisableRadius){
+                touchLoc.y > self.bounds.size.height + touchDisableRadius) {
                 pressed = false
             }
             else if self.touchAlpha == .untouched {
