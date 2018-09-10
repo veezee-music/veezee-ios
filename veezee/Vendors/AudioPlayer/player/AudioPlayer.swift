@@ -8,6 +8,8 @@
 
 import AVFoundation
 import MediaPlayer
+import CouchbaseLiteSwift
+import Kingfisher
 
 /// An `AudioPlayer` instance is used to play `AudioPlayerItem`. It's an easy to use AVPlayer with simple methods to
 /// handle the whole playing audio process.
@@ -60,6 +62,7 @@ final public class AudioPlayer: NSObject {
         didSet {
             player?.allowsExternalPlayback = false
             player?.volume = volume
+			player?.rate = 1.0;
             updatePlayerForBufferingStrategy()
 
             if let player = player {
@@ -83,6 +86,7 @@ final public class AudioPlayer: NSObject {
         didSet {
             if let currentItem = currentItem {
                 //Stops the current player
+				player?.rate = 0
                 player = nil
 
                 //Ensures the audio session got started
@@ -117,6 +121,7 @@ final public class AudioPlayer: NSObject {
                     delegate?.audioPlayer(self, willStartPlaying: currentItem)
 					NotificationCenter.default.post(name: Notification.Name(rawValue: AudioPlayer.Notifications.willStartPlayingItem), object: nil)
                 }
+				player?.rate = 1.0
             } else {
                 stop()
             }
@@ -376,3 +381,64 @@ extension AudioPlayer: EventListener {
         }
     }
 }
+
+extension AudioPlayer: CachingAVPlayerItemDelegate {
+	func playerItem(_ playerItem: CachingAVPlayerItem, playableItem: PlayableItem, didFinishDownloadingData data: Data) {
+		if(Constants.OFFLINE_ACCESS && !playableItem.isOffline) {
+			let fileName = playableItem._id;
+			let fileExtension = playableItem.url?.pathExtension;
+			let fileNameWithExtension = "\(fileName!).\(fileExtension!)";
+			let filePath = Constants.MUSIC_TRACKS_CACHE_FOLDER_PATH.appending("/\(fileNameWithExtension)");
+			
+			let cacheUrl = URL(fileURLWithPath: filePath);
+			try! data.write(to: cacheUrl);
+			
+			playableItem.isOffline = true;
+			playableItem.fileName = fileNameWithExtension;
+			
+			if playableItem.imageUrl != nil {
+				var imageFileNameWithExtension: String? = nil;
+				let imageUrl = URL(string: (playableItem.imageUrl)!);
+				KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: imageUrl!), options: nil, progressBlock: nil) {
+					(image, error, cacheType, imageURL) -> () in
+					var imagePath = Constants.MUSIC_IMAGES_CACHE_FOLDER_PATH.appending("/\(fileName!)");
+					
+					if(imageUrl?.pathExtension == "jpg") {
+						if let data = UIImagePNGRepresentation(image!) {
+							imagePath = imagePath.appending(".jpg");
+							imageFileNameWithExtension = "\(fileName!).jpg";
+							let url = URL(fileURLWithPath: imagePath);
+							try? data.write(to: url);
+						}
+					} else if(imageUrl?.pathExtension == "png") {
+						if let data = UIImageJPEGRepresentation(image!, 1.0) {
+							imagePath = imagePath.appending(".png");
+							imageFileNameWithExtension = "\(fileName!).png";
+							let url = URL(fileURLWithPath: imagePath);
+							try? data.write(to: url);
+						}
+					}
+					
+					let originImageUrl = playableItem.imageUrl;
+					// save the playableItem in the db
+					playableItem.imageUrl = imageFileNameWithExtension;
+					
+					let playableItemEncoded = playableItem.dictionary;
+					let offlineDocument = MutableDocument(id: playableItem._id!, data: playableItemEncoded);
+					try! OfflineAccessDatabase.sharedInstance.database?.saveDocument(offlineDocument);
+					
+					playableItem.imageUrl = originImageUrl;
+					
+					playableItem.url = cacheUrl;
+				};
+			} else {
+				let playableItemEncoded = playableItem.dictionary;
+				let offlineDocument = MutableDocument(id: playableItem._id!, data: playableItemEncoded);
+				try! OfflineAccessDatabase.sharedInstance.database?.saveDocument(offlineDocument);
+				
+				playableItem.url = cacheUrl;
+			}
+		}
+	}
+}
+
