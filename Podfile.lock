@@ -10,8 +10,6 @@ PODS:
     - Fabric (~> 1.7.5)
   - DeviceKit (1.3.2)
   - Fabric (1.7.6)
-  - FreeStreamer (3.8.3):
-    - Reachability (~> 3.0)
   - GoogleSignIn (4.2.0):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
@@ -34,6 +32,7 @@ PODS:
     - GTMSessionFetcher/Core (= 1.2.0)
   - KeychainSwift (10.0.0)
   - Kingfisher (4.7.0)
+  - LambdaKit (0.5.0)
   - MarqueeLabel/Swift (3.1.6)
   - MaterialComponents/Ink (55.0.4):
     - MaterialComponents/private/Math
@@ -63,7 +62,7 @@ PODS:
   - Pages (2.0.2)
   - PKHUD (5.0.0)
   - PMAlertController (3.2.0)
-  - Reachability (3.2)
+  - QuickTableViewController (0.9.1)
   - RimhTypingLetters (0.1.1)
   - RxCocoa (4.1.2):
     - RxSwift (~> 4.0)
@@ -84,16 +83,17 @@ DEPENDENCIES:
   - Crashlytics (~> 3.10.1)
   - DeviceKit (~> 1.3.0)
   - Fabric (~> 1.7.6)
-  - FreeStreamer (~> 3.8.3)
   - GoogleSignIn (~> 4.2.0)
   - KeychainSwift (~> 10.0)
   - Kingfisher (~> 4.0)
+  - LambdaKit (~> 0.5.0)
   - MarqueeLabel/Swift (~> 3.1.6)
   - MaterialComponents/Slider (~> 55.0.4)
   - NVActivityIndicatorView (~> 4.2.0)
   - Pages (~> 2.0.2)
   - PKHUD (~> 5.0)
   - PMAlertController (~> 3.2.0)
+  - QuickTableViewController (~> 0.9.1)
   - RimhTypingLetters (~> 0.1.1)
   - RxCocoa (~> 4.0)
   - RxSwift (~> 4.0)
@@ -114,13 +114,13 @@ SPEC REPOS:
     - Crashlytics
     - DeviceKit
     - Fabric
-    - FreeStreamer
     - GoogleSignIn
     - GoogleToolboxForMac
     - GTMOAuth2
     - GTMSessionFetcher
     - KeychainSwift
     - Kingfisher
+    - LambdaKit
     - MarqueeLabel
     - MaterialComponents
     - MDFInternationalization
@@ -128,7 +128,7 @@ SPEC REPOS:
     - Pages
     - PKHUD
     - PMAlertController
-    - Reachability
+    - QuickTableViewController
     - RimhTypingLetters
     - RxCocoa
     - RxSwift
@@ -148,13 +148,13 @@ SPEC CHECKSUMS:
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
   DeviceKit: f763607473cdd286a69d1957de099bdbd8391db5
   Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
-  FreeStreamer: b205b0bf6a2e7855f935369145498f930eb27cac
   GoogleSignIn: 591e46382014e591269f862ba6e7bc0fbd793532
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
   KeychainSwift: f9f7910449a0c0fd2cabc889121530dd2c477c33
   Kingfisher: da6b005aa96d37698e3e4f1ccfe96a5b9bbf27d6
+  LambdaKit: da53bb7d3ede0625ecb72895141643b45f64c11d
   MarqueeLabel: 0c41f08ef5773e29c0f71064a8fa788a2fd8b365
   MaterialComponents: 059f649876b2e1ed6a623ba689175493422cc7cd
   MDFInternationalization: e355b0cebecf53d60233bd267084e49366c82513
@@ -162,7 +162,7 @@ SPEC CHECKSUMS:
   Pages: 5564ac6035c48fef7a837049314f57507d263b11
   PKHUD: 3c001512c6e002091184197a8de7a20420786e3b
   PMAlertController: 46047b840f6e1833c2a5395c91ccad29e72ae2c0
-  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  QuickTableViewController: 5cbe91041c00b3ef4cfc405e3fad92b1fb63d6d2
   RimhTypingLetters: 914370e62a8280bcfc44bbcd887323bbaa0df609
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
   RxSwift: e49536837d9901277638493ea537394d4b55f570
@@ -172,6 +172,6 @@ SPEC CHECKSUMS:
   SwiftIcons: e475a56ae2c2da40672dbf16061ca5dd5cee7dbb
   VSInfiniteCarousel: 8249a9b2fcb0f28144aa1f64dc63824dcd3d8e20
 
-PODFILE CHECKSUM: 45e4607cbc2b5018baba0390f5b686b1684d17f5
+PODFILE CHECKSUM: 38fe084349684e0d7c01310a5202920403517de1
 
 COCOAPODS: 1.5.3

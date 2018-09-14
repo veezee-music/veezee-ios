@@ -107,7 +107,8 @@ final public class AudioPlayer: NSObject {
                 pausedForInterruption = false
                 
                 //Create new AVPlayerItem
-                let playerItem = AVPlayerItem(url: currentItem.url)
+				let playerItem = CachingAVPlayerItem(url: currentItem.url!, playableItem: currentItem);
+				playerItem.delegate = self
 				playerItem.preferredForwardBufferDuration = self.preferredForwardBufferDuration
 
                 //Creates new player

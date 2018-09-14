@@ -13,6 +13,7 @@ import PMAlertController
 import DeviceKit
 import Sheeeeeeeeet
 import Kingfisher
+import LambdaKit
 
 class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 	
@@ -154,6 +155,14 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		albumArtView.contentMode = .scaleAspectFit;
 		albumArtView.image = UIImage(named: "artwork");
 		
+		let albumArtViewClickEvent = UITapGestureRecognizer { gesture, state in
+			if(track.album != nil) {
+				self.goToAlbumPlaylistPage(album: track.album!);
+			}
+		}
+		albumArtView.isUserInteractionEnabled = true;
+		albumArtView.addGestureRecognizer(albumArtViewClickEvent);
+		
 		headerView.addSubview(albumArtView);
 		albumArtView.snp.makeConstraints ({ (make) in
 			make.left.equalTo(0)
@@ -183,6 +192,9 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		
 		let shareButton = UIButton();
 		shareButton.setIcon(icon: .ionicons(.iosUpload), iconSize: 27, color: .white, forState: .normal);
+//		shareButton.addEventHandler(forControlEvents: .touchUpInside) { (btn) in
+//			self.goToAlbumPlaylistPage();
+//		}
 		
 		headerView.addSubview(shareButton);
 		shareButton.snp.makeConstraints ({ (make) in
@@ -192,10 +204,16 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		
 		let rightArrowButton = UIButton();
 		rightArrowButton.setIcon(icon: .ionicons(.iosArrowRight), iconSize: 27, color: .white, forState: .normal);
+		rightArrowButton.addEventHandler(forControlEvents: .touchUpInside) { (btn) in
+			if(track.album != nil) {
+				self.goToAlbumPlaylistPage(album: track.album!);
+			}
+		}
 		
 		headerView.addSubview(rightArrowButton);
 		rightArrowButton.snp.makeConstraints ({ (make) in
 			make.right.equalTo(0).inset(5)
+			make.top.bottom.equalTo(0)
 			make.centerY.equalToSuperview()
 		});
 		
@@ -237,6 +255,13 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		
 		self.actionSheet?.sheet?.presenter = ActionSheetDefaultPresenter();
 		self.actionSheet?.sheet?.present(in: self, from: self.view);
+	}
+	
+	func goToAlbumPlaylistPage(album: Album) {
+		self.actionSheet?.sheet?.dismiss {
+			let vc = AlbumViewController(album: album);
+			self.navigationController?.pushViewController(vc, animated: true);
+		}
 	}
 	
 	func trackActionSheetDeleteTrackFromHistory(trackId: String?) {

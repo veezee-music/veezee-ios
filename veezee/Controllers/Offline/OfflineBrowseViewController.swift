@@ -158,13 +158,8 @@ class OfflineBrowseViewController: _BasePageViewController {
 	
 	@objc
 	func settingsButtonPressed(_ sender: AnyObject) {
-		guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
-			return;
-		}
-		
-		if UIApplication.shared.canOpenURL(settingsUrl) {
-			UIApplication.shared.open(settingsUrl);
-		}
+		let settingsScreen = SettingsViewController();
+		self.navigationController?.pushViewController(settingsScreen, animated: true);
 	}
 	
 	override func addNavigationButtons() {

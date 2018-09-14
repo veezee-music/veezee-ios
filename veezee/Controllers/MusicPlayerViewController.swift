@@ -17,7 +17,6 @@ import RxSwift
 import RxCocoa
 import MaterialComponents.MaterialSlider
 import MarqueeLabel
-import FreeStreamer
 import NVActivityIndicatorView
 
 class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {

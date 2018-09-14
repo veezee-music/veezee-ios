@@ -124,6 +124,7 @@
 		3DD6D98220487B2900D038AE /* HomePageItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6D98120487B2900D038AE /* HomePageItemType.swift */; };
 		3DDC9F73209EC416004CA8A6 /* IconedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDC9F72209EC416004CA8A6 /* IconedButton.swift */; };
 		3DE4AF9420F16D250050EC5E /* SearchSignleItemCollectionViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE4AF9320F16D250050EC5E /* SearchSignleItemCollectionViewContainer.swift */; };
+		3DE5EB56214AA628009505EA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE5EB55214AA628009505EA /* SettingsViewController.swift */; };
 		3DE8122A202239F900F4BA20 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE81229202239F900F4BA20 /* Album.swift */; };
 		3DE8122C202245C800F4BA20 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE8122B202245C800F4BA20 /* Header.swift */; };
 		3DE9419F20C8391D00A9E565 /* TrackInTracksListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE9419E20C8391D00A9E565 /* TrackInTracksListViewCell.swift */; };
@@ -135,7 +136,6 @@
 		3DEED42E20317D8A00603EDB /* MusicSmallViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEED42D20317D8A00603EDB /* MusicSmallViewCell.swift */; };
 		3DEED43020317DA900603EDB /* HeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEED42F20317DA900603EDB /* HeaderViewCell.swift */; };
 		3DEED43220317DC800603EDB /* MusicTinyViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEED43120317DC800603EDB /* MusicTinyViewCell.swift */; };
-		3DEED43420317F7500603EDB /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3DEED43320317F7500603EDB /* Settings.bundle */; };
 		3DEED4362031822900603EDB /* SettingsBundleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEED4352031822900603EDB /* SettingsBundleHelper.swift */; };
 		3DEED4392031CAEF00603EDB /* PlayableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEED4382031CAEF00603EDB /* PlayableItem.swift */; };
 		3DF4713A20C2DB2F00A03576 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4713920C2DB2F00A03576 /* Genre.swift */; };
@@ -264,6 +264,7 @@
 		3DD6D98120487B2900D038AE /* HomePageItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageItemType.swift; sourceTree = "<group>"; };
 		3DDC9F72209EC416004CA8A6 /* IconedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconedButton.swift; sourceTree = "<group>"; };
 		3DE4AF9320F16D250050EC5E /* SearchSignleItemCollectionViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSignleItemCollectionViewContainer.swift; sourceTree = "<group>"; };
+		3DE5EB55214AA628009505EA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		3DE81229202239F900F4BA20 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		3DE8122B202245C800F4BA20 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		3DE9419E20C8391D00A9E565 /* TrackInTracksListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackInTracksListViewCell.swift; sourceTree = "<group>"; };
@@ -275,7 +276,6 @@
 		3DEED42D20317D8A00603EDB /* MusicSmallViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSmallViewCell.swift; sourceTree = "<group>"; };
 		3DEED42F20317DA900603EDB /* HeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewCell.swift; sourceTree = "<group>"; };
 		3DEED43120317DC800603EDB /* MusicTinyViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicTinyViewCell.swift; sourceTree = "<group>"; };
-		3DEED43320317F7500603EDB /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		3DEED4352031822900603EDB /* SettingsBundleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBundleHelper.swift; sourceTree = "<group>"; };
 		3DEED4382031CAEF00603EDB /* PlayableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayableItem.swift; sourceTree = "<group>"; };
 		3DF4713920C2DB2F00A03576 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
@@ -329,6 +329,7 @@
 				3DC6648120992E4B00078974 /* LoginRequiredMessageViewController.swift */,
 				3DC3734C20A7F92200C5A92B /* UserPlaylistsViewController.swift */,
 				3D716E9720A900210067E3FE /* CreatePlaylistViewController.swift */,
+				3DE5EB55214AA628009505EA /* SettingsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -472,7 +473,6 @@
 				3D781786201BA055003C2054 /* Assets.xcassets */,
 				3D781788201BA055003C2054 /* LaunchScreen.storyboard */,
 				3D78178B201BA055003C2054 /* Info.plist */,
-				3DEED43320317F7500603EDB /* Settings.bundle */,
 			);
 			path = veezee;
 			sourceTree = "<group>";
@@ -757,7 +757,6 @@
 				3D645FA7206128A800B5F638 /* FontAwesome.ttf in Resources */,
 				3D645FA1206128A800B5F638 /* Ionicons.ttf in Resources */,
 				3D645FA2206128A800B5F638 /* open-iconic.ttf in Resources */,
-				3DEED43420317F7500603EDB /* Settings.bundle in Resources */,
 				3D645FA3206128A800B5F638 /* MaterialIcons-Regular.ttf in Resources */,
 				3D645FA4206128A800B5F638 /* LGButton.xib in Resources */,
 				3D78178A201BA055003C2054 /* LaunchScreen.storyboard in Resources */,
@@ -784,12 +783,12 @@
 				"${PODS_ROOT}/CouchbaseLite-Swift/iOS/CouchbaseLiteSwift.framework",
 				"${PODS_ROOT}/CouchbaseLite-Swift/iOS/CouchbaseLiteSwift.framework.dSYM",
 				"${BUILT_PRODUCTS_DIR}/DeviceKit/DeviceKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FreeStreamer/FreeStreamer.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/LambdaKit/LambdaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
@@ -797,7 +796,7 @@
 				"${BUILT_PRODUCTS_DIR}/PKHUD/PKHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/PMAlertController/PMAlertController.framework",
 				"${BUILT_PRODUCTS_DIR}/Pages/Pages.framework",
-				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/QuickTableViewController/QuickTableViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/RimhTypingLetters/RimhTypingLetters.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
@@ -817,12 +816,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CouchbaseLiteSwift.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/CouchbaseLiteSwift.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DeviceKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FreeStreamer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LambdaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
@@ -830,7 +829,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PKHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMAlertController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pages.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QuickTableViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RimhTypingLetters.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
@@ -990,6 +989,7 @@
 				3D43FD022142B8F1009C99A7 /* NetworkEventProducer.swift in Sources */,
 				3D43FD0D2142B8F1009C99A7 /* AudioPlayer+PlayerEvent.swift in Sources */,
 				3D43FD142142B8F1009C99A7 /* AudioPlayerState.swift in Sources */,
+				3DE5EB56214AA628009505EA /* SettingsViewController.swift in Sources */,
 				3D9FB8CF2073B60B0024D435 /* API.swift in Sources */,
 				3D1D2A7C20693398003D52FC /* SplashScreenViewController.swift in Sources */,
 				3D0412FF20C5291A0068299D /* TrackInAlbumListCollectionViewCell.swift in Sources */,
@@ -1160,7 +1160,7 @@
 				DEVELOPMENT_TEAM = 5Q4Z4KQM4A;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = veezee/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.music.veezee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1183,7 +1183,7 @@
 				DEVELOPMENT_TEAM = 5Q4Z4KQM4A;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = veezee/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.music.veezee;
 				PRODUCT_NAME = "$(TARGET_NAME)";

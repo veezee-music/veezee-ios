@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '10.2'
+platform :ios, '11.4'
 
 target 'veezee' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -31,8 +31,9 @@ target 'veezee' do
   pod 'RxCocoa', '~> 4.0'
   pod 'MaterialComponents/Slider', '~> 55.0.4'
   pod 'MarqueeLabel/Swift', '~> 3.1.6'
-  pod 'FreeStreamer', '~> 3.8.3'
   pod 'VSInfiniteCarousel', '~> 0.2.0'
+  pod 'QuickTableViewController', '~> 0.9.1'
+  pod 'LambdaKit', '~> 0.5.0'
 
 end
 
