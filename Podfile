@@ -25,7 +25,7 @@ target 'veezee' do
   pod 'Fabric', '~> 1.7.6'
   pod 'Crashlytics', '~> 3.10.1'
   pod 'NVActivityIndicatorView', '~> 4.2.0'
-  pod 'CouchbaseLite-Swift', '~> 2.0.0'
+  pod 'CouchbaseLite-Swift', '~> 2.1.1'
   pod 'Sheeeeeeeeet', '~> 0.9.4'
   pod 'RxSwift', '~> 4.0'
   pod 'RxCocoa', '~> 4.0'

@@ -225,7 +225,8 @@ class PlayerEventProducer: NSObject, EventProducer {
 	/// audio pauses and if it ends, we should restart playing if state was `.playing` before.
 	///
 	/// - Parameter note: The notification information.
-	@objc fileprivate func audioSessionGotInterrupted(note: Notification) {
+	@objc
+	fileprivate func audioSessionGotInterrupted(note: Notification) {
 		if let userInfo = note.userInfo,
 			let typeInt = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
 			let type = AVAudioSessionInterruptionType(rawValue: typeInt) {
@@ -246,7 +247,8 @@ class PlayerEventProducer: NSObject, EventProducer {
     /// Audio session route changed (ex: earbuds plugged in/out). This can change the player state, so we just adapt it.
     ///
     /// - Parameter note: The notification information.
-    @objc fileprivate func audioSessionRouteChanged(note: Notification) {
+    @objc
+	fileprivate func audioSessionRouteChanged(note: Notification) {
         eventListener?.onEvent(PlayerEvent.routeChanged, generetedBy: self)
     }
 
@@ -254,14 +256,16 @@ class PlayerEventProducer: NSObject, EventProducer {
     /// player.
     ///
     /// - Parameter note: The notification information.
-    @objc fileprivate func audioSessionMessedUp(note: Notification) {
+    @objc
+	fileprivate func audioSessionMessedUp(note: Notification) {
         eventListener?.onEvent(PlayerEvent.sessionMessedUp, generetedBy: self)
     }
 
     /// Playing item did end. We can play next or stop the player if queue is empty.
     ///
     /// - Parameter note: The notification information.
-    @objc fileprivate func playerItemDidEnd(note: Notification) {
+    @objc
+	fileprivate func playerItemDidEnd(note: Notification) {
         eventListener?.onEvent(PlayerEvent.endedPlaying(error: nil), generetedBy: self)
     }
 }

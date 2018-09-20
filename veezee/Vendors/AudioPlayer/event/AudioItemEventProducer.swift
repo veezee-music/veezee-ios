@@ -66,9 +66,9 @@ class AudioItemEventProducer: NSObject, EventProducer {
         }
 
         //Observing AudioItem's property
-//        for keyPath in PlayableItem.ap_KVOProperties {
-//            item.addObserver(self, forKeyPath: keyPath, options: .new, context: nil)
-//        }
+        for keyPath in PlayableItem.ap_KVOProperties {
+            item.addObserver(self, forKeyPath: keyPath, options: .new, context: nil)
+        }
 
         listening = true
     }
@@ -80,9 +80,9 @@ class AudioItemEventProducer: NSObject, EventProducer {
         }
 
         //Unobserving AudioItem's property
-//        for keyPath in PlayableItem.ap_KVOProperties {
-//            item.removeObserver(self, forKeyPath: keyPath)
-//        }
+        for keyPath in PlayableItem.ap_KVOProperties {
+            item.removeObserver(self, forKeyPath: keyPath)
+        }
 
         listening = false
     }

@@ -110,6 +110,8 @@ final public class AudioPlayer: NSObject {
 				let playerItem = CachingAVPlayerItem(url: currentItem.url!, playableItem: currentItem);
 				playerItem.delegate = self
 				playerItem.preferredForwardBufferDuration = self.preferredForwardBufferDuration
+				
+//				let playerItem = AVPlayerItem(url: currentItem.url!)
 
                 //Creates new player
                 player = AVPlayer(playerItem: playerItem)
@@ -202,34 +204,12 @@ final public class AudioPlayer: NSObject {
         case changeTime(every: TimeInterval, delta: TimeInterval)
 
         func handleSeekingStart(player: AudioPlayer, forward: Bool) {
-            switch self {
-            case .multiplyRate(let rateMultiplier):
-				print("")
-//                if forward {
-//                    player.rate = player.rate * rateMultiplier
-//                } else {
-//                    player.rate = -(player.rate * rateMultiplier)
-//                }
-
-            case .changeTime:
-                player.seekEventProducer.isBackward = !forward
-                player.seekEventProducer.startProducingEvents()
-            }
+			player.seekEventProducer.isBackward = !forward
+			player.seekEventProducer.startProducingEvents()
         }
 
         func handleSeekingEnd(player: AudioPlayer, forward: Bool) {
-            switch self {
-            case .multiplyRate(let rateMultiplier):
-				print("")
-//                if forward {
-//                    player.rate = player.rate / rateMultiplier
-//                } else {
-//                    player.rate = -(player.rate / rateMultiplier)
-//                }
-
-            case .changeTime:
-                player.seekEventProducer.stopProducingEvents()
-            }
+			player.seekEventProducer.stopProducingEvents()
         }
     }
 
@@ -248,7 +228,7 @@ final public class AudioPlayer: NSObject {
     /// The current state of the player.
     public internal(set) var state = AudioPlayerState.stopped {
         didSet {
-            updateNowPlayingInfoCenter()
+			updateNowPlayingInfoCenter()
 
             if state != oldValue {
                 if case .buffering = state {
@@ -259,6 +239,13 @@ final public class AudioPlayer: NSObject {
 
                 delegate?.audioPlayer(self, didChangeStateFrom: oldValue, to: state)
 				NotificationCenter.default.post(name: Notification.Name(rawValue: AudioPlayer.Notifications.didChangeState), object: nil)
+				
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+					self.updateNowPlayingInfoCenter()
+				}
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+					self.updateNowPlayingInfoCenter()
+				}
             }
         }
     }
@@ -305,6 +292,7 @@ final public class AudioPlayer: NSObject {
 				duration: currentItemDuration,
 				progression: currentItemProgression,
 				playbackRate: 1.0)
+			//print("updateNowPlayingInfoCenter")
 		} else {
 			MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
 		}

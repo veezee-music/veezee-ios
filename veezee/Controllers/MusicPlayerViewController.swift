@@ -888,9 +888,7 @@ extension MusicPlayerViewController {
 				
 				let itemDuration = self.currentItemDuration.value ?? 0;
 				
-				if(itemDuration == 0.0) {
-					self.currentItemDuration.accept(self.audioPlayer.currentItemDuration);
-				}
+				self.currentItemDuration.accept(self.audioPlayer.currentItemDuration);
 				
 				let percentage = (itemDuration > 0 ? CGFloat(currentItemProgression! / itemDuration) * 100 : 0);
 				self.progressPassedView.text = format(duration: currentItemProgression!);
