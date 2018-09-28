@@ -107,10 +107,10 @@ final public class AudioPlayer: NSObject {
                 pausedForInterruption = false
                 
                 //Create new AVPlayerItem
+				// iOS 12 simulator has some issues with CachingAVPlayerItem delegates not getting called
 				let playerItem = CachingAVPlayerItem(url: currentItem.url!, playableItem: currentItem);
 				playerItem.delegate = self
 				playerItem.preferredForwardBufferDuration = self.preferredForwardBufferDuration
-				
 //				let playerItem = AVPlayerItem(url: currentItem.url!)
 
                 //Creates new player

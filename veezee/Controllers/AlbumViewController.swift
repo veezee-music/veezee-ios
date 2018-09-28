@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import DeviceKit
 import PKHUD
+import LambdaKit
 
 fileprivate extension Selector {
 	static let vc = AlbumViewController.self;
@@ -319,15 +320,15 @@ class AlbumViewController: _BasePageViewController {
 			DispatchQueue.global(qos: .background).async {
 				// build the PlayableList, used by audio player
 				
-				//				var _album: Album?;
-				//				do {
-				//					let encodedData = try JSONEncoder().encode(self.album);
-				//					_album = try JSONDecoder().decode(Album.self, from: encodedData);
-				//					// Unarchive into a new instance
-				//					_album?.tracks = nil;
-				//				} catch {}
+//								var _album: Album?;
+//								do {
+//									let encodedData = try JSONEncoder().encode(self.album);
+//									_album = try JSONDecoder().decode(Album.self, from: encodedData);
+//									// Unarchive into a new instance
+//									_album?.tracks = nil;
+//								} catch {}
 				
-				for item in (self.album?.tracks)! {
+				for item in self.album!.tracks! {
 					let playableItem = PlayableItem(url: URL(string: item.fileName!)!);
 					playableItem._id = item.id;
 					playableItem.title = item.title;
@@ -388,6 +389,8 @@ class AlbumViewController: _BasePageViewController {
 			self.generatePlayableList();
 		}
 	}
+	
+	var trackLongPressEnded = false;
 	
 	func layoutTracksListForPhone() {
 		for (index, playableItem) in self.playableList.enumerated() {
@@ -460,6 +463,34 @@ class AlbumViewController: _BasePageViewController {
 			});
 			
 			tracksListHeight += itemHeight + 10;
+			
+			let cellLongPressGestureRecognizer = UILongPressGestureRecognizer { gesture, state in
+				if (gesture.state == UIGestureRecognizerState.ended) {
+					self.trackLongPressEnded = false;
+					return;
+				}
+				
+				if(self.trackLongPressEnded) {
+					return;
+				}
+				
+				if var track: Track = self.album?.tracks?[index] {
+					var _album: Album?;
+					do {
+						let encodedData = try JSONEncoder().encode(self.album);
+						_album = try JSONDecoder().decode(Album.self, from: encodedData);
+						// Unarchive into a new instance
+						_album?.tracks = nil;
+						track.album = _album;
+						NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : track]);
+					} catch {}
+				}
+				
+				self.trackLongPressEnded = true;
+			};
+			cellLongPressGestureRecognizer.minimumPressDuration = 0.5;
+			cellLongPressGestureRecognizer.delaysTouchesBegan = true;
+			item.addGestureRecognizer(cellLongPressGestureRecognizer);
 		}
 		
 		var heightToAdd : CGFloat = 0;
@@ -546,6 +577,34 @@ class AlbumViewController: _BasePageViewController {
 
 			tracksListHeight += itemHeight + 10;
 			tracksListViews.append(item);
+			
+			let cellLongPressGestureRecognizer = UILongPressGestureRecognizer { gesture, state in
+				if (gesture.state == UIGestureRecognizerState.ended) {
+					self.trackLongPressEnded = false;
+					return;
+				}
+				
+				if(self.trackLongPressEnded) {
+					return;
+				}
+				
+				if var track: Track = self.album?.tracks?[index] {
+					var _album: Album?;
+					do {
+						let encodedData = try JSONEncoder().encode(self.album);
+						_album = try JSONDecoder().decode(Album.self, from: encodedData);
+						// Unarchive into a new instance
+						_album?.tracks = nil;
+						track.album = _album;
+						NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : track]);
+					} catch {}
+				}
+				
+				self.trackLongPressEnded = true;
+			};
+			cellLongPressGestureRecognizer.minimumPressDuration = 0.5;
+			cellLongPressGestureRecognizer.delaysTouchesBegan = true;
+			item.addGestureRecognizer(cellLongPressGestureRecognizer);
 		}
 
 		var heightToAdd : CGFloat = 0;

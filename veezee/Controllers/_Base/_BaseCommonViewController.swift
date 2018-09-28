@@ -31,6 +31,7 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		
 		self.registerSettingsBundle();
 		NotificationCenter.default.addObserver(self, selector: #selector(self.appSettingsBundleChanged), name: UserDefaults.didChangeNotification, object: nil);
+		NotificationCenter.default.addObserver(self, selector: #selector(self.audioPlayerWillStartPlaying(_:)), name: Notification.Name(rawValue: AudioPlayer.Notifications.willStartPlayingItem), object: nil);
 		// just for initialization this time
 		self.appSettingsBundleChanged();
 		
@@ -41,6 +42,17 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated);
+		
+		NotificationCenter.default.removeObserver(self);
+	}
+	
+	@objc
+	func audioPlayerWillStartPlaying(_ notification: Notification) {
+		DispatchQueue.global(qos: .background).async {
+			if(self.audioPlayer.currentItem != nil && self.audioPlayer.currentItem!._id != nil) {
+				API.VEX.playedTrack(trackId: self.audioPlayer.currentItem!._id!, handler: {});
+			}
+		}
 	}
 	
 	func shouldCheckForUserLogin() -> Bool {

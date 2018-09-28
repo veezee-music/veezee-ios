@@ -78,6 +78,8 @@ class HorizontalTinyTripleRowCollectionViewCell: UICollectionViewCell, UIGesture
 		return headingsDivider;
 	}();
 	
+	var trackLongPressEnded = false;
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame);
 		
@@ -112,36 +114,28 @@ class HorizontalTinyTripleRowCollectionViewCell: UICollectionViewCell, UIGesture
 			make.left.right.equalTo(0)
 		});
 		
-		let lpgr : UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleCellLongPress(gestureRecognizer:)))
-		lpgr.minimumPressDuration = 0.5
-		lpgr.delegate = self
-		lpgr.delaysTouchesBegan = true
-		self.collectionView.addGestureRecognizer(lpgr)
-	}
-	
-	var longPressEnded = false;
-	@objc
-	func handleCellLongPress(gestureRecognizer: UILongPressGestureRecognizer){
-		if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
-			self.longPressEnded = false;
-			return;
-		}
-		
-		if(self.longPressEnded) {
-			// no go, too soon
-			return;
-		}
-		
-		let gestureRecognizer = gestureRecognizer.location(in: self.collectionView);
-		
-		if let indexPath = self.collectionView.indexPathForItem(at: gestureRecognizer) {
-			// get the cell at indexPath (the one you long pressed)
-//			let cell = self.collectionView.cellForItem(at: indexPath) as! MusicTinyViewCell;
-			let item = self.dataList[indexPath.item];
-			NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : item]);
-		}
-		
-		self.longPressEnded = true;
+		let cellLongPressGestureRecognizer = UILongPressGestureRecognizer { gesture, state in
+			if (gesture.state == UIGestureRecognizerState.ended) {
+				self.trackLongPressEnded = false;
+				return;
+			}
+			
+			if(self.trackLongPressEnded) {
+				return;
+			}
+			
+			let gestureRecognizerLocation = gesture.location(in: self.collectionView);
+			if let indexPath = self.collectionView.indexPathForItem(at: gestureRecognizerLocation) {
+				let item = self.dataList[indexPath.item];
+				NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : item]);
+			}
+			
+			self.trackLongPressEnded = true;
+		};
+		cellLongPressGestureRecognizer.minimumPressDuration = 0.5;
+		cellLongPressGestureRecognizer.delegate = self;
+		cellLongPressGestureRecognizer.delaysTouchesBegan = true;
+		self.collectionView.addGestureRecognizer(cellLongPressGestureRecognizer);
 	}
 	
 	@objc
