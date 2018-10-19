@@ -13,6 +13,7 @@ enum HomePageItemType: String, Codable {
 	case Album;
 	case Track;
 	case Genre;
+	case CompactAlbum;
 	
 	case Spacer;
 	case Divider;

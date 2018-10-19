@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.7.2)
+  - Alamofire (4.7.3)
   - AnimatedTextInput (0.5.2)
   - CodableAlamofire (1.1.0):
     - Alamofire (~> 4.0)
@@ -10,7 +10,7 @@ PODS:
     - Fabric (~> 1.7.5)
   - DeviceKit (1.3.2)
   - Fabric (1.7.6)
-  - GoogleSignIn (4.2.0):
+  - GoogleSignIn (4.3.0):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
     - GTMOAuth2 (~> 1.0)
@@ -68,13 +68,13 @@ PODS:
     - RxSwift (~> 4.0)
   - RxSwift (4.1.2)
   - Sheeeeeeeeet (0.9.4)
-  - SnapKit (4.0.0)
+  - SnapKit (4.0.1)
   - SwiftIconFont (2.7.3)
-  - SwiftIcons (2.0.1)
+  - SwiftIcons (2.2.0)
   - VSInfiniteCarousel (0.2.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.6)
+  - Alamofire (~> 4.7.3)
   - AnimatedTextInput (~> 0.5.2)
   - CodableAlamofire (~> 1.1.0)
   - CodableExtensions (~> 0.2.1)
@@ -83,7 +83,7 @@ DEPENDENCIES:
   - Crashlytics (~> 3.10.1)
   - DeviceKit (~> 1.3.0)
   - Fabric (~> 1.7.6)
-  - GoogleSignIn (~> 4.2.0)
+  - GoogleSignIn (~> 4.3.0)
   - KeychainSwift (~> 10.0)
   - Kingfisher (~> 4.0)
   - LambdaKit (~> 0.5.0)
@@ -98,9 +98,9 @@ DEPENDENCIES:
   - RxCocoa (~> 4.0)
   - RxSwift (~> 4.0)
   - Sheeeeeeeeet (~> 0.9.4)
-  - SnapKit (~> 4.0.0)
+  - SnapKit (~> 4.0.1)
   - SwiftIconFont (~> 2.7.3)
-  - SwiftIcons (~> 2.0.1)
+  - SwiftIcons (~> 2.2.0)
   - VSInfiniteCarousel (~> 0.2.0)
 
 SPEC REPOS:
@@ -139,7 +139,7 @@ SPEC REPOS:
     - VSInfiniteCarousel
 
 SPEC CHECKSUMS:
-  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AnimatedTextInput: bb004a2bc7eda53d701e585868dcd87813acfceb
   CodableAlamofire: e2d2edcec7cf413f7862c30c8fa98eded27a83f9
   CodableExtensions: dfc7a008a5951e3667ffdad5b43f1e9ed87213a7
@@ -148,7 +148,7 @@ SPEC CHECKSUMS:
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
   DeviceKit: f763607473cdd286a69d1957de099bdbd8391db5
   Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
-  GoogleSignIn: 591e46382014e591269f862ba6e7bc0fbd793532
+  GoogleSignIn: 11183592dc63e105475c7305a325045ff95e02b7
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
@@ -167,11 +167,11 @@ SPEC CHECKSUMS:
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
   RxSwift: e49536837d9901277638493ea537394d4b55f570
   Sheeeeeeeeet: 146870f19426aca0b137cb85a6209ff731e1db43
-  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftIconFont: ebd8ee931a1e7072b61a87aec53f3a0786ef7f2b
-  SwiftIcons: e475a56ae2c2da40672dbf16061ca5dd5cee7dbb
+  SwiftIcons: e7eb9bf2b475d6bdd8b37c5bdedc6d120aab0829
   VSInfiniteCarousel: 8249a9b2fcb0f28144aa1f64dc63824dcd3d8e20
 
-PODFILE CHECKSUM: be2cd2c7494e907cb2d7de183f6121f83e40765c
+PODFILE CHECKSUM: 2b1200e13dd83a0067be6503246da69dc03077e2
 
 COCOAPODS: 1.5.3

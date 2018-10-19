@@ -187,7 +187,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 	
 	lazy var skipBackwardButton: IconedButton = {
 		let button = IconedButton();
-		button.initButton(icon: .ionicons(.iosReward), iconSize: (self.device.isPad ? 7.38 : 5) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
+		button.initButton(icon: .ionicons(.iosRewind), iconSize: (self.device.isPad ? 7.38 : 5) * self.screenHieght / 100, color: self.audioPlayer.currentItem!.colors.accentColor, forState: .normal);
 		button.addTarget(self, action: #selector(self.skipBackwardButtonPressed), for: .touchUpInside);
 		
 		return button;
@@ -766,7 +766,6 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		if(!alreadyPaused) {
 			self.audioPlayer.resume();
 		}
-
 	}
 	
 	private func applyArtworkFilter(inputImage: UIImage, effectPower: Int, handler: @escaping (UIImage) -> Void) {
@@ -797,7 +796,6 @@ extension MusicPlayerViewController {
 	func setupCurrentAudioItemImage() {
 		self.currentItemImage.asObservable()
 			.subscribe(onNext: { currentItemImage in
-				
 				if(currentItemImage == nil) {
 					return;
 				}
@@ -824,7 +822,6 @@ extension MusicPlayerViewController {
 						self.setBackgroundForMusicPlayer();
 					}
 				}
-				
 			})
 			.disposed(by: self.disposeBag);
 	}
@@ -881,7 +878,6 @@ extension MusicPlayerViewController {
 			.subscribeOn(MainScheduler.instance)
 			.asObservable()
 			.subscribe(onNext: { currentItemProgression in
-				
 				if(currentItemProgression == nil) {
 					return;
 				}
@@ -896,7 +892,6 @@ extension MusicPlayerViewController {
 				if(percentage > 0.0 && !self.progressBarView.isTracking) {
 					self.progressBarView.value = percentage;
 				}
-				
 			})
 			.disposed(by: self.disposeBag);
 	}
@@ -906,23 +901,19 @@ extension MusicPlayerViewController {
 			.subscribeOn(MainScheduler.instance)
 			.asObservable()
 			.subscribe(onNext: { currentItemDuration in
-				
 				if(currentItemDuration == nil) {
 					return;
 				}
 				
 				self.durationView.text = format(duration: currentItemDuration!);
-				
 			})
 			.disposed(by: self.disposeBag);
 	}
 	
 	func setupCurrentAudioItemImage(imageUrl: String) {
-		
 		KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: URL.createFrom(localOrRemoteAddress: imageUrl)), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) -> () in
 			self.currentItemImage.accept(image);
 		};
-		
 	}
 	
 	func setupColorsForUIElements(currentItem: PlayableItem) {
@@ -934,7 +925,7 @@ extension MusicPlayerViewController {
 		} else {
 			self.shuffleButton.setIcon(icon: .ionicons(.iosShuffleStrong), color: currentItem.colors.accentColor);
 		}
-		self.skipBackwardButton.setIcon(icon: .ionicons(.iosReward), color: currentItem.colors.accentColor);
+		self.skipBackwardButton.setIcon(icon: .ionicons(.iosRewind), color: currentItem.colors.accentColor);
 		if(self.audioPlayer.state == AudioPlayerState.playing || self.audioPlayer.state == AudioPlayerState.buffering) {
 			self.playPauseStopButton.setIcon(icon: .ionicons(.pause), color: currentItem.colors.accentColor);
 		} else {

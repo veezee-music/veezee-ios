@@ -19,7 +19,7 @@ class HalfModalViewController : UIViewController {
 	
 	@objc
 	func onHalfModalDimmedViewTappedOrPushed() {
-		self.dismiss(animated: true, completion: nil);
+		self.dismiss(animated: false);
 	}
 	
 }

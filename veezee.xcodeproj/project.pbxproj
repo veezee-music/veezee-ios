@@ -53,6 +53,8 @@
 		3D4C1ED520B0C4C2002CD65E /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4C1ED420B0C4C2002CD65E /* ProgressHUD.swift */; };
 		3D4C1ED720B1397D002CD65E /* UniversalActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4C1ED620B1397D002CD65E /* UniversalActionSheet.swift */; };
 		3D4DC07B20AAF35A00D2AC99 /* UserPlaylistViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4DC07A20AAF35A00D2AC99 /* UserPlaylistViewCell.swift */; };
+		3D6063D42178B59800708812 /* CompactListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6063D32178B59800708812 /* CompactListCollectionViewCell.swift */; };
+		3D6063D62178C25400708812 /* AlbumCompactViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6063D52178C25400708812 /* AlbumCompactViewCell.swift */; };
 		3D645F94206124AB00B5F638 /* LGButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D645F92206124AB00B5F638 /* LGButton.swift */; };
 		3D645FA1206128A800B5F638 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D645F99206128A600B5F638 /* Ionicons.ttf */; };
 		3D645FA2206128A800B5F638 /* open-iconic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D645F9A206128A600B5F638 /* open-iconic.ttf */; };
@@ -191,6 +193,8 @@
 		3D4C1ED420B0C4C2002CD65E /* ProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		3D4C1ED620B1397D002CD65E /* UniversalActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalActionSheet.swift; sourceTree = "<group>"; };
 		3D4DC07A20AAF35A00D2AC99 /* UserPlaylistViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlaylistViewCell.swift; sourceTree = "<group>"; };
+		3D6063D32178B59800708812 /* CompactListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactListCollectionViewCell.swift; sourceTree = "<group>"; };
+		3D6063D52178C25400708812 /* AlbumCompactViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCompactViewCell.swift; sourceTree = "<group>"; };
 		3D645F92206124AB00B5F638 /* LGButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LGButton.swift; sourceTree = "<group>"; };
 		3D645F99206128A600B5F638 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
 		3D645F9A206128A600B5F638 /* open-iconic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open-iconic.ttf"; sourceTree = "<group>"; };
@@ -544,6 +548,8 @@
 				3DE9419E20C8391D00A9E565 /* TrackInTracksListViewCell.swift */,
 				3D7D9D5120F32BEE00E419C9 /* BaseCollectionViewCell.swift */,
 				3D9A9BE72110425E00AD0759 /* UPCarouselFlowLayout.swift */,
+				3D6063D32178B59800708812 /* CompactListCollectionViewCell.swift */,
+				3D6063D52178C25400708812 /* AlbumCompactViewCell.swift */,
 			);
 			path = CollectionView;
 			sourceTree = "<group>";
@@ -936,6 +942,7 @@
 				3DEED42820317D1E00603EDB /* HorizontalLargeCollectionViewCell.swift in Sources */,
 				3D4B1D332064DF85004853CF /* Account.swift in Sources */,
 				3D43FD042142B8F1009C99A7 /* SeekEventProducer.swift in Sources */,
+				3D6063D42178B59800708812 /* CompactListCollectionViewCell.swift in Sources */,
 				3DD4BB19206BA45F00267076 /* AccountViewController.swift in Sources */,
 				3D4DC07B20AAF35A00D2AC99 /* UserPlaylistViewCell.swift in Sources */,
 				3D716E9C20A90E510067E3FE /* ActionSheetCustomButton.swift in Sources */,
@@ -1008,6 +1015,7 @@
 				3DCF32A7208EA3AD00A32DA7 /* OfflineBrowseViewController.swift in Sources */,
 				3D43FCFE2142B8F1009C99A7 /* CMTime+TimeIntervalValue.swift in Sources */,
 				3DC3734B20A7822600C5A92B /* CGRect+Corners.swift in Sources */,
+				3D6063D62178C25400708812 /* AlbumCompactViewCell.swift in Sources */,
 				3D43FD062142B8F1009C99A7 /* PlayerEventProducer.swift in Sources */,
 				3DC3734220A7820E00C5A92B /* CornerView.swift in Sources */,
 				3DC6648220992E4B00078974 /* LoginRequiredMessageViewController.swift in Sources */,
@@ -1166,7 +1174,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1190,7 +1197,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.0;
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

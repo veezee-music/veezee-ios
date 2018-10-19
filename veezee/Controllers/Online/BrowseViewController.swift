@@ -151,9 +151,7 @@ extension BrowseViewController {
 	func setupLoadingObserver() {
 		self.isLoading.asObservable()
 			.subscribe(onNext: { loading in
-				
 				loading ? HUD.showProgress() : HUD.hide(animated: true);
-				
 			})
 			.disposed(by: self.disposeBag);
 	}
@@ -185,6 +183,12 @@ extension BrowseViewController: UICollectionViewDataSource {
 		} else if(item.type == HomePageItemType.Genre) {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalTinyOneRowCollectionViewCell.ID, for: indexPath) as! HorizontalTinyOneRowCollectionViewCell;
 			cell.dataList = item.genreList!;
+			cell.collectionViewTitleView.text = item.title ?? "";
+			return cell;
+		} else if(item.type == HomePageItemType.CompactAlbum) {
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CompactListCollectionViewCell.ID, for: indexPath) as! CompactListCollectionViewCell;
+			cell.navigationDelegate = self;
+			cell.dataList = item.albumList!;
 			cell.collectionViewTitleView.text = item.title ?? "";
 			return cell;
 		}
@@ -220,6 +224,9 @@ extension BrowseViewController: UICollectionViewDelegateFlowLayout {
 			return CGSize(width: view.bounds.width, height: HorizontalTinyTripleRowCollectionViewCell.cellHeight * 3 + 5 * HorizontalTinyTripleRowCollectionViewCell.insetSize + 25);
 		} else if(item.type == HomePageItemType.Genre) {
 			return CGSize(width: view.bounds.width, height: HorizontalTinyOneRowCollectionViewCell.cellHeight + 4.5 * HorizontalTinyOneRowCollectionViewCell.insetSize);
+		} else if(item.type == HomePageItemType.CompactAlbum) {
+			let height: CGFloat = (CompactListCollectionViewCell.cellHeight + CompactListCollectionViewCell.insetSize) * CGFloat(item.albumList?.count ?? 0) + CompactListCollectionViewCell.cellHeight * 1.5;
+			return CGSize(width: view.bounds.width, height: height);
 		}
 		
 		// spacer collection view
@@ -269,6 +276,7 @@ extension BrowseViewController {
 		collectionView.register(HorizontalLargeCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalLargeCollectionViewCell.ID);
 		collectionView.register(HorizontalTinyTripleRowCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalTinyTripleRowCollectionViewCell.ID);
 		collectionView.register(HorizontalTinyOneRowCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalTinyOneRowCollectionViewCell.ID);
+		collectionView.register(CompactListCollectionViewCell.self, forCellWithReuseIdentifier: CompactListCollectionViewCell.ID);
 		collectionView.register(SpacerCollectionViewCell.self, forCellWithReuseIdentifier: SpacerCollectionViewCell.ID);
 		collectionView.dataSource = self;
 		collectionView.delegate = self;

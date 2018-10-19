@@ -20,26 +20,26 @@ public class HalfModalPresentationController : UIPresentationController {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: containerView!.bounds.width, height: containerView!.bounds.height))
         
         // Blur Effect
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = view.bounds
-        view.addSubview(blurEffectView)
+		let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark);
+		let blurEffectView = UIVisualEffectView(effect: blurEffect);
+		blurEffectView.frame = view.bounds;
+		view.addSubview(blurEffectView);
         
         // Vibrancy Effect
-        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
-        let vibrancyEffectView = UIVisualEffectView(effect: vibrancyEffect)
-        vibrancyEffectView.frame = view.bounds
+		let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect);
+		let vibrancyEffectView = UIVisualEffectView(effect: vibrancyEffect);
+		vibrancyEffectView.frame = view.bounds;
         
         // Add the vibrancy view to the blur view
-        blurEffectView.contentView.addSubview(vibrancyEffectView)
+		blurEffectView.contentView.addSubview(vibrancyEffectView);
         
-        _dimmingView = view
+		_dimmingView = view;
 		
 		view.isUserInteractionEnabled = true;
 		let tap = UITapGestureRecognizer(target: self, action: #selector(self.dimmedViewTapped));
 		view.addGestureRecognizer(tap);
         
-        return view
+		return view;
     }
 	
 	@objc
@@ -49,7 +49,7 @@ public class HalfModalPresentationController : UIPresentationController {
     
     func adjustToFullScreen() {
         if let presentedView = presentedView, let containerView = self.containerView {
-            UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: { () -> Void in
+            UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
                 presentedView.frame = containerView.frame
                 
                 if let navController = self.presentedViewController as? UINavigationController {
@@ -86,7 +86,7 @@ public class HalfModalPresentationController : UIPresentationController {
             containerView.addSubview(dimmedView)
             dimmedView.addSubview(presentedViewController.view)
             
-            coordinator.animate(alongsideTransition: { (context) -> Void in
+            coordinator.animate(alongsideTransition: { context in
                 dimmedView.alpha = 1
                 self.presentingViewController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             }, completion: nil)

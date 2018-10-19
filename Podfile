@@ -6,16 +6,16 @@ target 'veezee' do
   use_frameworks!
 
   # Pods for veezee
-  pod 'SnapKit', '~> 4.0.0'
-  pod 'SwiftIcons', '~> 2.0.1'
+  pod 'SnapKit', '~> 4.0.1'
+  pod 'SwiftIcons', '~> 2.2.0'
   pod 'DeviceKit', '~> 1.3.0'
   pod 'CoreAnimator', '~> 2.1.3'
-  pod 'Alamofire', '~> 4.6'
+  pod 'Alamofire', '~> 4.7.3'
   pod 'CodableAlamofire', '~> 1.1.0'
   pod 'CodableExtensions', '~> 0.2.1'
   pod 'Kingfisher', '~> 4.0'
   pod 'PKHUD', '~> 5.0'
-  pod 'GoogleSignIn', '~> 4.2.0'
+  pod 'GoogleSignIn', '~> 4.3.0'
   pod 'Pages', '~> 2.0.2'
   pod 'AnimatedTextInput', '~> 0.5.2'
   pod 'RimhTypingLetters', '~> 0.1.1'
