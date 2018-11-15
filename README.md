@@ -54,13 +54,6 @@
 - Beautiful animations using UIKit animations and transitions and UIKit dynamics
 - And more...
 
-## Things that ARE planned
-
-- ViewController (VC) for generes
-- In-app settings (Right now it's located in iOS settings)
-- More themes
-- More animations
-
 ## Things that are currently NOT planned
 
 - Supporting devices with smaller screens (Current min is 4.7 inches)
