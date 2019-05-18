@@ -6,8 +6,6 @@
 <br>
 
 
-**This project is a work in progress!**
-
 **veezee** is a cross-platform music streamer inspired by Apple Music and Spotify for **iOS** and **Android**. It is built with **native** technologies for each platform (**Swift** and **Kotlin**). 
 
 *This is the repository for veezee for **iOS**, the **Android** version can be found [here](https://github.com/veezee-music/veezee-android).*
