@@ -1,7 +1,7 @@
 # veezee - music streamer (iOS)
 
 <p align="center">
-	<img width="50%" src="http://veezee.cloud/demo_assets/veezee-logotype.svg">
+	<img width="50%" src="http://veezee.ir/demo_assets/veezee-logotype.svg">
 </p>
 <br>
 
@@ -15,19 +15,19 @@
 <br>
 
 <p align="center">
-  <a href="http://veezee.cloud/demo_assets/ios/p1.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p1.png"></a>
-  <a href="http://veezee.cloud/demo_assets/ios/p2.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p2.png"></a>
-  <a href="http://veezee.cloud/demo_assets/ios/p3.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p3.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p1.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p1.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p2.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p2.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p3.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p3.png"></a>
 </p>
 <p align="center">
-  <a href="http://veezee.cloud/demo_assets/ios/p4.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p4.png"></a>
-  <a href="http://veezee.cloud/demo_assets/ios/p5.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p5.png"></a>
-  <a href="http://veezee.cloud/demo_assets/ios/p6.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p6.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p4.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p4.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p5.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p5.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p6.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p6.png"></a>
 </p>
 <p align="center">
-  <a href="http://veezee.cloud/demo_assets/ios/p7.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p7.png"></a>
-  <a href="http://veezee.cloud/demo_assets/ios/p8.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p8.png"></a>
-  <a href="http://veezee.cloud/demo_assets/ios/p9.png" target="_blank"><img width="32%" src="http://veezee.cloud/demo_assets/ios/p9.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p7.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p7.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p8.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p8.png"></a>
+  <a href="http://veezee.ir/demo_assets/ios/p9.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p9.png"></a>
 </p>
 
 
