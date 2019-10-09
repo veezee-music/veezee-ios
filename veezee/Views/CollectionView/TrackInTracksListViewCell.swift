@@ -35,7 +35,7 @@ class TrackInTracksListViewCell: UICollectionViewCell {
 	
 	lazy var titlesStackView: UIStackView = {
 		let stack = UIStackView(arrangedSubviews: [self.titleView, self.artistAndAlbumTitleView]);
-		stack.distribution = UIStackViewDistribution.equalCentering;
+		stack.distribution = UIStackView.Distribution.equalCentering;
 		stack.axis = .vertical;
 		
 		return stack;

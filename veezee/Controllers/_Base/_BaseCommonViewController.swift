@@ -13,7 +13,6 @@ import PMAlertController
 import DeviceKit
 import Sheeeeeeeeet
 import Kingfisher
-import LambdaKit
 
 class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 	
@@ -21,6 +20,8 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 	let keychain = KeychainSwift();
 	
 	let audioPlayer = AudioPlayer.shared;
+
+	var actionSheetTrack: Track?;
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return Constants.PRIMARY_COLOR == Constants.WHITE_THEME.PRIMARY_COLOR ? .default : .lightContent;
@@ -117,6 +118,7 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 	
 	var actionSheet: UniversalActionSheet?;
 	func showTrackActionSheet(track: Track, extraOptions: [String]? = []) {
+		self.actionSheetTrack = track;
 		let headerView = UIView();
 		
 		var actionSheetItems = [ActionSheetItem]();
@@ -166,14 +168,9 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		let albumArtView = UIImageView();
 		albumArtView.contentMode = .scaleAspectFit;
 		albumArtView.image = UIImage(named: "artwork");
-		
-		let albumArtViewClickEvent = UITapGestureRecognizer { gesture, state in
-			if(track.album != nil) {
-				self.goToAlbumPlaylistPage(album: track.album!);
-			}
-		}
+
 		albumArtView.isUserInteractionEnabled = true;
-		albumArtView.addGestureRecognizer(albumArtViewClickEvent);
+		albumArtView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.albumArtViewClicked(_:))));
 		
 		headerView.addSubview(albumArtView);
 		albumArtView.snp.makeConstraints ({ (make) in
@@ -195,7 +192,7 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 			// the order is important, the image must be placed before the blurEffect view
 			headerView.insertSubview(backgroundBlurredImageView, at: 0);
 			
-			let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark);
+			let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark);
 			let blurEffectView = UIVisualEffectView(effect: blurEffect);
 			blurEffectView.frame = backgroundBlurredImageView.frame;
 			
@@ -216,11 +213,7 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		
 		let rightArrowButton = UIButton();
 		rightArrowButton.setIcon(icon: .ionicons(.iosArrowRight), iconSize: 27, color: .white, forState: .normal);
-		rightArrowButton.addEventHandler(forControlEvents: .touchUpInside) { (btn) in
-			if(track.album != nil) {
-				self.goToAlbumPlaylistPage(album: track.album!);
-			}
-		}
+		rightArrowButton.addTarget(self, action:#selector(self.rightArrowButtonClicked), for: .touchUpInside);
 		
 		headerView.addSubview(rightArrowButton);
 		rightArrowButton.snp.makeConstraints ({ (make) in
@@ -267,6 +260,20 @@ class _BaseCommonViewController: UIViewController, UserPlaylistsDelegate {
 		
 		self.actionSheet?.sheet?.presenter = ActionSheetDefaultPresenter();
 		self.actionSheet?.sheet?.present(in: self, from: self.view);
+	}
+
+	@objc
+	func rightArrowButtonClicked() {
+		if(self.actionSheetTrack?.album != nil) {
+			self.goToAlbumPlaylistPage(album: (self.actionSheetTrack?.album!)!);
+		}
+	}
+
+	@objc
+	func albumArtViewClicked(_ sender: UITapGestureRecognizer) {
+		if(self.actionSheetTrack?.album != nil) {
+			self.goToAlbumPlaylistPage(album: (self.actionSheetTrack?.album!)!);
+		}
 	}
 	
 	func goToAlbumPlaylistPage(album: Album) {
@@ -344,7 +351,7 @@ extension _BaseCommonViewController {
 extension UINavigationController {
 	// this makes the preferredStatusBar... functions work when using a UINavigationController and UITabbar
 	// without it, they won't work
-	override open var childViewControllerForStatusBarStyle: UIViewController? {
+	override open var childForStatusBarStyle: UIViewController? {
 		return self.topViewController;
 	}
 }

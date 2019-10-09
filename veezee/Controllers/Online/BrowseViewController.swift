@@ -70,7 +70,7 @@ class BrowseViewController: _BasePageViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated);
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(self.viewReappearedFromForeground), name: Notification.Name.UIApplicationWillEnterForeground, object: nil);
+		NotificationCenter.default.addObserver(self, selector: #selector(self.viewReappearedFromForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
 	}
 	
 	override func viewDidLoad() {
@@ -103,7 +103,7 @@ class BrowseViewController: _BasePageViewController {
 				errorAC.show();
 				
 				self.retryButton.isHidden = false;
-				self.view.bringSubview(toFront: self.retryButton);
+				self.view.bringSubviewToFront(self.retryButton);
 				
 				return;
 			}

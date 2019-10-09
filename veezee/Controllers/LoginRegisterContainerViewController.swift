@@ -286,7 +286,7 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 		loginButton.layoutIfNeeded();
 		formContainerHeight += loginButton.frame.height;
 		
-		googleLoginButton.mainStackView.arrangedSubviews.first?.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: UILayoutConstraintAxis.horizontal);
+		googleLoginButton.mainStackView.arrangedSubviews.first?.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.horizontal);
 		googleLoginButton.mainStackView.distribution = .fill;
 		googleLoginButton.mainStackView.alignment = .center;
 		googleLoginButton.spacingTitleIcon = 0;
@@ -358,7 +358,7 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 		registrationButton.shadowOpacity = 2;
 		registrationButton.shadowOffset = CGSize(width: 0, height: 1);
 		registrationButton.shadowColor = Constants.ACCENT_COLOR;
-		registrationButton.addTarget(self, action: #selector(LoginRegisterContainerViewController.registrationButtonClicked), for: .touchUpInside);
+		registrationButton.addTarget(self, action: #selector(self.registrationButtonClicked), for: .touchUpInside);
 		
 		extraLightVibrancyView.contentView.addSubview(registrationButton);
 		registrationButton.snp.makeConstraints({(make) -> Void in
@@ -367,6 +367,21 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 		});
 		registrationButton.layoutIfNeeded();
 		formContainerHeight += (registrationButton.frame.height + 20);
+		
+		let guestLoginButton = UILabel();
+		guestLoginButton.text = "Guest Login";
+		guestLoginButton.isUserInteractionEnabled = true;
+		
+		let guestLoginButtonTap = UITapGestureRecognizer(target: self, action: #selector(self.guestLoginButtonClicked));
+		guestLoginButton.addGestureRecognizer(guestLoginButtonTap);
+		
+		extraLightVibrancyView.contentView.addSubview(guestLoginButton);
+		guestLoginButton.snp.makeConstraints({(make) -> Void in
+			make.top.equalTo(registrationButton.snp.bottom).offset(20)
+			make.centerX.equalTo(self.view)
+		});
+		guestLoginButton.layoutIfNeeded();
+		formContainerHeight += (guestLoginButton.frame.height + 20);
 	}
 	
 	@objc
@@ -562,10 +577,27 @@ class LoginRegisterContainerViewController: _BaseCommonViewController, GIDSignIn
 // MARK: - Login form
 extension LoginRegisterContainerViewController {
 	@objc
+	func guestLoginButtonClicked() {
+		Constants.GUEST_MODE = true;
+		self.replaceCurrentPageWithMainViews();
+	}
+	
+	func replaceCurrentPageWithMainViews(offline: Bool = false) {
+		if(offline) {
+			Constants.FORCE_OFFLINE_USAGE = true;
+		}
+		UIView.transition(with: (UIApplication.shared.delegate?.window!)!, duration: 0.3, options: .transitionFlipFromBottom, animations: {
+			UIApplication.shared.isStatusBarHidden = false;
+			let vc = AppDelegate.initializeMainViewsLayout(window: (UIApplication.shared.delegate?.window!)!);
+			UIApplication.shared.delegate?.window!?.rootViewController = vc;
+		});
+	}
+	
+	@objc
 	func loginButtonClicked() {
 		UIView.animate(withDuration: 0.5) {
 			self.loginFormContainer.alpha = 1.0;
-			self.view.bringSubview(toFront: self.loginFormContainer);
+			self.view.bringSubviewToFront(self.loginFormContainer);
 		}
 	}
 	
@@ -573,7 +605,7 @@ extension LoginRegisterContainerViewController {
 	func loginFormCancelClicked() {
 		UIView.animate(withDuration: 0.5) {
 			self.loginFormContainer.alpha = 0.0;
-			self.view.sendSubview(toBack: self.loginFormContainer);
+			self.view.sendSubviewToBack(self.loginFormContainer);
 		}
 	}
 	
@@ -718,7 +750,7 @@ extension LoginRegisterContainerViewController {
 	func registrationButtonClicked() {
 		UIView.animate(withDuration: 0.5) {
 			self.registrationFormContainer.alpha = 1.0;
-			self.view.bringSubview(toFront: self.registrationFormContainer);
+			self.view.bringSubviewToFront(self.registrationFormContainer);
 		}
 	}
 	
@@ -726,7 +758,7 @@ extension LoginRegisterContainerViewController {
 	func registrationFormCancelClicked() {
 		UIView.animate(withDuration: 0.5) {
 			self.registrationFormContainer.alpha = 0.0;
-			self.view.sendSubview(toBack: self.registrationFormContainer);
+			self.view.sendSubviewToBack(self.registrationFormContainer);
 		}
 	}
 	

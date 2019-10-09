@@ -41,7 +41,7 @@ class HorizontalLargeCollectionViewCell: UICollectionViewCell {
 		collectionView.register(HeaderViewCell.self, forCellWithReuseIdentifier: HeaderViewCell.ID);
 		collectionView.dataSource = self;
 		collectionView.delegate = self;
-		collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+		collectionView.decelerationRate = UIScrollView.DecelerationRate.fast;
 		
 		return collectionView;
 	}();

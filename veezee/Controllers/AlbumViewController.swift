@@ -10,7 +10,6 @@ import UIKit
 import Foundation
 import DeviceKit
 import PKHUD
-import LambdaKit
 
 fileprivate extension Selector {
 	static let vc = AlbumViewController.self;
@@ -263,11 +262,13 @@ class AlbumViewController: _BasePageViewController {
 				make.width.equalTo((self.view.bounds.width / 2) - 20 * 3)
 			});
 			
+			let halfWidth = self.view.bounds.width / 2;
+			
 			self.viewContainer.addSubview(self.playButtonView);
 			self.playButtonView.snp.makeConstraints ({(make) -> Void in
 				make.top.equalTo(trackCountView.snp.bottom).offset(15)
 				make.left.equalTo(35)
-				make.width.equalTo(((self.view.bounds.width / 2) - 20 * 3) / 2 - 30)
+				make.width.equalTo((halfWidth - 20 * 3) / 2 - 30)
 				make.height.equalTo(buttonsHeight)
 			});
 			
@@ -275,7 +276,7 @@ class AlbumViewController: _BasePageViewController {
 			self.shuffleButtonView.snp.makeConstraints ({(make) -> Void in
 				make.top.equalTo(trackCountView.snp.bottom).offset(15)
 				make.left.equalTo(self.playButtonView.snp.right).offset(30)
-				make.width.equalTo(((self.view.bounds.width / 2) - 20 * 3) / 2 - 30)
+				make.width.equalTo((halfWidth - 20 * 3) / 2 - 30)
 				make.height.equalTo(buttonsHeight)
 			});
 			
@@ -464,30 +465,7 @@ class AlbumViewController: _BasePageViewController {
 			
 			tracksListHeight += itemHeight + 10;
 			
-			let cellLongPressGestureRecognizer = UILongPressGestureRecognizer { gesture, state in
-				if (gesture.state == UIGestureRecognizerState.ended) {
-					self.trackLongPressEnded = false;
-					return;
-				}
-				
-				if(self.trackLongPressEnded) {
-					return;
-				}
-				
-				if var track: Track = self.album?.tracks?[index] {
-					var _album: Album?;
-					do {
-						let encodedData = try JSONEncoder().encode(self.album);
-						_album = try JSONDecoder().decode(Album.self, from: encodedData);
-						// Unarchive into a new instance
-						_album?.tracks = nil;
-						track.album = _album;
-						NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : track]);
-					} catch {}
-				}
-				
-				self.trackLongPressEnded = true;
-			};
+			let cellLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.cellLongPressed(_:)));
 			cellLongPressGestureRecognizer.minimumPressDuration = 0.5;
 			cellLongPressGestureRecognizer.delaysTouchesBegan = true;
 			item.addGestureRecognizer(cellLongPressGestureRecognizer);
@@ -577,31 +555,8 @@ class AlbumViewController: _BasePageViewController {
 
 			tracksListHeight += itemHeight + 10;
 			tracksListViews.append(item);
-			
-			let cellLongPressGestureRecognizer = UILongPressGestureRecognizer { gesture, state in
-				if (gesture.state == UIGestureRecognizerState.ended) {
-					self.trackLongPressEnded = false;
-					return;
-				}
-				
-				if(self.trackLongPressEnded) {
-					return;
-				}
-				
-				if var track: Track = self.album?.tracks?[index] {
-					var _album: Album?;
-					do {
-						let encodedData = try JSONEncoder().encode(self.album);
-						_album = try JSONDecoder().decode(Album.self, from: encodedData);
-						// Unarchive into a new instance
-						_album?.tracks = nil;
-						track.album = _album;
-						NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : track]);
-					} catch {}
-				}
-				
-				self.trackLongPressEnded = true;
-			};
+
+			let cellLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.cellLongPressed(_:)));
 			cellLongPressGestureRecognizer.minimumPressDuration = 0.5;
 			cellLongPressGestureRecognizer.delaysTouchesBegan = true;
 			item.addGestureRecognizer(cellLongPressGestureRecognizer);
@@ -621,6 +576,32 @@ class AlbumViewController: _BasePageViewController {
 				make.height.equalTo(self.viewContainer.contentSize.height)
 			});
 		}
+	}
+
+	@objc
+	func cellLongPressed(_ sender: UILongPressGestureRecognizer) {
+		if (sender.state == UIGestureRecognizer.State.ended) {
+			self.trackLongPressEnded = false;
+			return;
+		}
+
+		if(self.trackLongPressEnded) {
+			return;
+		}
+
+//		if var track: Track = self.album?.tracks?[index] {
+//			var _album: Album?;
+//			do {
+//				let encodedData = try JSONEncoder().encode(self.album);
+//				_album = try JSONDecoder().decode(Album.self, from: encodedData);
+//				// Unarchive into a new instance
+//				_album?.tracks = nil;
+//				track.album = _album;
+//				NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : track]);
+//			} catch {}
+//		}
+
+		self.trackLongPressEnded = true;
 	}
 	
 	@objc

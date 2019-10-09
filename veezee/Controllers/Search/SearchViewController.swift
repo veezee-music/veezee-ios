@@ -214,7 +214,7 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
 		
 		if(q.count < 3) {
 			let warning = UIAlertController(title: "Error", message: "Please enter 3 characters or more.", preferredStyle: .alert);
-			let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default);
+			let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default);
 			warning.addAction(okAction);
 			present(warning, animated: true, completion: nil);
 			return;

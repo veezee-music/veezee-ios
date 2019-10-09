@@ -18,7 +18,7 @@ struct Constants {
 	/// Max time out for API calls
 	static var API_TIME_OUT: Double = 20;
 	
-	static var API_BASE_URL = "https://veezee.cloud/api/v1";
+	static var API_BASE_URL = "https://veezee.ir/api/v1";
 	
 	static var GOOGLE_iOS_CLIENT_ID: String {
 		get {

@@ -19,9 +19,9 @@ private final class CustomSwitchCell: SwitchCell {
 }
 
 private final class CustomTapActionCell: TapActionCell {
-	public override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-		super.init(style: .default, reuseIdentifier: reuseIdentifier)
-		setUpAppearance()
+	public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+		super.init(style: .default, reuseIdentifier: reuseIdentifier);
+		setUpAppearance();
 	}
 	
 	public required init?(coder aDecoder: NSCoder) {
@@ -29,7 +29,7 @@ private final class CustomTapActionCell: TapActionCell {
 		setUpAppearance()
 	}
 	
-	open override func tintColorDidChange() {
+	public override func tintColorDidChange() {
 		super.tintColorDidChange()
 		textLabel?.textColor = tintColor
 	}
@@ -55,11 +55,11 @@ class SettingsViewController: QuickTableViewController {
 	
 	let userDefaults = UserDefaults.standard;
 	
-	lazy var offlineAccessOption: SwitchRow = SwitchRow<CustomSwitchCell>(title: "Offline Access", switchValue: Constants.OFFLINE_ACCESS, action: { _ in
+	private lazy var offlineAccessOption: SwitchRow = SwitchRow<CustomSwitchCell>(title: "Offline Access", switchValue: Constants.OFFLINE_ACCESS, action: { _ in
 		self.offlineAccessValueChanged();
 	});
 	
-	lazy var coloredPlayerOption: SwitchRow = SwitchRow<CustomSwitchCell>(title: "Colored Player", switchValue: Constants.COLORED_PLAYER, action: { _ in
+	private lazy var coloredPlayerOption: SwitchRow = SwitchRow<CustomSwitchCell>(title: "Colored Player", switchValue: Constants.COLORED_PLAYER, action: { _ in
 		self.coloredPlayerValueChanged();
 	});
 	
@@ -103,8 +103,8 @@ class SettingsViewController: QuickTableViewController {
 	private func clearCache(_ sender: Row) {
 		try? OfflineAccessDatabase.sharedInstance.database?.delete();
 		
-		let alertController = UIAlertController(title: "Clear Cache", message: "Clear the app from memory and run again for changes to take effect.", preferredStyle: UIAlertControllerStyle.alert);
-		alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil));
+		let alertController = UIAlertController(title: "Clear Cache", message: "Clear the app from memory and run again for changes to take effect.", preferredStyle: UIAlertController.Style.alert);
+		alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertAction.Style.default,handler: nil));
 		self.present(alertController, animated: true, completion: nil);
 	}
 	
@@ -124,8 +124,8 @@ extension SettingsViewController {
 	func themeValueChanged(selectedTheme: String) {
 		self.userDefaults.set(selectedTheme, forKey: "theme_preference");
 		
-		let alertController = UIAlertController(title: "Change Theme", message: "Clear the app from memory and run again for changes to take effect.", preferredStyle: UIAlertControllerStyle.alert);
-		alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil));
+		let alertController = UIAlertController(title: "Change Theme", message: "Clear the app from memory and run again for changes to take effect.", preferredStyle: UIAlertController.Style.alert);
+		alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertAction.Style.default,handler: nil));
 		self.present(alertController, animated: true, completion: nil);
 		//SettingsBundleHelper.appSettingsBundleChanged();
 	}

@@ -229,7 +229,7 @@ class AccountViewController: _BasePageViewController, UICollectionViewDataSource
 	var longPressEnded = false;
 	@objc
 	func handleCellLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
-		if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
+		if (gestureRecognizer.state == UIGestureRecognizer.State.ended) {
 			self.longPressEnded = false;
 			return;
 		}
@@ -285,7 +285,7 @@ extension AccountViewController {
 	func changeNameOrPasswordButtonTapped() {
 		UIView.animate(withDuration: 0.5) {
 			self.changeNameAndPasswordFormContainer.alpha = 1.0;
-			self.view.bringSubview(toFront: self.changeNameAndPasswordFormContainer);
+			self.view.bringSubviewToFront(self.changeNameAndPasswordFormContainer);
 		}
 	}
 	
@@ -293,7 +293,7 @@ extension AccountViewController {
 	func changeNameAndPasswordFormCancelButtonTapped() {
 		UIView.animate(withDuration: 0.5) {
 			self.changeNameAndPasswordFormContainer.alpha = 0.0;
-			self.view.sendSubview(toBack: self.changeNameAndPasswordFormContainer);
+			self.view.sendSubviewToBack(self.changeNameAndPasswordFormContainer);
 		}
 	}
 	

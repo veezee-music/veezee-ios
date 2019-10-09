@@ -26,7 +26,7 @@ class _BasePageViewController: _BaseCommonViewController, BottomPlayerDelegate, 
 		
 		self.bottomPlayer.resetVisibility();
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(self.viewReappearedFromForeground), name: Notification.Name.UIApplicationWillEnterForeground, object: nil);
+		NotificationCenter.default.addObserver(self, selector: #selector(self.viewReappearedFromForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
 		NotificationCenter.default.addObserver(self, selector: #selector(self.onInitiatePlayerForPlayableList(_:)), name: Notification.Name(rawValue: Constants.audioPlayerInitiatePlayBroadcastNotificationKey), object: nil);
 		NotificationCenter.default.addObserver(self, selector: #selector(self.onShowTrackActionSheet(_:)), name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: nil);
 		NotificationCenter.default.addObserver(self, selector: #selector(self.onStopAndClearPlayers(_:)), name: Notification.Name(rawValue: Constants.audioPlayerStopAndClearPlayersBroadcastNotificationKey), object: nil);
@@ -113,7 +113,7 @@ class _BasePageViewController: _BaseCommonViewController, BottomPlayerDelegate, 
 		}
 		self.bottomPlayer.delegate = self;
 		self.view.addSubviewOnce(self.bottomPlayer);
-		self.view.bringSubview(toFront: self.bottomPlayer);
+		self.view.bringSubviewToFront(self.bottomPlayer);
 		bottomPlayer.snp.remakeConstraints({(make) -> Void in
 			make.height.equalTo(BottomPlayer.Height);
 			make.bottom.equalTo(0)//.inset((self.tabBarController?.tabBar.bounds.height)!);
@@ -135,17 +135,17 @@ class _BasePageViewController: _BaseCommonViewController, BottomPlayerDelegate, 
 	
 	@objc
 	func bottomPlayerGestureHandler(gesture: UISwipeGestureRecognizer) -> Void {
-		if gesture.direction == UISwipeGestureRecognizerDirection.right {
+		if gesture.direction == UISwipeGestureRecognizer.Direction.right {
 			// Swipe right
 		}
-		else if gesture.direction == UISwipeGestureRecognizerDirection.left {
+		else if gesture.direction == UISwipeGestureRecognizer.Direction.left {
 			// Swipe left
 		}
-		else if gesture.direction == UISwipeGestureRecognizerDirection.up {
+		else if gesture.direction == UISwipeGestureRecognizer.Direction.up {
 			// Swipe up
 			self.openPlayerModal();
 		}
-		else if gesture.direction == UISwipeGestureRecognizerDirection.down {
+		else if gesture.direction == UISwipeGestureRecognizer.Direction.down {
 			// Swipe down
 		}
 	}

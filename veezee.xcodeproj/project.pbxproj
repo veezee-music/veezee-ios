@@ -780,7 +780,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-veezee/Pods-veezee-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-veezee/Pods-veezee-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AnimatedTextInput/AnimatedTextInput.framework",
 				"${BUILT_PRODUCTS_DIR}/CodableAlamofire/CodableAlamofire.framework",
@@ -794,7 +794,6 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/LambdaKit/LambdaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
@@ -827,7 +826,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LambdaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
@@ -847,7 +845,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-veezee/Pods-veezee-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-veezee/Pods-veezee-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3723CCD70C906B5A9BA46419 /* [CP] Copy Pods Resources */ = {
@@ -856,7 +854,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-veezee/Pods-veezee-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-veezee/Pods-veezee-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -865,7 +863,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-veezee/Pods-veezee-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-veezee/Pods-veezee-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3D2D7639207EA363004FBF86 /* ShellScript */ = {
@@ -879,7 +877,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "FabricApiKey=$(sed -n '2p' < app_config.txt)\nFabricSecretKey=$(sed -n '4p' < app_config.txt)\nGoogleReversediOSClientId=$(sed -n '6p' < app_config.txt)\nGoogleiOSClientId=$(sed -n '8p' < app_config.txt)\nGoogleServerClientId=$(sed -n '10p' < app_config.txt)\n\nINFO_PLIST=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :Fabric:APIKey $FabricApiKey\" \"$INFO_PLIST\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 $GoogleReversediOSClientId\" \"$INFO_PLIST\"\n\n/usr/libexec/PlistBuddy -c \"Set :VZAppConfig:GoogleiOSClientId $GoogleiOSClientId\" \"$INFO_PLIST\"\n/usr/libexec/PlistBuddy -c \"Set :VZAppConfig:GoogleServerClientId $GoogleServerClientId\" \"$INFO_PLIST\"\n\n\"${PODS_ROOT}/Fabric/run\" $FabricApiKey $FabricSecretKey";
+			shellScript = "GoogleReversediOSClientId=$(sed -n '6p' < app_config.txt)\nGoogleiOSClientId=$(sed -n '8p' < app_config.txt)\nGoogleServerClientId=$(sed -n '10p' < app_config.txt)\n\nINFO_PLIST=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 $GoogleReversediOSClientId\" \"$INFO_PLIST\"\n\n/usr/libexec/PlistBuddy -c \"Set :VZAppConfig:GoogleiOSClientId $GoogleiOSClientId\" \"$INFO_PLIST\"\n/usr/libexec/PlistBuddy -c \"Set :VZAppConfig:GoogleServerClientId $GoogleServerClientId\" \"$INFO_PLIST\"\n";
 		};
 		D7E64DFB4BF033F72639E9EC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1168,12 +1166,13 @@
 				DEVELOPMENT_TEAM = 5Q4Z4KQM4A;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = veezee/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.music.veezee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1190,13 +1189,14 @@
 				DEVELOPMENT_TEAM = 5Q4Z4KQM4A;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = veezee/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cloud.music.veezee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

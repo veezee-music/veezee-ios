@@ -482,7 +482,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 			self.artworkView.image = artwork;
 			self.artworkView.layoutIfNeeded();
 			
-			self.containerView.bringSubview(toFront: self.artworkView);
+			self.containerView.bringSubviewToFront(self.artworkView);
 			
 			let titlesContainer = UIView();
 			self.containerView.addSubview(titlesContainer);
@@ -628,7 +628,7 @@ class MusicPlayerViewController: HalfModalViewController, AudioPlayerDelegate {
 		// the order is important, the image must be placed before the blurEffect view
 		self.view.insertSubview(self.backgroundBlurredImageView, at: 0);
 		
-		let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark);
+		let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark);
 		let blurEffectView = UIVisualEffectView(effect: blurEffect);
 		blurEffectView.frame = self.backgroundBlurredImageView.frame;
 		

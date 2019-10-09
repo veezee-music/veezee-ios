@@ -63,10 +63,10 @@ class BackgroundHandler: NSObject {
 		
 		taskIdentifier = backgroundTaskCreator.beginBackgroundTask { [weak self] in
 			if let taskIdentifier = self?.taskIdentifier {
-				self?.backgroundTaskCreator.endBackgroundTask(taskIdentifier)
+				self?.backgroundTaskCreator.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: taskIdentifier))
 			}
 			self?.taskIdentifier = nil
-		}
+		}.rawValue
 		return true
     }
 
@@ -75,7 +75,7 @@ class BackgroundHandler: NSObject {
     /// - Returns: A boolean value indicating whether a background task was ended or not.
     @discardableResult
     func endBackgroundTask() -> Bool {
-		guard let taskIdentifier = taskIdentifier else {
+		guard let taskIdentifierr = taskIdentifier else {
 			return false
 		}
 		
@@ -85,8 +85,8 @@ class BackgroundHandler: NSObject {
 			return false
 		}
 		
-		if taskIdentifier != UIBackgroundTaskInvalid {
-			backgroundTaskCreator.endBackgroundTask(taskIdentifier)
+		if taskIdentifierr != UIBackgroundTaskIdentifier.invalid.rawValue {
+			backgroundTaskCreator.endBackgroundTask(UIBackgroundTaskIdentifier.init(rawValue: taskIdentifierr))
 		}
 		self.taskIdentifier = nil
 		return true

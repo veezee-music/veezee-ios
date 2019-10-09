@@ -103,7 +103,7 @@ class UserPlaylistsViewController: _BaseCommonViewController {
 		collectionView.isScrollEnabled = true;
 		collectionView.bounces = true;
 		collectionView.isPagingEnabled = false;
-		collectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
+		collectionView.decelerationRate = UIScrollView.DecelerationRate.normal;
 		collectionView.register(UserPlaylistViewCell.self, forCellWithReuseIdentifier: UserPlaylistViewCell.ID);
 		collectionView.dataSource = self;
 		collectionView.delegate = self;
@@ -236,7 +236,7 @@ extension UserPlaylistsViewController {
 			self.clearAllCellsFromCheckMarks();
 			self.resetCellSelectionState();
 			self.createNewPlaylistFormContainer.alpha = 1.0;
-			self.view.bringSubview(toFront: self.createNewPlaylistFormContainer);
+			self.view.bringSubviewToFront(self.createNewPlaylistFormContainer);
 		}
 	}
 	
@@ -244,7 +244,7 @@ extension UserPlaylistsViewController {
 	func createNewPlaylistFormCancelClicked() {
 		UIView.animate(withDuration: 0.5) {
 			self.createNewPlaylistFormContainer.alpha = 0.0;
-			self.view.sendSubview(toBack: self.createNewPlaylistFormContainer);
+			self.view.sendSubviewToBack(self.createNewPlaylistFormContainer);
 		}
 	}
 	

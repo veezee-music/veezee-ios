@@ -41,7 +41,7 @@ class HorizontalTinyOneRowCollectionViewCell: UICollectionViewCell, UIGestureRec
 		collectionView.register(GenreTinyViewCell.self, forCellWithReuseIdentifier: GenreTinyViewCell.ID);
 		collectionView.dataSource = self;
 		collectionView.delegate = self;
-		collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+		collectionView.decelerationRate = UIScrollView.DecelerationRate.fast;
 		
 		return collectionView;
 	}();
@@ -118,7 +118,7 @@ class HorizontalTinyOneRowCollectionViewCell: UICollectionViewCell, UIGestureRec
 	var longPressEnded = false;
 	@objc
 	func handleCellLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
-		if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
+		if (gestureRecognizer.state == UIGestureRecognizer.State.ended) {
 			self.longPressEnded = false;
 			return;
 		}

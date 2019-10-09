@@ -238,7 +238,7 @@ extension UIColor{
 
 extension UICollectionView {
 	func scrollToNearestVisibleCollectionViewCell() {
-		self.decelerationRate = UIScrollViewDecelerationRateFast
+		self.decelerationRate = UIScrollView.DecelerationRate.fast
 		let visibleCenterPositionOfScrollView = Float(self.contentOffset.x + (self.bounds.size.width / 2))
 		var closestCellIndex = -1
 		var closestDistance: Float = .greatestFiniteMagnitude
@@ -307,11 +307,11 @@ extension UIViewController {
 		if let onView = onView {
 			holderView = onView
 		}
-		addChildViewController(childController)
+		addChild(childController)
 		holderView?.addSubview(childController.view)
 		constrainViewEqual(holderView: holderView!, view: childController.view)
-		childController.didMove(toParentViewController: self)
-		childController.willMove(toParentViewController: self)
+		childController.didMove(toParent: self)
+		childController.willMove(toParent: self)
 	}
 	
 	func constrainViewEqual(holderView: UIView, view: UIView) {
@@ -343,7 +343,7 @@ extension UIAlertController {
 		let vc = UIViewController()
 		vc.view.backgroundColor = .clear
 		win.rootViewController = vc
-		win.windowLevel = UIWindowLevelAlert + 1
+		win.windowLevel = UIWindow.Level.alert + 1
 		win.makeKeyAndVisible()
 		vc.present(self, animated: true, completion: nil)
 	}
@@ -355,7 +355,7 @@ public extension PMAlertController {
 		let vc = UIViewController()
 		vc.view.backgroundColor = .clear
 		win.rootViewController = vc
-		win.windowLevel = UIWindowLevelAlert + 1
+		win.windowLevel = UIWindow.Level.alert + 1
 		win.makeKeyAndVisible()
 		vc.present(self, animated: true, completion: nil)
 	}
@@ -378,7 +378,7 @@ extension UIWindow {
 		
 		let dismissCompletion = { () -> Void in // dismiss all modal view controllers
 			self.rootViewController = replacementController
-			self.bringSubview(toFront: snapshotImageView)
+			self.bringSubviewToFront(snapshotImageView)
 			if animated {
 				UIView.animate(withDuration: 0.4, animations: { () -> Void in
 					snapshotImageView.alpha = 0

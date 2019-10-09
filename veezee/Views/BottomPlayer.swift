@@ -85,7 +85,7 @@ class BottomPlayer: UIView {
 		}
 		
 		if(!Constants.COLORED_PLAYER) {
-			let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark);
+			let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark);
 			let blurEffectView = UIVisualEffectView(effect: blurEffect);
 			blurEffectView.frame = CGRect(x: 0, y: 0, width: (self.bounds.width), height: BottomPlayer.Height);
 			blurEffectView.translatesAutoresizingMaskIntoConstraints = false;
@@ -98,7 +98,7 @@ class BottomPlayer: UIView {
 			// the order is important, the image must be placed before the blurEffect view
 			self.insertSubview(self.backgroundImageView!, at: 0);
 			
-			let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark);
+			let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark);
 			let blurEffectView = UIVisualEffectView(effect: blurEffect);
 			blurEffectView.frame = self.backgroundImageView!.frame;
 			
@@ -192,10 +192,10 @@ class BottomPlayer: UIView {
 		DispatchQueue.main.async {
 			
 			if(self.audioPlayer.state == AudioPlayerState.playing || self.audioPlayer.state == AudioPlayerState.buffering) {
-				self.superview?.bringSubview(toFront: self);
+				self.superview?.bringSubviewToFront(self);
 				self.isHidden = false;
 			} else if(self.audioPlayer.state == AudioPlayerState.paused) {
-				self.superview?.bringSubview(toFront: self);
+				self.superview?.bringSubviewToFront(self);
 				self.isHidden = false;
 			} else {
 				self.isHidden = true;

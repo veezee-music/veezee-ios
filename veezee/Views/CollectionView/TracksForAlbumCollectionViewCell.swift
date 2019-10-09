@@ -52,7 +52,7 @@ class TracksForAlbumCollectionViewCell: UICollectionViewCell, UIGestureRecognize
 		collectionView.register(NoteCollectionViewCell.self, forCellWithReuseIdentifier: NoteCollectionViewCell.ID);
 		collectionView.dataSource = self;
 		collectionView.delegate = self;
-		collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+		collectionView.decelerationRate = UIScrollView.DecelerationRate.fast;
 		collectionView.layer.cornerRadius = 4;
 		
 		return collectionView;

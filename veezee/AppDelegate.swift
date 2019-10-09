@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	var window: UIWindow?;
 
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		let userDefaults = UserDefaults.standard;
 		// a hack to make sure keychain is cleared on app reinstall
 		if userDefaults.bool(forKey: "hasRunBefore") == false {
@@ -45,8 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		self.window?.backgroundColor = UIColor.black;
 		self.window?.makeKeyAndVisible();
 		
-		Fabric.with([Crashlytics.self, Answers.self]);
-		
 		// Enables lockscreen controls for audio player
 		UIApplication.shared.beginReceivingRemoteControlEvents();
 		
@@ -63,10 +61,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		}
 	}
 	
-	func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 		return GIDSignIn.sharedInstance().handle(url,
-												 sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
-												 annotation: options[UIApplicationOpenURLOptionsKey.annotation]);
+												 sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+												 annotation: options[UIApplication.OpenURLOptionsKey.annotation]);
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
@@ -136,8 +134,8 @@ extension AppDelegate {
 			.foregroundColor: Constants.PRIMARY_TEXT_COLOR
 		];
 		// for example cancel button for search bar
-		let navbarButtonAttributes = [NSAttributedStringKey.foregroundColor: Constants.PRIMARY_TEXT_COLOR];
-		UIBarButtonItem.appearance().setTitleTextAttributes(navbarButtonAttributes , for: UIControlState.normal);
+		let navbarButtonAttributes = [NSAttributedString.Key.foregroundColor: Constants.PRIMARY_TEXT_COLOR];
+		UIBarButtonItem.appearance().setTitleTextAttributes(navbarButtonAttributes , for: UIControl.State.normal);
 		
 		tabBarController = UITabBarController();
 		let unselectedTabBarTintColor : UIColor = .gray;

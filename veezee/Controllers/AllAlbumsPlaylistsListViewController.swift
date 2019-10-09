@@ -40,7 +40,7 @@ class AllAlbumsPlaylistsListViewController: _BasePageViewController {
 		collectionView.isScrollEnabled = true;
 		collectionView.bounces = true;
 		collectionView.isPagingEnabled = false;
-		collectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
+		collectionView.decelerationRate = UIScrollView.DecelerationRate.normal;
 		collectionView.register(MusicSmallViewCell.self, forCellWithReuseIdentifier: MusicSmallViewCell.ID);
 		collectionView.register(TracksForAlbumCollectionViewCell.self, forCellWithReuseIdentifier: TracksForAlbumCollectionViewCell.ID);
 		collectionView.register(SpacerCollectionViewCell.self, forCellWithReuseIdentifier: SpacerCollectionViewCell.ID);

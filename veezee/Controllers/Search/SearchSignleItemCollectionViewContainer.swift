@@ -31,7 +31,7 @@ class SearchSignleItemCollectionViewContainer: UIView {
 		collectionView.isScrollEnabled = true;
 		collectionView.bounces = true;
 		collectionView.register(SingleTitleCollectionViewCell.self, forCellWithReuseIdentifier: SingleTitleCollectionViewCell.ID);
-		collectionView.register(CollectionCustomHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionCustomHeader.ID);
+		collectionView.register(CollectionCustomHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionCustomHeader.ID);
 		collectionView.dataSource = self;
 		collectionView.delegate = self;
 		

@@ -29,7 +29,7 @@ class IconedButton: UIButton {
 		super.init(coder: aDecoder);
 	}
 	
-	func initButton(icon: FontType, iconSize: CGFloat?, color: UIColor, backgroundColor: UIColor, forState state: UIControlState) {
+	func initButton(icon: FontType, iconSize: CGFloat?, color: UIColor, backgroundColor: UIColor, forState state: UIControl.State) {
 		self.icon = icon;
 		self.iconSize = iconSize;
 		self.buttonBackgroundColor = backgroundColor;
@@ -37,7 +37,7 @@ class IconedButton: UIButton {
 		super.setIcon(icon: icon, iconSize: iconSize, color: color, backgroundColor: backgroundColor, forState: .normal);
 	}
 	
-	func initButton(icon: FontType, iconSize: CGFloat?, color: UIColor, forState state: UIControlState) {
+	func initButton(icon: FontType, iconSize: CGFloat?, color: UIColor, forState state: UIControl.State) {
 		self.icon = icon;
 		self.iconSize = iconSize;
 		self.iconColor = color;
@@ -55,13 +55,13 @@ class IconedButton: UIButton {
 		self.setIcon(icon: self.icon!, iconSize: self.iconSize!, color: self.iconColor!, forState: .normal);
 	}
 	
-	func setIcon(icon: FontType, color: UIColor, forState state: UIControlState) {
+	func setIcon(icon: FontType, color: UIColor, forState state: UIControl.State) {
 		self.icon = icon;
 		self.iconColor = color;
 		self.setIcon(icon: self.icon!, iconSize: self.iconSize!, color: self.iconColor!, forState: state);
 	}
 	
-	func setIcon(color: UIColor, forState state: UIControlState) {
+	func setIcon(color: UIColor, forState state: UIControl.State) {
 		self.iconColor = color;
 		self.setIcon(icon: self.icon!, iconSize: self.iconSize!, color: self.iconColor!, forState: state);
 	}

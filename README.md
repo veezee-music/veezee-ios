@@ -1,7 +1,7 @@
 # veezee - music streamer (iOS)
 
 <p align="center">
-	<img width="50%" src="http://veezee.ir/demo_assets/veezee-logotype.svg">
+	<img width="50%" src="https://veezee-music.github.io/veezee-static-contents/brand/veezee-logotype.svg">
 </p>
 <br>
 
@@ -13,19 +13,19 @@
 <br>
 
 <p align="center">
-  <a href="http://veezee.ir/demo_assets/ios/p1.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p1.png"></a>
-  <a href="http://veezee.ir/demo_assets/ios/p2.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p2.png"></a>
-  <a href="http://veezee.ir/demo_assets/ios/p3.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p3.png"></a>
+  <a href="https://veezee-music.github.io/veezee-static-contents/brand/ios/p1.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p1.png"></a>
+  <a href="hhttps://veezee-music.github.io/veezee-static-contents/brand/ios/p2.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p2.png"></a>
+  <a href="https://veezee-music.github.io/veezee-static-contents/brand/ios/p3.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p3.png"></a>
 </p>
 <p align="center">
-  <a href="http://veezee.ir/demo_assets/ios/p4.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p4.png"></a>
-  <a href="http://veezee.ir/demo_assets/ios/p5.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p5.png"></a>
-  <a href="http://veezee.ir/demo_assets/ios/p6.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p6.png"></a>
+  <a href="https://veezee-music.github.io/veezee-static-contents/brand/ios/p4.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p4.png"></a>
+  <a href="https://veezee-music.github.io/veezee-static-contents/brand/ios/p5.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p5.png"></a>
+  <a href="https://veezee-music.github.io/veezee-static-contents/brand/ios/p6.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p6.png"></a>
 </p>
 <p align="center">
-  <a href="http://veezee.ir/demo_assets/ios/p7.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p7.png"></a>
-  <a href="http://veezee.ir/demo_assets/ios/p8.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p8.png"></a>
-  <a href="http://veezee.ir/demo_assets/ios/p9.png" target="_blank"><img width="32%" src="http://veezee.ir/demo_assets/ios/p9.png"></a>
+  <a href="https://veezee-music.github.io/veezee-static-contents/brand/ios/p7.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p7.png"></a>
+  <a href="https://veezee-music.github.io/veezee-static-contents/brand/ios/p8.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p8.png"></a>
+  <a href="https://veezee-music.github.io/veezee-static-contents/brand/ios/p9.png" target="_blank"><img width="32%" src="https://veezee-music.github.io/veezee-static-contents/brand/ios/p9.png"></a>
 </p>
 
 
@@ -42,7 +42,7 @@
 
 ## iOS version features
 
-- Completely written in **Swift 4**
+- Written in **Swift 4.2**
 - Optimized for both **iPhone and iPad** (Supports screen resizing)
 - Landscape mode (iPad only) - WiP (UI bugs expected)
 - **Coded UI** with Autolayout using **Snapkit** (no storyboards or xib files!)
@@ -52,17 +52,11 @@
 - Beautiful animations using UIKit animations and transitions and UIKit dynamics
 - And more...
 
-## Things that are currently NOT planned
-
-- Supporting devices with smaller screens (Current min is 4.7 inches)
-- Localization
-- Equalizer
-
 ## How to use
 
 ### Compiling: iOS version
 
-You'll need to use **Xcode 9+** and the **Cocoapods 1.5+** with the repos up to date.
+You'll need to use **Xcode 11+** and the **Cocoapods 1.5+** with the repos up to date.
 
 - Install the dependencies by executing the following command in the project directory in a terminal window: `pod install`
 - Rename the `example-app-config.txt` file to `app-config.txt` located in the project root and optionally fill it with API keys for various services supported by veezee
@@ -71,6 +65,9 @@ You'll need to use **Xcode 9+** and the **Cocoapods 1.5+** with the repos up to 
 - Open `veezee.xcworkspace` file by double clicking on it or use Xcode file menu to open the project.
 - Wait for Xcode to complete the indexing proccess and then build the project using **Product** -> **Build** option from the top menu.
 - Select a device or simulator with a screen size **equal or larger than 4.7 inch** (e.g. iPhone 8, 8 Plus, X or any iPad) and run the project (For running on a real device you might need to change the application bundle id from Xcode project settings)
+
+##### Note!
+If you are having issues compiling the project using Xcode, try using JetBrains AppCode.
 
 ### Setting up a server (IMPORTANT!)
 

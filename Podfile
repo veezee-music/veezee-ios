@@ -6,15 +6,15 @@ target 'veezee' do
   use_frameworks!
 
   # Pods for veezee
-  pod 'SnapKit', '~> 4.0.1'
+  pod 'SnapKit', '~> 5.0.0'
   pod 'SwiftIcons', '~> 2.2.0'
   pod 'DeviceKit', '~> 1.3.0'
   pod 'CoreAnimator', '~> 2.1.3'
   pod 'Alamofire', '~> 4.7.3'
   pod 'CodableAlamofire', '~> 1.1.0'
   pod 'CodableExtensions', '~> 0.2.1'
-  pod 'Kingfisher', '~> 4.0'
-  pod 'PKHUD', '~> 5.0'
+  pod 'Kingfisher', '~> 5.4.0'
+  pod 'PKHUD', '~> 5.2.1'
   pod 'GoogleSignIn', '~> 4.3.0'
   pod 'Pages', '~> 2.0.2'
   pod 'AnimatedTextInput', '~> 0.5.2'
@@ -22,18 +22,16 @@ target 'veezee' do
   pod 'SwiftIconFont', '~> 2.7.3'
   pod 'KeychainSwift', '~> 10.0'
   pod 'PMAlertController', '~> 3.2.0'
-  pod 'Fabric', '~> 1.7.6'
   pod 'Crashlytics', '~> 3.10.1'
-  pod 'NVActivityIndicatorView', '~> 4.2.0'
-  pod 'CouchbaseLite-Swift', '~> 2.1.1'
+  pod 'NVActivityIndicatorView', '~> 4.7.0'
+  pod 'CouchbaseLite-Swift', '~> 2.6.0'
   pod 'Sheeeeeeeeet', '~> 0.9.4'
-  pod 'RxSwift', '~> 4.0'
+  pod 'RxSwift', '~> 4.5.0'
   pod 'RxCocoa', '~> 4.0'
   pod 'MaterialComponents/Slider', '~> 55.0.4'
-  pod 'MarqueeLabel/Swift', '~> 3.1.6'
+  pod 'MarqueeLabel', '~> 4.0.0'
   pod 'VSInfiniteCarousel', '~> 0.2.0'
   pod 'QuickTableViewController', '~> 0.9.1'
-  pod 'LambdaKit', '~> 0.5.0'
 
 end
 

@@ -48,7 +48,7 @@ class SearchRowTracksCollectionViewCell: BaseCollectionViewCell, UICollectionVie
 		collectionView.dataSource = self;
 		collectionView.delegate = self;
 		collectionView.translatesAutoresizingMaskIntoConstraints = false;
-		collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+		collectionView.decelerationRate = UIScrollView.DecelerationRate.fast;
 		
 		return collectionView;
 	}();

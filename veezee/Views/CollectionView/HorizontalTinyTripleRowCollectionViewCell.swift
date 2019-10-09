@@ -45,7 +45,7 @@ class HorizontalTinyTripleRowCollectionViewCell: UICollectionViewCell, UIGesture
 		collectionView.dataSource = self;
 		collectionView.delegate = self;
 		collectionView.translatesAutoresizingMaskIntoConstraints = false;
-		collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+		collectionView.decelerationRate = UIScrollView.DecelerationRate.fast;
 		
 		return collectionView;
 	}();
@@ -114,28 +114,31 @@ class HorizontalTinyTripleRowCollectionViewCell: UICollectionViewCell, UIGesture
 			make.left.right.equalTo(0)
 		});
 		
-		let cellLongPressGestureRecognizer = UILongPressGestureRecognizer { gesture, state in
-			if (gesture.state == UIGestureRecognizerState.ended) {
-				self.trackLongPressEnded = false;
-				return;
-			}
-			
-			if(self.trackLongPressEnded) {
-				return;
-			}
-			
-			let gestureRecognizerLocation = gesture.location(in: self.collectionView);
-			if let indexPath = self.collectionView.indexPathForItem(at: gestureRecognizerLocation) {
-				let item = self.dataList[indexPath.item];
-				NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : item]);
-			}
-			
-			self.trackLongPressEnded = true;
-		};
+		let cellLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.cellLongPressed(_:)));
 		cellLongPressGestureRecognizer.minimumPressDuration = 0.5;
 		cellLongPressGestureRecognizer.delegate = self;
 		cellLongPressGestureRecognizer.delaysTouchesBegan = true;
 		self.collectionView.addGestureRecognizer(cellLongPressGestureRecognizer);
+	}
+
+	@objc
+	func cellLongPressed(_ sender: UILongPressGestureRecognizer) {
+		if (sender.state == UIGestureRecognizer.State.ended) {
+			self.trackLongPressEnded = false;
+			return;
+		}
+
+		if(self.trackLongPressEnded) {
+			return;
+		}
+
+		let gestureRecognizerLocation = sender.location(in: self.collectionView);
+		if let indexPath = self.collectionView.indexPathForItem(at: gestureRecognizerLocation) {
+			let item = self.dataList[indexPath.item];
+			NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.trackLongPressedBroadcastNotificationKey), object: self, userInfo: ["track" : item]);
+		}
+
+		self.trackLongPressEnded = true;
 	}
 	
 	@objc

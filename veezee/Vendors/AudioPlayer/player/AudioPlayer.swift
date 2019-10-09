@@ -302,7 +302,7 @@ final public class AudioPlayer: NSObject {
     ///
     /// - Parameter active: A boolean value indicating whether the audio session should be set to active or not.
     func setAudioSession(active: Bool) {
-		_ = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+		_ = try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
 		_ = try? AVAudioSession.sharedInstance().setActive(active)
     }
 
@@ -393,14 +393,14 @@ extension AudioPlayer: CachingAVPlayerItemDelegate {
 					var imagePath = Constants.MUSIC_IMAGES_CACHE_FOLDER_PATH.appending("/\(fileName!)");
 					
 					if(imageUrl?.pathExtension == "jpg") {
-						if let data = UIImagePNGRepresentation(image!) {
+						if let data = image!.pngData() {
 							imagePath = imagePath.appending(".jpg");
 							imageFileNameWithExtension = "\(fileName!).jpg";
 							let url = URL(fileURLWithPath: imagePath);
 							try? data.write(to: url);
 						}
 					} else if(imageUrl?.pathExtension == "png") {
-						if let data = UIImageJPEGRepresentation(image!, 1.0) {
+						if let data = image!.jpegData(compressionQuality: 1.0) {
 							imagePath = imagePath.appending(".png");
 							imageFileNameWithExtension = "\(fileName!).png";
 							let url = URL(fileURLWithPath: imagePath);

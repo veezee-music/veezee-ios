@@ -39,7 +39,7 @@ class AllTracksListViewController: _BasePageViewController {
 		collectionView.isScrollEnabled = true;
 		collectionView.bounces = true;
 		collectionView.isPagingEnabled = false;
-		collectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
+		collectionView.decelerationRate = UIScrollView.DecelerationRate.normal;
 		collectionView.register(TracksForAlbumCollectionViewCell.self, forCellWithReuseIdentifier: TracksForAlbumCollectionViewCell.ID);
 		collectionView.register(TrackInTracksListViewCell.self, forCellWithReuseIdentifier: TrackInTracksListViewCell.ID);
 		collectionView.dataSource = self;
