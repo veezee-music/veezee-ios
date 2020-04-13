@@ -74,7 +74,7 @@ You'll need to use **Xcode 11+** and the **Cocoapods 1.5+** with the repos up to
 
 The server can be set up either on the localhost or the Internet. This server's address must be specified in the `Constants.swift` file in the iOS application's project code.
 
-*`https://veezee-music.github.io/veezee-static-contents/` is a demo API limited in functionaliity (registrations not working) that can be used to understand the apps behavior. **It contains some music and image files that exist for educational purposes only! No profit is gained from them. Its content may not be used in any way that may violate any copyright laws.** This is not based on veezee HTTP API, it's just some static files hosted on Github Pages.*
+*`https://veezee.cloud/api/v1/` is a demo API limited in functionaliity (registrations not working) that can be used to understand the apps behavior. **It contains some music and image files that exist for educational purposes only! No profit is gained from them. Its content may not be used in any way that may violate any copyright laws.** This is not based on veezee HTTP API, it's just some static files hosted on Github Pages.*
 
 
 
