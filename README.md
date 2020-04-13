@@ -46,7 +46,6 @@
 - Optimized for both **iPhone and iPad** (Supports screen resizing)
 - Landscape mode (iPad only) - WiP (UI bugs expected)
 - **Coded UI** with Autolayout using **Snapkit** (no storyboards or xib files!)
-- RxSwift and RxCocoa (limited use)
 - Guest mode (Without login)
 - Many custom views for different pages
 - Beautiful animations using UIKit animations and transitions and UIKit dynamics
@@ -67,7 +66,7 @@ You'll need to use **Xcode 11+** and the **Cocoapods 1.5+** with the repos up to
 - Select a device or simulator with a screen size **equal or larger than 4.7 inch** (e.g. iPhone 8, 8 Plus, X or any iPad) and run the project (For running on a real device you might need to change the application bundle id from Xcode project settings)
 
 ##### Note!
-If you are having issues compiling the project using Xcode, try using JetBrains AppCode.
+**If you are having issues compiling the project using Xcode, try using JetBrains AppCode.**
 
 ### Setting up a server (IMPORTANT!)
 
@@ -75,7 +74,7 @@ If you are having issues compiling the project using Xcode, try using JetBrains 
 
 The server can be set up either on the localhost or the Internet. This server's address must be specified in the `Constants.swift` file in the iOS application's project code.
 
-*`https://veezee.cloud/api/v1/` is a demo API limited in functionaliity (registrations not allowed) that can be used to understand the apps behavior. **It contains some music and image files that exist for educational purposes only! No profit is gained from them. Its content may not be used in any way that may violate any copyright laws.** This server does not have powerful hardware and network connectivity and is expected to be slow and unresponsive at times.*
+*`https://veezee-music.github.io/veezee-static-contents/` is a demo API limited in functionaliity (registrations not working) that can be used to understand the apps behavior. **It contains some music and image files that exist for educational purposes only! No profit is gained from them. Its content may not be used in any way that may violate any copyright laws.** This is not based on veezee HTTP API, it's just some static files hosted on Github Pages.*
 
 
 
